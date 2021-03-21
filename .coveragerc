@@ -1,0 +1,14 @@
+### https://coverage.readthedocs.io/en/v4.5.x/config.html
+
+[run]
+branch = True
+# Skip virtualenv
+omit = */site-packages/*,\
+	manage.py,\
+	*tests/*
+
+[html]
+directory = coverage-reports/html
+
+[xml]
+output = coverage-reports/xml/coverage.xml
