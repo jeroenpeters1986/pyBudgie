@@ -64,7 +64,7 @@ class Bird(models.Model):
         null=True,
         verbose_name=_("Father"),
         on_delete=models.SET_NULL,
-        related_name="mother",
+        related_name="ancestor_father",
     )
     mother = models.ForeignKey(
         "self",
@@ -72,7 +72,7 @@ class Bird(models.Model):
         null=True,
         verbose_name=_("Mother"),
         on_delete=models.SET_NULL,
-        related_name="father",
+        related_name="ancestor_mother",
     )
     breeder = models.ForeignKey(
         "Breeder", null=True, on_delete=models.SET_NULL, related_name="breeder"
