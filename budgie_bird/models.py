@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.models import BudgieUser
@@ -32,21 +33,22 @@ class Bird(models.Model):
         max_length=20,
         blank=False,
         unique=True,
-        verbose_name=_("Ring number to identify the bird"),
+        verbose_name=_("Ring number"),
+        help_text=_('This is to uniquely identify the bird and to determine its breeder')
     )
     sex = models.CharField(
         choices=Sex.choices,
         max_length=6,
         blank=False,
         null=False,
-        verbose_name=_("Sex of the bird"),
+        verbose_name=_("Sex"),
     )
     color = models.CharField(
         choices=Color.choices,
         max_length=15,
         blank=False,
         null=False,
-        verbose_name=_("Color of the bird"),
+        verbose_name=_("Color"),
     )
     color_property = models.ManyToManyField(
         "ColorProperty",
@@ -91,13 +93,18 @@ class Bird(models.Model):
         default=False, verbose_name=_("This bird is for sale")
     )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
-    photo = models.ImageField()
+    photo = models.ImageField(default='bird_pics/default.jpg', upload_to='bird_pics')
 
     class Meta:
         ordering = ["ring_number"]
 
     def __str__(self):
         return self.ring_number
+    #
+    # def image_tag(self):
+    #     return mark_safe('<img src="/directory/{}}" width="150" height="150" />'.format(self.photo))
+    #
+    # image_tag.short_description = 'Image'
 
 
 class Breeder(models.Model):
