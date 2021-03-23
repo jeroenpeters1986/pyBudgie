@@ -11,14 +11,3 @@ class BudgieUser(AbstractUser):
     notes = models.TextField(
         max_length=500, blank=True, verbose_name=_("Remarks / Notes")
     )
-
-
-class Account(models.Model):
-    name = models.CharField(
-        max_length=120,
-        verbose_name=_("Account name"),
-        help_text=_("Typically, this could be the surname of the client"),
-    )
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL
-    )
