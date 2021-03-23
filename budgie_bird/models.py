@@ -1,15 +1,21 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from budgie_account.models import Account
+from budgie_user.models import BudgieUser
 
 
 class Bird(models.Model):
+    """ Respresentation of a bird and all its characteristics/properties """
+
     class Sex(models.TextChoices):
+        """ Sex of the bird """
+
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
 
     class Color(models.TextChoices):
+        """ The colors of the birds, defined by the category number on the 'Vraagprogramma' """
+
         LIGHT_GREEN = "18.001.001", _("Light Green")
         D_GREEN = "18.002.001", _("Dark Green")
         DD_GREEN = "18.002.002", _("Olive Green")
@@ -21,7 +27,7 @@ class Bird(models.Model):
         GREY_BLUE = "18.004.004", _("Violet Blue")
         VIOLET_BLUE = "18.004.005", _("Violet Blue")
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     ring_number = models.CharField(
         max_length=20,
         blank=False,
@@ -87,10 +93,17 @@ class Bird(models.Model):
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
     photo = models.ImageField()
 
+    class Meta:
+        ordering = ["ring_number"]
+
+    def __str__(self):
+        return self.ring_number
+
 
 class Breeder(models.Model):
+    """ Breeder (contacts) model """
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=60, verbose_name=_("First name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last name"))
     breeding_reg_nr = models.CharField(
@@ -105,8 +118,17 @@ class Breeder(models.Model):
     )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
 
+    def __str__(self):
+        """ Represent a breed with his name and regnumber """
+        return "{} {} ({})".format(
+            self.first_name, self.last_name, self.breeding_reg_nr
+        )
+
 
 class ColorProperty(models.Model):
+    """Color properties, which include a rank of importance,
+    for when the items should be displayed"""
+
     color_name = models.CharField(
         max_length=100, blank=False, verbose_name=_("Colorproperty name")
     )
@@ -114,3 +136,10 @@ class ColorProperty(models.Model):
         verbose_name=_("Matter of importance"),
         help_text=_("1 is very important, 1000 is " "not important"),
     )
+
+    class Meta:
+        ordering = ["rank"]
+
+    def __str__(self):
+        """ Use the color name as the field representation"""
+        return self.color_name

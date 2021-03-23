@@ -1,8 +1,8 @@
 # Project specific
 .idea/
 pybudgie/settings.py
-pybudgie/settings.py
 pybudgie/db.sqlite3
+pybudgie/budgie.sqlite3
 
 
 # Byte-compiled / optimized / DLL files

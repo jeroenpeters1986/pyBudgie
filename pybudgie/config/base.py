@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "budgie_account",
+
+    "budgie_user",
     "budgie_bird",
 ]
 
@@ -119,4 +120,4 @@ STATIC_URL = "/static/"
 
 
 # PyBudgie APP settings
-AUTH_USER_MODEL = "budgie_account.BudgieUser"
+AUTH_USER_MODEL = "budgie_user.BudgieUser"
