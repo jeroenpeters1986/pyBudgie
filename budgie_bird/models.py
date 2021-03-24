@@ -34,7 +34,9 @@ class Bird(models.Model):
         blank=False,
         unique=True,
         verbose_name=_("Ring number"),
-        help_text=_('This is to uniquely identify the bird and to determine its breeder')
+        help_text=_(
+            "This is to uniquely identify the bird and to determine its breeder"
+        ),
     )
     sex = models.CharField(
         choices=Sex.choices,
@@ -93,13 +95,14 @@ class Bird(models.Model):
         default=False, verbose_name=_("This bird is for sale")
     )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
-    photo = models.ImageField(default='bird_pics/default.jpg', upload_to='bird_pics')
+    photo = models.ImageField(default="bird_pics/default.jpg", upload_to="bird_pics")
 
     class Meta:
         ordering = ["ring_number"]
 
     def __str__(self):
         return self.ring_number
+
     #
     # def image_tag(self):
     #     return mark_safe('<img src="/directory/{}}" width="150" height="150" />'.format(self.photo))

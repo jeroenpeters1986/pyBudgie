@@ -8,7 +8,7 @@ do
 	CMD_ARGS="$CMD_ARGS $ARGUMENT"
 done
 
-coverage run manage.py test -v2 --settings=settings_test --noinput  $CMD_ARGS
+coverage run manage.py test -v2 --noinput  $CMD_ARGS
 
 echo
 echo "      Generating coverage reports..."

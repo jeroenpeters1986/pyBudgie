@@ -10,24 +10,34 @@ from .models import Bird, Breeder, ColorProperty
 
 
 class BirdAdmin(admin.ModelAdmin):
-
     def image_tag(self, obj):
         return mark_safe('<img src="{}" height="75" />'.format(obj.photo.url))
-    image_tag.short_description = 'Image'
+
+    image_tag.short_description = "Image"
 
     def color_props(self, obj):
-        return " ".join(x.color_name for x in obj.color_property.all().order_by('rank'))
+        return " ".join(x.color_name for x in obj.color_property.all().order_by("rank"))
+
     color_props.short_description = _("Color properties")
 
     def split_props(self, obj):
-        return " ".join(x.color_name for x in obj.split_property.all().order_by('rank'))
+        return " ".join(x.color_name for x in obj.split_property.all().order_by("rank"))
+
     split_props.short_description = _("Split properties")
 
-    list_display = ['ring_number', 'sex', 'color', 'color_props', 'split_props', 'date_of_birth', 'image_tag']
+    list_display = [
+        "ring_number",
+        "sex",
+        "color",
+        "color_props",
+        "split_props",
+        "date_of_birth",
+        "image_tag",
+    ]
 
 
 class ColorPropertyAdmin(admin.ModelAdmin):
-    list_display = ['color_name', 'rank']
+    list_display = ["color_name", "rank"]
 
 
 admin.site.register(Bird, BirdAdmin)
