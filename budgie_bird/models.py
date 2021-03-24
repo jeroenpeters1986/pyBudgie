@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.models import BudgieUser
@@ -105,7 +104,8 @@ class Bird(models.Model):
 
     #
     # def image_tag(self):
-    #     return mark_safe('<img src="/directory/{}}" width="150" height="150" />'.format(self.photo))
+    #     return mark_safe('<img src="/directory/{}}" width="150" height="150" />'.format(
+    #     self.photo))
     #
     # image_tag.short_description = 'Image'
 
