@@ -43,14 +43,12 @@ jobs:
       - name: Setup python environment # setting python environment to 3.x
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
-      - name: Check Python version # checking the python version to see if 3.x is installed.
-        run: python --version
-      - name: Install requirements # install application requirements
+          python-version: '3.9'
+      - name: Install requirements
         run: pip install -r requirements.txt
-      - name: Check Syntax # check code formatting
+      - name: Check Syntax with PyLama
         run: pylama
-      - name: Run Migrations # run migrations to create table in side car db container
-        run: python manage.py migrate
-      - name: Run Test # running tests
-        run: python manage.py test
+      - name: Run Migrations
+        run: python manage.py migrate --settings=pybudgie.config.settings_ci
+      - name: Run Tests
+        run: python manage.py test --settings=pybudgie.config.settings_ci
