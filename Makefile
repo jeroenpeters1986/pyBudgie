@@ -1,8 +1,8 @@
-SETTINGS = pybudgie.config.settings_dev
+SETTINGS ?= pybudgie.config.settings_dev
 PORT ?= 9000
 MANAGE = ./manage.py
 REQUIREMENTS = pyBudgie/requirements.txt
-ARGS ?= 
+ARGS ?=
 
 run:
 	$(MANAGE) runserver --settings=$(SETTINGS) $(PORT)
