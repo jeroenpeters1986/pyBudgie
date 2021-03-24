@@ -5,11 +5,14 @@ from budgie_user.models import BudgieUser
 
 
 class BreederModelTest(TestCase):
-
     def setUp(self):
 
-        self.app_user = BudgieUser.objects.create(username='henk', breeding_reg_nr="OMG1337")
-        self.other_user = BudgieUser.objects.create(username='cees', breeding_reg_nr="OhNo666")
+        self.app_user = BudgieUser.objects.create(
+            username="henk", breeding_reg_nr="OMG1337"
+        )
+        self.other_user = BudgieUser.objects.create(
+            username="cees", breeding_reg_nr="OhNo666"
+        )
 
         self.breeder1 = Breeder.objects.create(
             user=self.app_user,
