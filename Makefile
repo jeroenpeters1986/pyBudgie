@@ -1,5 +1,4 @@
 SETTINGS ?= pybudgie.config.settings_dev
-SETTINGS_TEST ?= pybudgie.config.settings_ci
 PORT ?= 9000
 MANAGE = ./manage.py
 REQUIREMENTS = requirements.txt
@@ -21,7 +20,7 @@ coverage:
 	coverage html
 
 run-test:
-	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS_TEST) $(ARGS)
+	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
 test: run-test coverage
 
