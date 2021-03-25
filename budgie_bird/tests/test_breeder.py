@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import Breeder
+from budgie_bird.models import Breeder
 from budgie_user.models import BudgieUser
 
 

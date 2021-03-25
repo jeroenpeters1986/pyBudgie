@@ -2,10 +2,24 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from .forms import BirdForm
 from .models import Bird, Breeder, ColorProperty
 
 
 class BirdAdmin(admin.ModelAdmin):
+
+    form = BirdForm
+
+    list_display = [
+        "ring_number",
+        "gender",
+        "color",
+        "color_props",
+        "split_props",
+        "date_of_birth",
+        "image_tag",
+    ]
+
     def image_tag(self, obj):
         return mark_safe('<img src="{}" height="75" />'.format(obj.photo.url))
 
@@ -20,16 +34,6 @@ class BirdAdmin(admin.ModelAdmin):
         return " ".join(x.color_name for x in obj.split_property.all().order_by("rank"))
 
     split_props.short_description = _("Split properties")
-
-    list_display = [
-        "ring_number",
-        "sex",
-        "color",
-        "color_props",
-        "split_props",
-        "date_of_birth",
-        "image_tag",
-    ]
 
 
 class ColorPropertyAdmin(admin.ModelAdmin):

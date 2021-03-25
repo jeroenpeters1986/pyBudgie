@@ -7,9 +7,10 @@ from budgie_user.models import BudgieUser
 class Bird(models.Model):
     """ Respresentation of a bird and all its characteristics/properties """
 
-    class Sex(models.TextChoices):
-        """ Sex of the bird """
+    class Gender(models.TextChoices):
+        """ Gender of the bird """
 
+        UNKNOWN = "unknown", _("Unknown")
         MALE = "male", _("Male")
         FEMALE = "female", _("Female")
 
@@ -37,9 +38,10 @@ class Bird(models.Model):
             "This is to uniquely identify the bird and to determine its breeder"
         ),
     )
-    sex = models.CharField(
-        choices=Sex.choices,
-        max_length=6,
+    gender = models.CharField(
+        choices=Gender.choices,
+        max_length=10,
+        default=Gender.UNKNOWN,
         blank=False,
         null=False,
         verbose_name=_("Sex"),
