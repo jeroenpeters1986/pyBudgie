@@ -6,7 +6,7 @@ from budgie_user.models import BudgieUser
 
 
 class Bird(models.Model):
-    """ Respresentation of a bird and all its characteristics/properties """
+    """ Representation of a bird and all its characteristics/properties """
 
     class Gender(models.TextChoices):
         """ Gender of the bird """
@@ -33,12 +33,11 @@ class Bird(models.Model):
     ring_number = models.CharField(
         max_length=20,
         blank=False,
-        unique=True,
         verbose_name=_("Ring number"),
         help_text=_(
             "This is to uniquely identify the bird and to determine its breeder"
         ),
-    )  # TODO: Make this a combined unique property with user
+    )
     gender = models.CharField(
         choices=Gender.choices,
         max_length=10,
@@ -104,6 +103,7 @@ class Bird(models.Model):
 
     class Meta:
         ordering = ["ring_number"]
+        unique_together = [["user", "ring_number"]]
 
     def __str__(self):
         return self.ring_number

@@ -22,7 +22,7 @@ class BreederModelTest(TestCase):
             user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-1337-2018"
         )
 
-    def test_bird_unique_ringnumber(self):
+    def test_bird_unique_ringnumber_per_user(self):
         """ Check if the ring number is truly unique """
 
         # Register a bird with a new ring number (which is unique at this point)
@@ -30,8 +30,19 @@ class BreederModelTest(TestCase):
             user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-1337-2021"
         )
         self.assertIsInstance(new_bird, Bird)
-        self.assertTrue(hasattr(new_bird, 'pk'))
+        self.assertTrue(hasattr(new_bird, "pk"))
         self.assertEqual("5TJJ-1337-2021", new_bird.ring_number)
+
+        # Register the same ring number for a different user
+        second_user = BudgieUser.objects.create(
+            username="harry", breeding_reg_nr="JEVER-2021"
+        )
+        same_bird = Bird.objects.create(
+            user=second_user, breeder=self.breeder1, ring_number="5TJJ-1337-2021"
+        )
+        self.assertIsInstance(same_bird, Bird)
+        self.assertTrue(hasattr(same_bird, "pk"))
+        self.assertEqual("5TJJ-1337-2021", same_bird.ring_number)
 
         # Register the bird again
         with self.assertRaises(IntegrityError):
