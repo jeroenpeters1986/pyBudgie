@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.db.utils import IntegrityError
 
 from budgie_bird.models import Breeder, Bird
 from budgie_bird.forms import BirdForm
@@ -20,6 +21,23 @@ class BreederModelTest(TestCase):
         self.existing_bird = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-1337-2018"
         )
+
+    def test_bird_unique_ringnumber(self):
+        """ Check if the ring number is truly unique """
+
+        # Register a bird with a new ring number (which is unique at this point)
+        new_bird = Bird.objects.create(
+            user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-1337-2021"
+        )
+        self.assertIsInstance(new_bird, Bird)
+        self.assertTrue(hasattr(new_bird, 'pk'))
+        self.assertEqual("5TJJ-1337-2021", new_bird.ring_number)
+
+        # Register the bird again
+        with self.assertRaises(IntegrityError):
+            Bird.objects.create(
+                user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-1337-2021"
+            )
 
     def test_bird_default_gender(self):
         """ Check if gender is 'unknown' if user does not make choice """

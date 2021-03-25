@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -37,7 +38,7 @@ class Bird(models.Model):
         help_text=_(
             "This is to uniquely identify the bird and to determine its breeder"
         ),
-    )
+    )  # TODO: Make this a combined unique property with user
     gender = models.CharField(
         choices=Gender.choices,
         max_length=10,
@@ -96,7 +97,10 @@ class Bird(models.Model):
         default=False, verbose_name=_("This bird is for sale")
     )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
-    photo = models.ImageField(default="bird_pics/default.jpg", upload_to="bird_pics")
+    photo = models.ImageField(
+        default=settings.BIRD_PICTURE_DEFAULT,
+        upload_to=settings.BIRD_PICTURE_UPLOAD_LOCATION,
+    )
 
     class Meta:
         ordering = ["ring_number"]

@@ -122,3 +122,5 @@ STATIC_URL = "/static/"
 
 # PyBudgie APP settings
 AUTH_USER_MODEL = "budgie_user.BudgieUser"
+BIRD_PICTURE_DEFAULT = "assets/budgie-silhouette.png"
+BIRD_PICTURE_UPLOAD_LOCATION = "assets/uploads/bird_pics"
