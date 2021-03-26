@@ -121,6 +121,8 @@ class Bird(models.Model):
     class Meta:
         ordering = ["ring_number"]
         unique_together = [["user", "ring_number"]]
+        verbose_name = _("Bird")
+        verbose_name_plural = _("Birds")
 
     def __str__(self):
         return self.ring_number
@@ -153,6 +155,8 @@ class Breeder(models.Model):
 
     class Meta:
         ordering = [Lower("last_name")]
+        verbose_name = _("Breeder")
+        verbose_name_plural = _("Breeders")
 
     def __str__(self):
         """ Represent a breed with his name and regnumber """
@@ -175,6 +179,7 @@ class ColorProperty(models.Model):
 
     class Meta:
         ordering = ["rank"]
+        verbose_name = _("Color property")
         verbose_name_plural = _("Color properties")
 
     def __str__(self):

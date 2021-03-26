@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.db.utils import IntegrityError
 
 from budgie_bird.models import Breeder, Bird
@@ -58,6 +58,7 @@ class BreederModelTest(TestCase):
         )
         self.assertEqual(new_bird.gender, Bird.Gender.UNKNOWN)
 
+    @override_settings(LANGUAGE_CODE="en-us")
     def test_bird_descendant_validation(self):
         """ Check if a bird can be it's own parent (kerelll!!) """
 

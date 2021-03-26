@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of config and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,9 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "Europe/Amsterdam"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -124,3 +123,11 @@ STATIC_URL = "/static/"
 AUTH_USER_MODEL = "budgie_user.BudgieUser"
 BIRD_PICTURE_DEFAULT = "assets/budgie-silhouette.png"
 BIRD_PICTURE_UPLOAD_LOCATION = "assets/uploads/bird_pics"
+
+LANGUAGE_CODE = "nl"
+TIME_ZONE = "Europe/Amsterdam"
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
+LANGUAGES = [
+    ("en-us", _("English")),
+    ("nl", _("Dutch")),
+]

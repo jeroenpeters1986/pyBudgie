@@ -1,0 +1,220 @@
+# Dutch translation file for pyBudgie
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jeroen Peters <jeroenpeters1986@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-03-26 19:26+0100\n"
+"PO-Revision-Date: 2021-03-26 17:10+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: budgie_bird/admin.py:41
+msgid "Photo"
+msgstr "Foto"
+
+#: budgie_bird/admin.py:46 budgie_bird/models.py:61 budgie_bird/models.py:183
+msgid "Color properties"
+msgstr "Kleur eigenschappen"
+
+#: budgie_bird/admin.py:51 budgie_bird/models.py:67
+msgid "Split properties"
+msgstr "Split eigenschappen"
+
+#: budgie_bird/admin.py:61
+msgid "Full name"
+msgstr "Volledige naam"
+
+#: budgie_bird/apps.py:7
+msgid "Bird Administration"
+msgstr "Vogeladministratie"
+
+#: budgie_bird/forms.py:25
+#, python-brace-format
+msgid "Bird cannot be it's own {parent}"
+msgstr "Een vogel kan niet zijn eigen {parent} zijn"
+
+#: budgie_bird/models.py:15
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: budgie_bird/models.py:16
+msgid "Male"
+msgstr "Man"
+
+#: budgie_bird/models.py:17
+msgid "Female"
+msgstr "Pop"
+
+#: budgie_bird/models.py:22
+msgid "Light Green"
+msgstr "Lichtgroen"
+
+#: budgie_bird/models.py:23
+msgid "Dark Green"
+msgstr "Donkergroen"
+
+#: budgie_bird/models.py:24
+msgid "Olive Green"
+msgstr "Olijfgroen"
+
+#: budgie_bird/models.py:25
+msgid "Grey Green"
+msgstr "Grijsgroen"
+
+#: budgie_bird/models.py:26
+msgid "Violet Green"
+msgstr "Violet groen"
+
+#: budgie_bird/models.py:27
+msgid "Sky Blue"
+msgstr "Hemelsblauw"
+
+#: budgie_bird/models.py:28
+msgid "Mauve"
+msgstr "Mauve"
+
+#: budgie_bird/models.py:29
+msgid "Gray"
+msgstr "Grijs"
+
+#: budgie_bird/models.py:30
+msgid "Violet Grey"
+msgstr "Violet grijs"
+
+#: budgie_bird/models.py:31
+msgid "Violet Blue"
+msgstr "Violet blauw"
+
+#: budgie_bird/models.py:37
+msgid "Ring number"
+msgstr "Ringnummer"
+
+#: budgie_bird/models.py:39
+msgid "This is to uniquely identify the bird and to determine its breeder"
+msgstr ""
+"Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
+
+#: budgie_bird/models.py:48
+msgid "Gender"
+msgstr "Geslacht"
+
+#: budgie_bird/models.py:55
+msgid "Color"
+msgstr "Kleur"
+
+#: budgie_bird/models.py:70
+msgid "Date of birth"
+msgstr "Geboortedatum"
+
+#: budgie_bird/models.py:73
+msgid "Date of death"
+msgstr "Sterfdatum"
+
+#: budgie_bird/models.py:79
+msgid "Father"
+msgstr "Vader"
+
+#: budgie_bird/models.py:87
+msgid "Mother"
+msgstr "Moeder"
+
+#: budgie_bird/models.py:107
+msgid "I own this bird"
+msgstr "In bezit"
+
+#: budgie_bird/models.py:109
+msgid ""
+"Sometimes when you are the owner, the bird is not at your disposal due to a "
+"trade"
+msgstr ""
+"Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
+"bezit is, bijvoorbeeld vanwege een broedruil"
+
+#: budgie_bird/models.py:113
+msgid "This bird is for sale"
+msgstr "Deze vogel is te koop"
+
+#: budgie_bird/models.py:115 budgie_bird/models.py:154 budgie_user/models.py:11
+msgid "Remarks / Notes"
+msgstr "Opmerkingen / Notities"
+
+#: budgie_bird/models.py:124
+msgid "Bird"
+msgstr "Vogel"
+
+#: budgie_bird/models.py:125
+msgid "Birds"
+msgstr "Vogels"
+
+#: budgie_bird/models.py:142
+msgid "First name"
+msgstr "Voornaam"
+
+#: budgie_bird/models.py:143
+msgid "Last name"
+msgstr "Achternaam"
+
+#: budgie_bird/models.py:148 budgie_user/models.py:8
+msgid "Breeding registration number"
+msgstr "Kwekersnummer"
+
+#: budgie_bird/models.py:150
+msgid "Home address"
+msgstr "Thuisadres"
+
+#: budgie_bird/models.py:152
+msgid "Phone number"
+msgstr "Telefoonnummer"
+
+#: budgie_bird/models.py:158
+msgid "Breeder"
+msgstr "Kweker"
+
+#: budgie_bird/models.py:159
+msgid "Breeders"
+msgstr "Kwekers"
+
+#: budgie_bird/models.py:173
+msgid "Colorproperty name"
+msgstr "Kleureigenschap naam"
+
+#: budgie_bird/models.py:176
+msgid "Matter of importance"
+msgstr "Volgorde van belangrijkheid"
+
+#: budgie_bird/models.py:177
+msgid "1 is very important, 1000 is not important"
+msgstr ""
+"1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
+
+#: budgie_bird/models.py:182
+#, fuzzy
+#| msgid "Color properties"
+msgid "Color property"
+msgstr "Kleur eigenschappen"
+
+#: budgie_user/admin.py:21
+msgid "PyBudgie properties"
+msgstr "PyBudgie eigenschappen"
+
+#: budgie_user/apps.py:7
+msgid "PyBudgie User Administration"
+msgstr "PyBudgie Gebruikersbeheer"
+
+#: pybudgie/config/base.py:131
+msgid "English"
+msgstr "Engels"
+
+#: pybudgie/config/base.py:132
+msgid "Dutch"
+msgstr "Nederlands"
