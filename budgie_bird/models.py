@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.models import BudgieUser
@@ -102,8 +103,12 @@ class Bird(models.Model):
         related_name="owner",
     )
     is_owned = models.BooleanField(
-        default=False, verbose_name=_("I own this bird")
-    )  # TODO: Check if this can be deleted
+        default=False,
+        verbose_name=_("I own this bird"),
+        help_text=_(
+            "Sometimes when you are the owner, the bird is not at your disposal due to a trade"
+        ),
+    )
     is_for_sale = models.BooleanField(
         default=False, verbose_name=_("This bird is for sale")
     )
@@ -145,6 +150,9 @@ class Breeder(models.Model):
         max_length=15, blank=True, null=True, verbose_name=_("Phone number")
     )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
+
+    class Meta:
+        ordering = [Lower("last_name")]
 
     def __str__(self):
         """ Represent a breed with his name and regnumber """

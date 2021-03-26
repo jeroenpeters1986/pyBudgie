@@ -10,19 +10,6 @@ class BirdAdmin(admin.ModelAdmin):
 
     form = BirdForm
 
-    save_on_top = True
-    list_filter = [
-        "gender",
-        "color",
-        "color_property",
-        "split_property",
-        "is_owned",
-        "is_for_sale",
-    ]
-    search_fields = ["ring_number", "gender"]
-
-    ordering = ["ring_number"]
-
     list_display = [
         "ring_number",
         "gender",
@@ -32,6 +19,21 @@ class BirdAdmin(admin.ModelAdmin):
         "date_of_birth",
         "image_tag",
     ]
+    list_filter = [
+        "gender",
+        "color",
+        "color_property",
+        "split_property",
+        "is_owned",
+        "is_for_sale",
+    ]
+    search_fields = ["ring_number", "gender"]
+    date_hierarchy = "date_of_birth"
+    ordering = ["ring_number"]
+
+    autocomplete_fields = ["father", "mother", "breeder", "owner"]
+    save_on_top = True
+    save_as = True
 
     def image_tag(self, obj):
         return mark_safe('<img src="{}" height="75" />'.format(obj.photo.url))
@@ -52,7 +54,6 @@ class BirdAdmin(admin.ModelAdmin):
 class BreederAdmin(admin.ModelAdmin):
     search_fields = ["first_name", "last_name", "breeding_reg_nr", "notes", "address"]
     list_display = ["full_name", "breeding_reg_nr", "phone_number"]
-    ordering = ["last_name"]
 
     def full_name(self, obj):
         return "{}, {}".format(obj.last_name, obj.first_name)
