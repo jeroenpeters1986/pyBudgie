@@ -127,13 +127,6 @@ class Bird(models.Model):
     def __str__(self):
         return self.ring_number
 
-    #
-    # def image_tag(self):
-    #     return mark_safe('<img src="/directory/{}}" width="150" height="150" />'.format(
-    #     self.photo))
-    #
-    # image_tag.short_description = 'Image'
-
 
 class Breeder(models.Model):
     """ Breeder (contacts) model """

@@ -36,7 +36,7 @@ class BirdAdmin(admin.ModelAdmin):
     save_as = True
 
     def image_tag(self, obj):
-        return mark_safe('<img src="{}" height="75" />'.format(obj.photo.url))
+        return mark_safe('<img src="{}" height="48" />'.format(obj.photo.url))
 
     image_tag.short_description = _("Photo")
 
