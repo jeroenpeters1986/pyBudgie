@@ -27,4 +27,4 @@ class BreederModelTest(TestCase):
         self.assertIsInstance(self.breeder1.last_name, str)
         self.assertIsInstance(self.breeder1.breeding_reg_nr, str)
 
-        self.assertEqual(self.breeder1.__str__(), "Henk de Vries (NAVI-2000)")
+        self.assertEqual(self.breeder1.__str__(), "de Vries, Henk (NAVI-2000)")

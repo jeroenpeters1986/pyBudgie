@@ -26,7 +26,7 @@ class Bird(models.Model):
         BLUE = "18.004.001", _("Sky Blue")
         D_BLUE = "18.004.002", _("Mauve")
         DD_BLUE = "18.004.003", _("Gray")
-        GREY_BLUE = "18.004.004", _("Violet Blue")
+        GREY_BLUE = "18.004.004", _("Violet Grey")
         VIOLET_BLUE = "18.004.005", _("Violet Blue")
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
@@ -44,7 +44,7 @@ class Bird(models.Model):
         default=Gender.UNKNOWN,
         blank=False,
         null=False,
-        verbose_name=_("Sex"),
+        verbose_name=_("Gender"),
     )
     color = models.CharField(
         choices=Color.choices,
@@ -55,11 +55,13 @@ class Bird(models.Model):
     )
     color_property = models.ManyToManyField(
         "ColorProperty",
+        blank=True,
         related_name="color_properties",
         verbose_name=_("Color properties"),
     )
     split_property = models.ManyToManyField(
         "ColorProperty",
+        blank=True,
         related_name="split_properties",
         verbose_name=_("Split properties"),
     )
@@ -86,12 +88,22 @@ class Bird(models.Model):
         related_name="ancestor_mother",
     )
     breeder = models.ForeignKey(
-        "Breeder", null=True, on_delete=models.SET_NULL, related_name="breeder"
+        "Breeder",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="breeder",
     )
     owner = models.ForeignKey(
-        "Breeder", null=True, on_delete=models.SET_NULL, related_name="owner"
+        "Breeder",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="owner",
     )
-    is_owned = models.BooleanField(default=False, verbose_name=_("I own this bird"))
+    is_owned = models.BooleanField(
+        default=False, verbose_name=_("I own this bird")
+    )  # TODO: Check if this can be deleted
     is_for_sale = models.BooleanField(
         default=False, verbose_name=_("This bird is for sale")
     )
@@ -136,8 +148,8 @@ class Breeder(models.Model):
 
     def __str__(self):
         """ Represent a breed with his name and regnumber """
-        return "{} {} ({})".format(
-            self.first_name, self.last_name, self.breeding_reg_nr
+        return "{}, {} ({})".format(
+            self.last_name, self.first_name, self.breeding_reg_nr
         )
 
 
@@ -155,6 +167,7 @@ class ColorProperty(models.Model):
 
     class Meta:
         ordering = ["rank"]
+        verbose_name_plural = _("Color properties")
 
     def __str__(self):
         """ Use the color name as the field representation"""

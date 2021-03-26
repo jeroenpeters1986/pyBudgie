@@ -5,4 +5,4 @@ SECRET_KEY = "develop"
 ALLOWED_HOSTS = [
     "*",
 ]
-X_FRAME_OPTIONS = "ALLOW-FROM *"
+X_FRAME_OPTIONS = "sameorigin"
