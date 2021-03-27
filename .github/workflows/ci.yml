@@ -44,6 +44,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+      - name: Install msgfmt (dependency for locale generation)
+        run: sudo apt-get -y install msgfmt
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Check Syntax with PyLama

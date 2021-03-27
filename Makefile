@@ -16,11 +16,14 @@ migrations:
 install:
 	pip install -r $(REQUIREMENTS) $(ARGS)
 
+generate-locales:
+	$(MANAGE) compilemessages --settings=$(SETTINGS)
+
 coverage:
 	coverage html
 
 run-test:
 	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
-test: run-test coverage
+test: generate-locales run-test coverage
 
