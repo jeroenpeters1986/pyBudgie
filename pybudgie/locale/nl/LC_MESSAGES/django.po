@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-27 14:30+0100\n"
-"PO-Revision-Date: 2021-03-26 17:10+0100\n"
+"POT-Creation-Date: 2021-03-28 00:20+0100\n"
+"PO-Revision-Date: 2021-03-27 16:34+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: budgie_bird/admin.py:41
+#: budgie_bird/admin.py:42
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:46 budgie_bird/models.py:61 budgie_bird/models.py:176
+#: budgie_bird/admin.py:47 budgie_bird/models.py:61 budgie_bird/models.py:177
 msgid "Color properties"
-msgstr "Kleur eigenschappen"
+msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:51 budgie_bird/models.py:67
+#: budgie_bird/admin.py:52 budgie_bird/models.py:67
 msgid "Split properties"
-msgstr "Split eigenschappen"
+msgstr "Split voor"
 
-#: budgie_bird/admin.py:61
+#: budgie_bird/admin.py:62
 msgid "Full name"
 msgstr "Volledige naam"
 
@@ -121,12 +121,12 @@ msgid "Date of death"
 msgstr "Sterfdatum"
 
 #: budgie_bird/models.py:79
-msgid "Father"
-msgstr "Vader"
+msgid "father"
+msgstr "vader"
 
 #: budgie_bird/models.py:87
-msgid "Mother"
-msgstr "Moeder"
+msgid "mother"
+msgstr "moeder"
 
 #: budgie_bird/models.py:107
 msgid "I own this bird"
@@ -184,26 +184,24 @@ msgstr "Kweker"
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:166
+#: budgie_bird/models.py:167
 msgid "Colorproperty name"
-msgstr "Kleureigenschap naam"
+msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:169
+#: budgie_bird/models.py:170
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:170
+#: budgie_bird/models.py:171
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
 
-#: budgie_bird/models.py:175
-#, fuzzy
-#| msgid "Color properties"
+#: budgie_bird/models.py:176
 msgid "Color property"
-msgstr "Kleur eigenschappen"
+msgstr "Kleurslagen"
 
-#: budgie_user/admin.py:21
+#: budgie_user/admin.py:36
 msgid "PyBudgie properties"
 msgstr "PyBudgie eigenschappen"
 

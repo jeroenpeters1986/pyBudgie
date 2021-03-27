@@ -2,11 +2,12 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
 from .models import Bird, Breeder, ColorProperty
 
 
-class BirdAdmin(admin.ModelAdmin):
+class BirdAdmin(BudgieUserMixin, admin.ModelAdmin):
 
     form = BirdForm
 
@@ -51,7 +52,7 @@ class BirdAdmin(admin.ModelAdmin):
     split_props.short_description = _("Split properties")
 
 
-class BreederAdmin(admin.ModelAdmin):
+class BreederAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["first_name", "last_name", "breeding_reg_nr", "notes", "address"]
     list_display = ["full_name", "breeding_reg_nr", "phone_number"]
 
@@ -61,7 +62,7 @@ class BreederAdmin(admin.ModelAdmin):
     full_name.short_description = _("Full name")
 
 
-class ColorPropertyAdmin(admin.ModelAdmin):
+class ColorPropertyAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["color_name"]
     list_display = ["color_name", "rank"]
 

@@ -76,7 +76,7 @@ class Bird(models.Model):
         "self",
         blank=True,
         null=True,
-        verbose_name=_("Father"),
+        verbose_name=_("father").capitalize(),
         on_delete=models.SET_NULL,
         related_name="ancestor_father",
     )
@@ -84,7 +84,7 @@ class Bird(models.Model):
         "self",
         blank=True,
         null=True,
-        verbose_name=_("Mother"),
+        verbose_name=_("mother").capitalize(),
         on_delete=models.SET_NULL,
         related_name="ancestor_mother",
     )
@@ -162,6 +162,7 @@ class ColorProperty(models.Model):
     """Color properties, which include a rank of importance,
     for when the items should be displayed"""
 
+    user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     color_name = models.CharField(
         max_length=100, blank=False, verbose_name=_("Colorproperty name")
     )
