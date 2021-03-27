@@ -48,6 +48,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Check Syntax with PyLama
         run: pylama
+      - name: Generate locales
+        run: python manage.py compilemessages --settings=pybudgie.config.settings_ci
       - name: Run Migrations
         run: python manage.py migrate --settings=pybudgie.config.settings_ci
       - name: Run Tests
