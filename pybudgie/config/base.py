@@ -128,6 +128,7 @@ LANGUAGE_CODE = "nl"
 TIME_ZONE = "Europe/Amsterdam"
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 LANGUAGES = [
-    ("en-us", _("English")),
     ("nl", _("Dutch")),
+    ("en", _("English")),
 ]
+MIDDLEWARE += ["django.middleware.locale.LocaleMiddleware"]

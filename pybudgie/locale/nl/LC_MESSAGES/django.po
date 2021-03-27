@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-26 19:26+0100\n"
+"POT-Creation-Date: 2021-03-27 14:30+0100\n"
 "PO-Revision-Date: 2021-03-26 17:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:46 budgie_bird/models.py:61 budgie_bird/models.py:183
+#: budgie_bird/admin.py:46 budgie_bird/models.py:61 budgie_bird/models.py:176
 msgid "Color properties"
 msgstr "Kleur eigenschappen"
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:115 budgie_bird/models.py:154 budgie_user/models.py:11
+#: budgie_bird/models.py:115 budgie_bird/models.py:147 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
@@ -156,48 +156,48 @@ msgstr "Vogel"
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:142
+#: budgie_bird/models.py:135
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:143
+#: budgie_bird/models.py:136
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:148 budgie_user/models.py:8
+#: budgie_bird/models.py:141 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:150
+#: budgie_bird/models.py:143
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:152
+#: budgie_bird/models.py:145
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:158
+#: budgie_bird/models.py:151
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:159
+#: budgie_bird/models.py:152
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:173
+#: budgie_bird/models.py:166
 msgid "Colorproperty name"
 msgstr "Kleureigenschap naam"
 
-#: budgie_bird/models.py:176
+#: budgie_bird/models.py:169
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:177
+#: budgie_bird/models.py:170
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
 
-#: budgie_bird/models.py:182
+#: budgie_bird/models.py:175
 #, fuzzy
 #| msgid "Color properties"
 msgid "Color property"
@@ -212,9 +212,9 @@ msgid "PyBudgie User Administration"
 msgstr "PyBudgie Gebruikersbeheer"
 
 #: pybudgie/config/base.py:131
-msgid "English"
-msgstr "Engels"
-
-#: pybudgie/config/base.py:132
 msgid "Dutch"
 msgstr "Nederlands"
+
+#: pybudgie/config/base.py:132
+msgid "English"
+msgstr "Engels"
