@@ -13,6 +13,9 @@ migrate:
 migrations:
 	$(MANAGE) makemigrations --settings=$(SETTINGS) $(ARGS)
 
+superuser:
+	$(MANAGE) createsuperuser --settings=$(SETTINGS) $(ARGS)
+
 install:
 	pip install -r $(REQUIREMENTS) $(ARGS)
 
