@@ -17,7 +17,10 @@ class Bird(models.Model):
         FEMALE = "female", _("Female")
 
     class Color(models.TextChoices):
-        """ The colors of the birds, defined by the category number on the 'Vraagprogramma' """
+        """
+        The colors of the birds,
+        defined by the category number on the 'Vraagprogramma'
+        """
 
         LIGHT_GREEN = "18.001.001", _("Light Green")
         D_GREEN = "18.002.001", _("Dark Green")
