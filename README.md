@@ -13,3 +13,4 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://docs.djangoproject.com/en/3.1/topics/testing/tools/
  * https://github.com/ripienaar/free-for-dev (for hosting, later on)
  * https://github.com/fabiocaccamo/django-admin-interface/
+ * https://help.alwaysdata.com/en/languages/python/django/
