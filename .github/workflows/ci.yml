@@ -48,6 +48,8 @@ jobs:
         run: sudo apt-get -y install gettext
       - name: Install requirements
         run: pip install -r requirements.txt
+      - name: Install dev requirements
+        run: pip install -r requirements-dev.txt
       - name: Check Syntax with PyLama
         run: pylama
       - name: Generate locales
