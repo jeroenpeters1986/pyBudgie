@@ -1,0 +1,94 @@
+[
+    {
+        "model": "budgie_user.budgieuser",
+        "pk": 1,
+        "fields": {
+            "password": "bier",
+            "last_login": "2021-03-27T11:23:01.502Z",
+            "is_superuser": true,
+            "username": "ryan",
+            "first_name": "Ryan",
+            "last_name": "Howard",
+            "email": "ryan.howard@dundermifflininfinity.com",
+            "is_staff": true,
+            "is_active": false,
+            "date_joined": "2021-03-25T20:15:57.082Z",
+            "breeding_reg_nr": "RyRy",
+            "notes": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "color_name": "Dominant bont",
+        "rank": 1
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "color_name": "Geelmasker",
+        "rank": 3
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 3,
+    "fields": {
+        "user": 1,
+        "color_name": "Cinnamon",
+        "rank": 2
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 4,
+    "fields": {
+        "user": 1,
+        "color_name": "Australisch geelmasker",
+        "rank": 4
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 5,
+    "fields": {
+        "user": 1,
+        "color_name": "Texas clearbody",
+        "rank": 5
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 6,
+    "fields": {
+        "user": 1,
+        "color_name": "Lutino",
+        "rank": 6
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 7,
+    "fields": {
+        "user": 1,
+        "color_name": "Albino",
+        "rank": 8
+    }
+},
+{
+    "model": "budgie_bird.colorproperty",
+    "pk": 8,
+    "fields": {
+        "user": 1,
+        "color_name": "Lacewing",
+        "rank": 7
+    }
+}
+]

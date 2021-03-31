@@ -130,6 +130,16 @@ class Bird(models.Model):
     def __str__(self):
         return self.ring_number
 
+    def color_props(self):
+        return " ".join(
+            x.color_name for x in self.color_property.all().order_by("rank")
+        )
+
+    def split_props(self):
+        return " ".join(
+            x.color_name for x in self.split_property.all().order_by("rank")
+        )
+
 
 class Breeder(models.Model):
     """ Breeder (contacts) model """

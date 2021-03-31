@@ -1,15 +1,18 @@
 from django.test import TestCase, override_settings
 from django.db.utils import IntegrityError
 
-from budgie_bird.models import Breeder, Bird
+from budgie_bird.models import Breeder, Bird, ColorProperty
 from budgie_bird.forms import BirdForm
 from budgie_user.models import BudgieUser
 
 
 class BreederModelTest(TestCase):
+
+    fixtures = ["test_colors.json"]
+
     def setUp(self):
 
-        self.app_user = BudgieUser.objects.create(
+        self.app_user = BudgieUser.objects.create_user(
             username="henk", breeding_reg_nr="OMG1337"
         )
         self.breeder1 = Breeder.objects.create(
@@ -70,3 +73,16 @@ class BreederModelTest(TestCase):
         )
         self.assertIn("Bird cannot be", form.errors["father"][0])
         self.assertIn("Bird cannot be", form.errors["mother"][0])
+
+    def test_bird_color_notation(self):
+        """ Test if the color notation and color ranks will be outputted correctly """
+
+        new_bird = Bird.objects.create(
+            user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-81-2018"
+        )
+        for color in ColorProperty.objects.all():
+            color.user = self.app_user
+        [new_bird.color_property.add(x) for x in range(4)]
+        self.assertEqual(new_bird.color_props(), "Dominant bont Cinnamon Geelmasker")
+        ColorProperty.objects.filter(rank=2).update(rank=100)
+        self.assertEqual(new_bird.color_props(), "Dominant bont Geelmasker Cinnamon")

@@ -14,3 +14,7 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://github.com/ripienaar/free-for-dev (for hosting, later on)
  * https://github.com/fabiocaccamo/django-admin-interface/
  * https://help.alwaysdata.com/en/languages/python/django/
+
+## System requirements
+Django 3.1
+(min) Python 3.6

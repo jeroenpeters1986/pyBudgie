@@ -5,3 +5,4 @@ SECRET_KEY = "CIciCIciCIciCIciCI"
 ALLOWED_HOSTS = [
     "*",
 ]
+MEDIA_ROOT = "/tmp/"

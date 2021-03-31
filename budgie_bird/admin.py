@@ -37,17 +37,19 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin):
     save_as = True
 
     def image_tag(self, obj):
-        return mark_safe('<img src="{}" height="48" />'.format(obj.photo.url))
+        return mark_safe(
+            '<img src="{}" height="48" class="birdpreview" />'.format(obj.photo.url)
+        )
 
     image_tag.short_description = _("Photo")
 
     def color_props(self, obj):
-        return " ".join(x.color_name for x in obj.color_property.all().order_by("rank"))
+        return obj.color_props()
 
     color_props.short_description = _("Color properties")
 
     def split_props(self, obj):
-        return " ".join(x.color_name for x in obj.split_property.all().order_by("rank"))
+        return obj.split_props()
 
     split_props.short_description = _("Split properties")
 

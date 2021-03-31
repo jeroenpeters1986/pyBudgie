@@ -3,7 +3,7 @@
     "model": "budgie_user.budgieuser",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$216000$unfiCAvUxZOK$XUWIko9sfASChmDmGxTwEfGtgoNo9p7vlIf22hPAvj0=",
+      "password": "bier",
       "last_login": "2021-03-27T11:23:01.502Z",
       "is_superuser": true,
       "username": "ryan",
