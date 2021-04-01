@@ -1,6 +1,15 @@
 # pyBudgie
 Keep track of your budgies
 
+https://github.com/jeroenpeters1986/pyBudgie/actions/workflows/ci.yml/badge.svg
+
+## Shiny badges
+Hopefully they're all nice and green
+
+[![Python](https://img.shields.io/badge/python-3.9-brightgreen.svg)](https://devguide.python.org/#status-of-python-branches)
+[![Python](https://img.shields.io/badge/django-3.1-brightgreen.svg)](https://djangoproject.com)
+[![Github Actions](https://github.com/jeroenpeters1986/pyBudgie/actions/workflows/ci.yml/badge.svg)](https://github.com/jeroenpeters1986/pyBudgie/actions)
+
 ## Setup 
 ### Custom User Auth
 settings.py
