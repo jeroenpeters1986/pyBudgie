@@ -2,6 +2,7 @@ SETTINGS ?= pybudgie.config.settings_dev
 PORT ?= 9000
 MANAGE = ./manage.py
 REQUIREMENTS = requirements.txt
+REQUIREMENTS_DEV = requirements-dev.txt
 ARGS ?=
 
 run:
@@ -15,6 +16,9 @@ migrations:
 
 superuser:
 	$(MANAGE) createsuperuser --settings=$(SETTINGS) $(ARGS)
+
+install-dev: install
+	pip install -r $(REQUIREMENTS_DEV) $(ARGS)
 
 install:
 	pip install -r $(REQUIREMENTS) $(ARGS)
