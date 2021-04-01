@@ -1,4 +1,7 @@
 import datetime
+import glob
+import os
+from unittest import mock
 
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -48,6 +51,10 @@ class DocumentAdminFormTest(TestCase):
             breeding_reg_nr=self.user_credentials["breeding_reg_nr"],
             is_staff=True,
         )
+        content_type = ContentType.objects.get_for_model(Bird)
+        permissions = Permission.objects.filter(content_type=content_type)
+        self.pybudgie_user.user_permissions.set(permissions)
+
         self.bird_data = {
             "user": 1,
             "ring_number": "5TJJ-12-2018",
@@ -64,16 +71,17 @@ class DocumentAdminFormTest(TestCase):
             "split_property": [],
         }
 
+    def tearDown(self):
+        for filename in glob.glob(
+            "{}/test_test_bird*".format(settings.BIRD_PICTURE_UPLOAD_LOCATION)
+        ):
+            os.remove(filename)
+
     def setup_assign_breeders(self, user):
         # Update template breeders
         for breeder in Breeder.objects.all():
             breeder.user = user
             breeder.save()
-
-    def setup_assign_users_bird_permissions(self, user):
-        content_type = ContentType.objects.get_for_model(Bird)
-        permissions = Permission.objects.filter(content_type=content_type)
-        user.user_permissions.set(permissions)
 
     def test_admin_bird_add_by_admin(self):
         """ Test if the admin can add a new bird """
@@ -91,7 +99,7 @@ class DocumentAdminFormTest(TestCase):
         new_bird["user"] = self.pybudgie_admin.pk
         response = self.client.post(self.add_bird_url, self.bird_data)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response._headers["location"][1], self.bird_overview_url)
+        self.assertRedirects(response, self.bird_overview_url)
 
         bird = Bird.objects.get(ring_number=self.bird_data["ring_number"])
         self.assertIsInstance(bird, Bird)
@@ -100,6 +108,11 @@ class DocumentAdminFormTest(TestCase):
 
     def test_admin_user_without_group_or_permission(self):
         """ Test if a staff user without the proper permissions gets a 403 """
+
+        content_type = ContentType.objects.get_for_model(Bird)
+        for permission in Permission.objects.filter(content_type=content_type):
+            self.pybudgie_user.user_permissions.remove(permission)
+
         self.client.login(
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
@@ -110,7 +123,6 @@ class DocumentAdminFormTest(TestCase):
     def test_admin_bird_add_by_user(self):
         """ Test if a normal user can add a new bird """
         self.setup_assign_breeders(self.pybudgie_user)
-        self.setup_assign_users_bird_permissions(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
@@ -131,7 +143,6 @@ class DocumentAdminFormTest(TestCase):
     def test_admin_bird_preview(self):
         """ Test if the birdpreview is displayed """
         self.setup_assign_breeders(self.pybudgie_user)
-        self.setup_assign_users_bird_permissions(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
@@ -148,13 +159,14 @@ class DocumentAdminFormTest(TestCase):
     def test_admin_bird_photo_upload_test(self):
         """ Test if user can attach a photo """
         self.setup_assign_breeders(self.pybudgie_user)
-        self.setup_assign_users_bird_permissions(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
         )
 
-        photo_filename = "mooievogel_{}.png".format(datetime.datetime.now().timestamp())
+        photo_filename = "test_test_bird{}.png".format(
+            datetime.datetime.now().timestamp()
+        )
         photo_data = open(
             "{}/../budgie_bird/fixtures/testpic.png".format(settings.BASE_DIR), "rb"
         ).read()
@@ -171,3 +183,54 @@ class DocumentAdminFormTest(TestCase):
         self.assertNotContains(
             response, settings.BIRD_PICTURE_DEFAULT
         )  # We dont want the default
+
+    def test_bird_get_queryset_mixin_called(self):
+        """ Test if the BudgieUser mixin is used in the admin """
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        with mock.patch("budgie_user.mixins.BudgieUserMixin.get_queryset") as mocked:
+            response = self.client.get(self.bird_overview_url)
+            mocked.assert_called_once()
+
+            self.assertEqual(str(response.context["user"]), "d.shrute")
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_userfilter_mixin_working_for_user(self):
+        """ Test if the BudgieUser mixin is used in the admin """
+
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021")
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021")
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2021")
+        Bird.objects.create(user=self.pybudgie_admin, ring_number="5TJJ-2011-2021")
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+        response = self.client.get(self.bird_overview_url)
+        self.assertContains(response, "5TJJ-2802-2021")
+        self.assertContains(response, "5TJJ-0801-2021")
+        self.assertContains(response, "5TJJ-2710-2021")
+        self.assertNotContains(response, "5TJJ-2011-2021")
+
+    def test_admin_userfilter_mixin_admin_user(self):
+        """ Test if the BudgieUser does not limit the administrator user """
+
+        Bird.objects.create(user=self.pybudgie_admin, ring_number="6TJJ-1-2021")
+        Bird.objects.create(user=self.pybudgie_user, ring_number="6TJJ-2-2021")
+        Bird.objects.create(user=self.pybudgie_user, ring_number="6TJJ-3-2021")
+        Bird.objects.create(user=self.pybudgie_admin, ring_number="6TJJ-4-2021")
+
+        self.client.login(
+            username=self.admin_credentials["username"],
+            password=self.admin_credentials["password"],
+        )
+        response = self.client.get(self.bird_overview_url)
+        self.assertContains(response, "6TJJ-1-2021")
+        self.assertContains(response, "6TJJ-2-2021")
+        self.assertContains(response, "6TJJ-3-2021")
+        self.assertContains(response, "6TJJ-4-2021")
