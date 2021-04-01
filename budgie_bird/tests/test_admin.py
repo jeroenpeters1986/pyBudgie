@@ -10,7 +10,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
-from budgie_bird.models import Breeder, Bird
+from budgie_bird.models import Breeder, Bird, ColorProperty
 from budgie_user.models import BudgieUser
 
 
@@ -18,6 +18,8 @@ class DocumentAdminFormTest(TestCase):
     fixtures = ["test_breeders.json"]
     bird_overview_url = reverse("admin:budgie_bird_bird_changelist")
     add_bird_url = reverse("admin:budgie_bird_bird_add")
+    breeder_overview_url = reverse("admin:budgie_bird_breeder_changelist")
+    add_breeder_url = reverse("admin:budgie_bird_breeder_add")
 
     def setUp(self):
 
@@ -51,8 +53,11 @@ class DocumentAdminFormTest(TestCase):
             breeding_reg_nr=self.user_credentials["breeding_reg_nr"],
             is_staff=True,
         )
-        content_type = ContentType.objects.get_for_model(Bird)
-        permissions = Permission.objects.filter(content_type=content_type)
+        content_type_bird = ContentType.objects.get_for_model(Bird)
+        content_type_breeder = ContentType.objects.get_for_model(Breeder)
+        permissions = Permission.objects.filter(
+            content_type__in=(content_type_bird, content_type_breeder)
+        )
         self.pybudgie_user.user_permissions.set(permissions)
 
         self.bird_data = {
@@ -234,3 +239,59 @@ class DocumentAdminFormTest(TestCase):
         self.assertContains(response, "6TJJ-2-2021")
         self.assertContains(response, "6TJJ-3-2021")
         self.assertContains(response, "6TJJ-4-2021")
+
+    def test_admin_userfilter_color(self):
+        """ Test if the BudgieUsers colorlist is limited to the current user """
+
+        ColorProperty.objects.create(
+            user=self.pybudgie_user, color_name="DarkBlue", rank=1
+        )
+        ColorProperty.objects.create(
+            user=self.pybudgie_user, color_name="DarkYellow", rank=3
+        )
+        ColorProperty.objects.create(
+            user=self.pybudgie_admin, color_name="DarkPink", rank=4
+        )
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+        response = self.client.get(self.add_bird_url)
+        self.assertNotContains(response, "DarkPink")
+        self.assertContains(response, "DarkBlue")
+        self.assertContains(response, "DarkYellow")
+
+    def test_bird_get_form_mixin_called(self):
+        """ Test if the BudgieUser mixin is used in the admin """
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        with mock.patch(
+            "budgie_user.mixins.BudgieUserMixin.formfield_for_manytomany"
+        ) as mocked:
+            self.client.post(self.add_bird_url, self.bird_data)
+            mocked.assert_called()
+
+    def test_admin_breeder_add_by_user(self):
+        """ Test if a normal user can add a new breeder """
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        # Try to create a new breeder-contact
+        response = self.client.post(
+            self.add_breeder_url,
+            {
+                "user": self.pybudgie_user.pk,
+                "first_name": "Jim",
+                "last_name": "Halpert",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.breeder_overview_url)
+        self.assertEqual(1, Breeder.objects.filter(user=self.pybudgie_user).count())

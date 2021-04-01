@@ -74,6 +74,17 @@ class BreederModelTest(TestCase):
         self.assertIn("Bird cannot be", form.errors["father"][0])
         self.assertIn("Bird cannot be", form.errors["mother"][0])
 
+    def test_bird_descendant_validation_ok(self):
+        """ Check if a bird can have descendants """
+
+        bird_henk = Bird.objects.create(user=self.app_user, ring_number="D")
+        bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
+        bird_father = Bird.objects.create(user=self.app_user, ring_number="F")
+        form = BirdForm(
+            instance=bird_henk, data={"father": bird_father, "mother": bird_mother}
+        )
+        self.assertTrue(True, form.is_valid())
+
     def test_bird_color_notation(self):
         """ Test if the color notation and color ranks will be outputted correctly """
 
