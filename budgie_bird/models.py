@@ -170,6 +170,9 @@ class Breeder(models.Model):
             self.last_name, self.first_name, self.breeding_reg_nr
         )
 
+    def display_name(self):
+        return "{}, {}".format(self.last_name, self.first_name)
+
 
 class ColorProperty(models.Model):
     """Color properties, which include a rank of importance,

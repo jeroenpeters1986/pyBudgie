@@ -56,12 +56,12 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin):
 
 class BreederAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["first_name", "last_name", "breeding_reg_nr", "notes", "address"]
-    list_display = ["full_name", "breeding_reg_nr", "phone_number"]
+    list_display = ["display_name", "breeding_reg_nr", "phone_number"]
 
-    def full_name(self, obj):
-        return "{}, {}".format(obj.last_name, obj.first_name)
+    def display_name(self, obj):
+        return obj.display_name()
 
-    full_name.short_description = _("Full name")
+    display_name.short_description = _("Full name")
 
 
 class ColorPropertyAdmin(BudgieUserMixin, admin.ModelAdmin):
