@@ -11,23 +11,23 @@ MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 run:
 	$(MANAGE) runserver --settings=$(SETTINGS) $(PORT)
 
-.PHONY: run
+.PHONY: migrate
 migrate:
 	$(MANAGE) migrate --settings=$(SETTINGS) $(ARGS)
 
-.PHONY: run
+.PHONY: migrations
 migrations:
 	$(MANAGE) makemigrations --settings=$(SETTINGS) $(ARGS)
 
-.PHONY: run
+.PHONY: superuser
 superuser:
 	$(MANAGE) createsuperuser --settings=$(SETTINGS) $(ARGS)
 
-.PHONY: run
+.PHONY: install-dev
 install-dev: install
 	pip install -r $(REQUIREMENTS_DEV) $(ARGS)
 
-.PHONY: run
+.PHONY: install
 install:
 	pip install -r $(REQUIREMENTS) $(ARGS)
 
@@ -35,18 +35,17 @@ install:
 $(MO_FILES): $(PO_FILES)
 	$(MANAGE) compilemessages --settings=$(SETTINGS)
 
-
 .PHONY: generate-locales
 generate-locales: $(MO_FILES)
 
-.PHONY: run
+.PHONY: coverage
 coverage:
 	coverage html
 
-.PHONY: run
+.PHONY: run-test
 run-test:
 	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
-.PHONY: run
+.PHONY: test
 test: $(PO_FILES) generate-locales run-test coverage
 
