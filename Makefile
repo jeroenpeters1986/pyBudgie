@@ -23,13 +23,20 @@ migrations:
 superuser:
 	$(MANAGE) createsuperuser --settings=$(SETTINGS) $(ARGS)
 
+.requirements :requirements.txt
+	pip install -r $(REQUIREMENTS) -U $(ARGS)
+	touch .requirements
+
+.requirements_dev: requirements-dev.txt
+	pip install -r $(REQUIREMENTS) -U $(ARGS)
+	touch .requirements_dev
+
+
 .PHONY: install-dev
-install-dev: install
-	pip install -r $(REQUIREMENTS_DEV) $(ARGS)
+install-dev: .requirements_dev
 
 .PHONY: install
-install:
-	pip install -r $(REQUIREMENTS) $(ARGS)
+install: .requirements
 
 
 $(MO_FILES): $(PO_FILES)
@@ -49,3 +56,9 @@ run-test:
 .PHONY: test
 test: $(PO_FILES) generate-locales run-test coverage
 
+
+.PHONY: clean
+clean:
+	-rm .requirements*
+	-rm coverage
+	-rm -rf coverage-reports
