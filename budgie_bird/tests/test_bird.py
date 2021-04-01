@@ -82,7 +82,7 @@ class BreederModelTest(TestCase):
         )
         for color in ColorProperty.objects.all():
             color.user = self.app_user
-        [new_bird.color_property.add(x) for x in range(4)]
+        [new_bird.color_property.add(x) for x in range(1, 4)]
         self.assertEqual(new_bird.color_props(), "Dominant bont Cinnamon Geelmasker")
         ColorProperty.objects.filter(rank=2).update(rank=100)
         self.assertEqual(new_bird.color_props(), "Dominant bont Geelmasker Cinnamon")
