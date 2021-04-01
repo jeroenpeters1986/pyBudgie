@@ -4,6 +4,8 @@ MANAGE = ./manage.py
 REQUIREMENTS = requirements.txt
 REQUIREMENTS_DEV = requirements-dev.txt
 ARGS ?=
+PO_FILES := $(shell find . -name '*.po')
+MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 
 run:
 	$(MANAGE) runserver --settings=$(SETTINGS) $(PORT)
@@ -23,8 +25,17 @@ install-dev: install
 install:
 	pip install -r $(REQUIREMENTS) $(ARGS)
 
-generate-locales:
+
+.generated-locales: 
 	$(MANAGE) compilemessages --settings=$(SETTINGS)
+	touch .generated-locales
+
+$(MO_FILES): $(PO_FILES)
+	$(MANAGE) compilemessages --settings=$(SETTINGS)
+
+
+.PHONY: generate-locales
+generate-locales: $(MO_FILES)
 
 coverage:
 	coverage html
@@ -32,5 +43,5 @@ coverage:
 run-test:
 	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
-test: generate-locales run-test coverage
+test: $(PO_FILES) generate-locales run-test coverage
 
