@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "budgie_user.apps.BudgieUserConfig",
     "budgie_bird.apps.BudgieBirdConfig",
+    "import_export",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,5 @@ LANGUAGES = [
     ("en", _("English")),
 ]
 MIDDLEWARE += ["django.middleware.locale.LocaleMiddleware"]
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True

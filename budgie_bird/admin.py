@@ -2,12 +2,50 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
+
 from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
 from .models import Bird, Breeder, ColorProperty
 
 
-class BirdAdmin(BudgieUserMixin, admin.ModelAdmin):
+class BirdResource(resources.ModelResource):
+    """ This resource is used for the Import/Export functionality """
+
+    class Meta:
+        model = Bird
+        skip_unchanged = True
+        report_skipped = True
+        import_id_fields = ("ring_number",)
+        export_order = (
+            "ring_number",
+            "color",
+            "father",
+            "mother",
+            "date_of_birth",
+            "breeder",
+            "owner",
+            "gender",
+            "is_owned",
+        )
+        fields = (
+            "ring_number",
+            "color",
+            "father",
+            "mother",
+            "date_of_birth",
+            "breeder",
+            "owner",
+            "gender",
+            "is_owned",
+        )
+        widgets = {
+            "date_of_birth": {"format": "%d-%m-%Y"},
+        }
+
+
+class BirdAdmin(BudgieUserMixin, ImportExportModelAdmin):
 
     form = BirdForm
 
@@ -31,6 +69,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["ring_number", "gender"]
     date_hierarchy = "date_of_birth"
     ordering = ["ring_number"]
+    resource_class = BirdResource
 
     autocomplete_fields = ["father", "mother", "breeder", "owner"]
     save_on_top = True
