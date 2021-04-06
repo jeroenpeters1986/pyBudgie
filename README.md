@@ -23,7 +23,17 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://github.com/ripienaar/free-for-dev (for hosting, later on)
  * https://github.com/fabiocaccamo/django-admin-interface/
  * https://help.alwaysdata.com/en/languages/python/django/
+ * https://books.agiliq.com/projects/django-admin-cookbook/en/latest/
+ * https://stackoverflow.com/a/54531546 (url list for admin debugging)
 
 ## System requirements
-Django 3.1
-(min) Python 3.6
+ * Django 3.1
+ * (min) Python 3.6
+
+### Author todo:
+CSS-addition:
+```css
+select[multiple] {
+   min-width: 20em;
+}
+```

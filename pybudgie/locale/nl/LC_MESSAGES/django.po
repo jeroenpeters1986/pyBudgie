@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-28 00:20+0100\n"
-"PO-Revision-Date: 2021-03-27 16:34+0100\n"
+"POT-Creation-Date: 2021-04-04 15:34+0200\n"
+"PO-Revision-Date: 2021-04-04 15:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: budgie_bird/admin.py:42
+#: budgie_bird/admin.py:46
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:47 budgie_bird/models.py:61 budgie_bird/models.py:177
+#: budgie_bird/admin.py:51 budgie_bird/models.py:64 budgie_bird/models.py:193
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:52 budgie_bird/models.py:67
+#: budgie_bird/admin.py:56 budgie_bird/models.py:70
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:62
+#: budgie_bird/admin.py:67
 msgid "Full name"
 msgstr "Volledige naam"
 
@@ -42,6 +42,10 @@ msgstr "Vogeladministratie"
 #, python-brace-format
 msgid "Bird cannot be it's own {parent}"
 msgstr "Een vogel kan niet zijn eigen {parent} zijn"
+
+#: budgie_bird/mixins.py:23
+msgid "Export selected as .csv"
+msgstr "Exporteer geselecteerde als .csv"
 
 #: budgie_bird/models.py:15
 msgid "Unknown"
@@ -55,84 +59,84 @@ msgstr "Man"
 msgid "Female"
 msgstr "Pop"
 
-#: budgie_bird/models.py:22
+#: budgie_bird/models.py:25
 msgid "Light Green"
 msgstr "Lichtgroen"
 
-#: budgie_bird/models.py:23
+#: budgie_bird/models.py:26
 msgid "Dark Green"
 msgstr "Donkergroen"
 
-#: budgie_bird/models.py:24
+#: budgie_bird/models.py:27
 msgid "Olive Green"
 msgstr "Olijfgroen"
 
-#: budgie_bird/models.py:25
+#: budgie_bird/models.py:28
 msgid "Grey Green"
 msgstr "Grijsgroen"
 
-#: budgie_bird/models.py:26
+#: budgie_bird/models.py:29
 msgid "Violet Green"
 msgstr "Violet groen"
 
-#: budgie_bird/models.py:27
+#: budgie_bird/models.py:30
 msgid "Sky Blue"
 msgstr "Hemelsblauw"
 
-#: budgie_bird/models.py:28
+#: budgie_bird/models.py:31
 msgid "Mauve"
 msgstr "Mauve"
 
-#: budgie_bird/models.py:29
+#: budgie_bird/models.py:32
 msgid "Gray"
 msgstr "Grijs"
 
-#: budgie_bird/models.py:30
+#: budgie_bird/models.py:33
 msgid "Violet Grey"
 msgstr "Violet grijs"
 
-#: budgie_bird/models.py:31
+#: budgie_bird/models.py:34
 msgid "Violet Blue"
 msgstr "Violet blauw"
 
-#: budgie_bird/models.py:37
+#: budgie_bird/models.py:40
 msgid "Ring number"
 msgstr "Ringnummer"
 
-#: budgie_bird/models.py:39
+#: budgie_bird/models.py:42
 msgid "This is to uniquely identify the bird and to determine its breeder"
 msgstr ""
 "Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
 
-#: budgie_bird/models.py:48
+#: budgie_bird/models.py:51
 msgid "Gender"
 msgstr "Geslacht"
 
-#: budgie_bird/models.py:55
+#: budgie_bird/models.py:58
 msgid "Color"
 msgstr "Kleur"
 
-#: budgie_bird/models.py:70
+#: budgie_bird/models.py:73
 msgid "Date of birth"
 msgstr "Geboortedatum"
 
-#: budgie_bird/models.py:73
+#: budgie_bird/models.py:76
 msgid "Date of death"
 msgstr "Sterfdatum"
 
-#: budgie_bird/models.py:79
+#: budgie_bird/models.py:82
 msgid "father"
 msgstr "vader"
 
-#: budgie_bird/models.py:87
+#: budgie_bird/models.py:90
 msgid "mother"
 msgstr "moeder"
 
-#: budgie_bird/models.py:107
+#: budgie_bird/models.py:110
 msgid "I own this bird"
 msgstr "In bezit"
 
-#: budgie_bird/models.py:109
+#: budgie_bird/models.py:112
 msgid ""
 "Sometimes when you are the owner, the bird is not at your disposal due to a "
 "trade"
@@ -140,68 +144,68 @@ msgstr ""
 "Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
 "bezit is, bijvoorbeeld vanwege een broedruil"
 
-#: budgie_bird/models.py:113
+#: budgie_bird/models.py:116
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:115 budgie_bird/models.py:147 budgie_user/models.py:11
+#: budgie_bird/models.py:118 budgie_bird/models.py:160 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:124
+#: budgie_bird/models.py:127
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:125
+#: budgie_bird/models.py:128
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:135
+#: budgie_bird/models.py:148
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:136
+#: budgie_bird/models.py:149
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:141 budgie_user/models.py:8
+#: budgie_bird/models.py:154 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:143
+#: budgie_bird/models.py:156
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:145
+#: budgie_bird/models.py:158
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:151
+#: budgie_bird/models.py:164
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:152
+#: budgie_bird/models.py:165
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:167
+#: budgie_bird/models.py:183
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:170
+#: budgie_bird/models.py:186
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:171
+#: budgie_bird/models.py:187
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
 
-#: budgie_bird/models.py:176
+#: budgie_bird/models.py:192
 msgid "Color property"
 msgstr "Kleurslagen"
 
-#: budgie_user/admin.py:36
+#: budgie_user/admin.py:21
 msgid "PyBudgie properties"
 msgstr "PyBudgie eigenschappen"
 
@@ -209,10 +213,10 @@ msgstr "PyBudgie eigenschappen"
 msgid "PyBudgie User Administration"
 msgstr "PyBudgie Gebruikersbeheer"
 
-#: pybudgie/config/base.py:131
+#: pybudgie/config/base.py:132
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: pybudgie/config/base.py:132
+#: pybudgie/config/base.py:133
 msgid "English"
 msgstr "Engels"

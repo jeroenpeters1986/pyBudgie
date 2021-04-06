@@ -140,6 +140,19 @@ class Bird(models.Model):
             x.color_name for x in self.split_property.all().order_by("rank")
         )
 
+    def get_ancestors(self):
+        """ Recursive function to return the family tree """
+        ancestors = []
+        tree = {
+            'bird': self,
+            'ancestors': {
+                'father': self.father.get_ancestors() if self.father else None,
+                'mother': self.mother.get_ancestors() if self.mother else None,
+            }
+        }
+        ancestors.append(tree)
+        return ancestors
+
 
 class Breeder(models.Model):
     """ Breeder (contacts) model """
