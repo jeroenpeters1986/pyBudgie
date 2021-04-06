@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "budgie_user.apps.BudgieUserConfig",
     "budgie_bird.apps.BudgieBirdConfig",
-    "import_export",
 ]
 
 MIDDLEWARE = [
