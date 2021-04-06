@@ -81,9 +81,8 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     def family_tree_view(self, request, *args, **kwargs):
         context = dict(
             self.admin_site.each_context(request),  # Common admin things
-
-            bird_id=kwargs['object_id'],
-            family_tree=Bird.objects.get(pk=kwargs['object_id']).get_ancestors()
+            bird_id=kwargs["object_id"],
+            family_tree=Bird.objects.get(pk=kwargs["object_id"]).get_ancestors(),
         )
         return TemplateResponse(request, "budgie_bird/admin/family_tree.html", context)
 
