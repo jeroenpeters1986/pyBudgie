@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-04 15:34+0200\n"
+"POT-Creation-Date: 2021-04-09 11:33+0200\n"
 "PO-Revision-Date: 2021-04-04 15:35+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,23 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: budgie_bird/admin.py:46
+#: budgie_bird/admin.py:71
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:51 budgie_bird/models.py:64 budgie_bird/models.py:193
+#: budgie_bird/admin.py:76 budgie_bird/models.py:64 budgie_bird/models.py:206
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:56 budgie_bird/models.py:70
+#: budgie_bird/admin.py:81 budgie_bird/models.py:70
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:67
+#: budgie_bird/admin.py:103
+msgid "That bird does not exist"
+msgstr ""
+
+#: budgie_bird/admin.py:130
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: budgie_bird/apps.py:7
+#: budgie_bird/apps.py:8
 msgid "Bird Administration"
 msgstr "Vogeladministratie"
 
@@ -148,7 +152,7 @@ msgstr ""
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:118 budgie_bird/models.py:160 budgie_user/models.py:11
+#: budgie_bird/models.py:118 budgie_bird/models.py:173 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
@@ -160,63 +164,71 @@ msgstr "Vogel"
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:148
+#: budgie_bird/models.py:161
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:149
+#: budgie_bird/models.py:162
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:154 budgie_user/models.py:8
+#: budgie_bird/models.py:167 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:156
+#: budgie_bird/models.py:169
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:158
+#: budgie_bird/models.py:171
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:164
+#: budgie_bird/models.py:177
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:165
+#: budgie_bird/models.py:178
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:183
+#: budgie_bird/models.py:196
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:186
+#: budgie_bird/models.py:199
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:187
+#: budgie_bird/models.py:200
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
 
-#: budgie_bird/models.py:192
+#: budgie_bird/models.py:205
 msgid "Color property"
 msgstr "Kleurslagen"
+
+#: budgie_bird/templates/budgie_bird/admin/family_tree.html:22
+msgid "Family tree of"
+msgstr "Stamboom van"
+
+#: budgie_bird/templates/budgie_bird/admin/family_tree.html:28
+msgid "Back to the overview"
+msgstr "Terug naar het overzicht"
 
 #: budgie_user/admin.py:21
 msgid "PyBudgie properties"
 msgstr "PyBudgie eigenschappen"
 
-#: budgie_user/apps.py:7
+#: budgie_user/apps.py:8
 msgid "PyBudgie User Administration"
 msgstr "PyBudgie Gebruikersbeheer"
 
-#: pybudgie/config/base.py:132
+#: pybudgie/config/base.py:131
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: pybudgie/config/base.py:133
+#: pybudgie/config/base.py:132
 msgid "English"
 msgstr "Engels"
