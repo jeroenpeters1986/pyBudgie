@@ -8,7 +8,7 @@ PO_FILES := $(shell find . -name '*.po')
 MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 
 .PHONY: run
-run:
+run: install install-dev
 	$(MANAGE) runserver --settings=$(SETTINGS) $(PORT)
 
 .PHONY: migrate
@@ -50,7 +50,7 @@ coverage:
 	coverage html
 
 .PHONY: run-test
-run-test:
+run-test: install install-dev
 	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
 .PHONY: test
@@ -60,5 +60,7 @@ test: $(PO_FILES) generate-locales run-test coverage
 .PHONY: clean
 clean:
 	-rm .requirements*
-	-rm coverage
+	-rm .coverage
 	-rm -rf coverage-reports
+	find . -type f -name *.pyc -delete
+	find . -type d -name __pycache__ -delete

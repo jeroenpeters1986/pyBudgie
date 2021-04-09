@@ -44,9 +44,6 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
 
     change_list_template = "budgie_bird/admin/bird_changelist.html"
 
-    class Media:
-        js = ("js/jquery1.9.1.min.js", "admin/js/jquery.init.js", "js/viz.js")
-
     def get_urls(self):
         """ Extend the urls of the Django admin with new views """
         urls = super().get_urls()

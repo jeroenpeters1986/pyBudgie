@@ -197,7 +197,7 @@ class ColorProperty(models.Model):
     )
     rank = models.IntegerField(
         verbose_name=_("Matter of importance"),
-        help_text=_("1 is very important, 1000 is " "not important"),
+        help_text=_("1 is very important, 1000 is not important"),
     )
 
     class Meta:
