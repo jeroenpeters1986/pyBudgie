@@ -51,7 +51,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
             path(
                 "<path:object_id>/family_tree/",
                 self.admin_site.admin_view(self.family_tree_view, cacheable=True),
-                name='budgie_bird_bird_familytree'
+                name="budgie_bird_bird_familytree",
             )
         ]
         return additional_bird_admin_urls + urls

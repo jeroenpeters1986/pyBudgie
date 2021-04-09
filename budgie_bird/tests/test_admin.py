@@ -342,8 +342,12 @@ class DocumentAdminFormTest(TestCase):
         bird_henk.mother = bird_mother
         bird_henk.save()
 
-        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': bird_henk.pk}))
-        self.assertContains(response, 'digraph G {')  # Graphviz notation
+        response = self.client.get(
+            reverse(
+                "admin:budgie_bird_bird_familytree", kwargs={"object_id": bird_henk.pk}
+            )
+        )
+        self.assertContains(response, "digraph G {")  # Graphviz notation
         self.assertEqual(response.status_code, 200)
 
     def test_admin_bird_familytree_non_existing_bird(self):
@@ -353,8 +357,15 @@ class DocumentAdminFormTest(TestCase):
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
         )
-        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': 28021986}))
+        response = self.client.get(
+            reverse("admin:budgie_bird_bird_familytree", kwargs={"object_id": 28021986})
+        )
         self.assertEqual(response.status_code, 302)
 
-        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': 28021986}), follow=True)
+        response = self.client.get(
+            reverse(
+                "admin:budgie_bird_bird_familytree", kwargs={"object_id": 28021986}
+            ),
+            follow=True,
+        )
         self.assertContains(response, "That bird does not exist")

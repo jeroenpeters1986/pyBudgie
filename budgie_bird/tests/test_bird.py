@@ -104,11 +104,17 @@ class BreederModelTest(TestCase):
         family_tree = bird_henk.get_ancestors()
 
         self.assertIsInstance(family_tree, dict)
-        self.assertEqual(family_tree['bird'], bird_henk)
-        self.assertEqual(family_tree['ancestors']['father']['bird'], bird_father)
-        self.assertEqual(family_tree['ancestors']['mother']['bird'], bird_mother)
-        self.assertEqual(family_tree['ancestors']['mother']['ancestors']['father']['bird'], bird_grandfather)
-        self.assertEqual(family_tree['ancestors']['mother']['ancestors']['mother']['bird'], bird_grandmother)
+        self.assertEqual(family_tree["bird"], bird_henk)
+        self.assertEqual(family_tree["ancestors"]["father"]["bird"], bird_father)
+        self.assertEqual(family_tree["ancestors"]["mother"]["bird"], bird_mother)
+        self.assertEqual(
+            family_tree["ancestors"]["mother"]["ancestors"]["father"]["bird"],
+            bird_grandfather,
+        )
+        self.assertEqual(
+            family_tree["ancestors"]["mother"]["ancestors"]["mother"]["bird"],
+            bird_grandmother,
+        )
 
     def test_bird_color_notation(self):
         """ Test if the color notation and color ranks will be outputted correctly """
