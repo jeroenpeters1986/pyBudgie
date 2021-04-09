@@ -1,6 +1,7 @@
-from django.contrib import admin
+from django.contrib import admin, messages
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -43,6 +44,9 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
 
     change_list_template = "budgie_bird/admin/bird_changelist.html"
 
+    class Media:
+        js = ("js/jquery1.9.1.min.js", "admin/js/jquery.init.js", "js/viz.js")
+
     def get_urls(self):
         """ Extend the urls of the Django admin with new views """
         urls = super().get_urls()
@@ -50,6 +54,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
             path(
                 "<path:object_id>/family_tree/",
                 self.admin_site.admin_view(self.family_tree_view, cacheable=True),
+                name='budgie_bird_bird_familytree'
             )
         ]
         return additional_bird_admin_urls + urls
@@ -78,12 +83,40 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
 
     split_props.short_description = _("Split properties")
 
+    def get_ancestors_graphviz(self, generation):
+        """ Generate digraph notation, don't really think it should live here..?! """
+        graphviz_notation = ""
+        for parent_type in ["father", "mother"]:
+            if generation["ancestors"][parent_type]:
+                graphviz_notation += '\n  "{}" -> "{}"'.format(
+                    generation["bird"].__str__(),
+                    generation["ancestors"][parent_type]["bird"].__str__(),
+                )
+                graphviz_notation += self.get_ancestors_graphviz(
+                    generation["ancestors"][parent_type]
+                )
+
+        return graphviz_notation
+
     def family_tree_view(self, request, *args, **kwargs):
+        """ Custom admin view to show the family tree """
+        try:
+            bird = Bird.objects.get(pk=kwargs["object_id"])
+        except Bird.DoesNotExist:
+            messages.add_message(request, messages.INFO, _("That bird does not exist"))
+            return redirect(reverse("admin:budgie_bird_bird_changelist"))
+
+        family_tree = bird.get_ancestors()
+
+        graphviz_format = "digraph G {"
+        graphviz_format += self.get_ancestors_graphviz(family_tree)
+        graphviz_format += "}"
+
         context = dict(
             self.admin_site.each_context(request),  # Common admin things
-
-            bird_id=kwargs['object_id'],
-            family_tree=Bird.objects.get(pk=kwargs['object_id']).get_ancestors()
+            bird=bird,
+            family_tree=family_tree,
+            family_tree_graphviz=graphviz_format,
         )
         return TemplateResponse(request, "budgie_bird/admin/family_tree.html", context)
 

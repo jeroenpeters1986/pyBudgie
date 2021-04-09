@@ -85,6 +85,31 @@ class BreederModelTest(TestCase):
         )
         self.assertTrue(True, form.is_valid())
 
+    def test_bird_family_tree(self):
+        """ Check if all the descendants are genereated correctly """
+
+        bird_henk = Bird.objects.create(user=self.app_user, ring_number="D")
+        bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
+        bird_father = Bird.objects.create(user=self.app_user, ring_number="F")
+        bird_henk.father = bird_father
+        bird_henk.mother = bird_mother
+        bird_henk.save()
+        bird_grandfather = Bird.objects.create(user=self.app_user, ring_number="GF")
+        bird_grandmother = Bird.objects.create(user=self.app_user, ring_number="GM")
+        bird_mother.father = bird_grandfather
+        bird_mother.save()
+        bird_mother.mother = bird_grandmother
+        bird_mother.save()
+
+        family_tree = bird_henk.get_ancestors()
+
+        self.assertIsInstance(family_tree, dict)
+        self.assertEqual(family_tree['bird'], bird_henk)
+        self.assertEqual(family_tree['ancestors']['father']['bird'], bird_father)
+        self.assertEqual(family_tree['ancestors']['mother']['bird'], bird_mother)
+        self.assertEqual(family_tree['ancestors']['mother']['ancestors']['father']['bird'], bird_grandfather)
+        self.assertEqual(family_tree['ancestors']['mother']['ancestors']['mother']['bird'], bird_grandmother)
+
     def test_bird_color_notation(self):
         """ Test if the color notation and color ranks will be outputted correctly """
 

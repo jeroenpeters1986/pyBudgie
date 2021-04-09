@@ -145,7 +145,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(bird.user, self.pybudgie_user)
         self.assertEqual(1, Bird.objects.count())
 
-    def test_admin_bird_preview(self):
+    def test_admin_bird_photo_preview(self):
         """ Test if the birdpreview is displayed """
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
@@ -295,3 +295,66 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.breeder_overview_url)
         self.assertEqual(1, Breeder.objects.filter(user=self.pybudgie_user).count())
+
+    def test_bird_csv_export(self):
+        """ Test if the CSV-export works """
+
+        testbirds = [
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2021"),
+        ]
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        post_data = {
+            "action": "export_as_csv",
+            "_selected_action": [b.pk for b in testbirds],
+        }
+        response = self.client.post(self.bird_overview_url, post_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "id,user,ring_number,gender,color,date_of_birth,date_of_death,father,"
+            "mother,breeder,owner,is_owned,is_for_sale,notes,photo",
+        )
+        self.assertContains(response, "5TJJ-2802-2021")
+        self.assertContains(response, "5TJJ-0801-2021")
+        self.assertContains(response, "5TJJ-2710-2021")
+        self.assertEqual(response.headers["Content-Type"], "text/csv")
+
+    def test_admin_bird_familytree(self):
+        """ Test if user can view a birds familytree """
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        bird_henk = Bird.objects.create(user=self.pybudgie_user, ring_number="D")
+        bird_mother = Bird.objects.create(user=self.pybudgie_user, ring_number="M")
+        bird_father = Bird.objects.create(user=self.pybudgie_user, ring_number="F")
+        bird_henk.father = bird_father
+        bird_henk.mother = bird_mother
+        bird_henk.save()
+
+        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': bird_henk.pk}))
+        self.assertContains(response, 'digraph G {')  # Graphviz notation
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_bird_familytree_non_existing_bird(self):
+        """ Test if user can view a birds familytree """
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': 28021986}))
+        self.assertEqual(response.status_code, 302)
+
+        response = self.client.get(reverse("admin:budgie_bird_bird_familytree", kwargs={'object_id': 28021986}), follow=True)
+        self.assertContains(response, "That bird does not exist")

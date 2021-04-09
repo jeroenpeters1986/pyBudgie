@@ -142,15 +142,15 @@ class Bird(models.Model):
 
     def get_ancestors(self):
         """ Recursive function to return the family tree """
-        ancestors = []
+        ancestors = {}
         tree = {
-            'bird': self,
-            'ancestors': {
-                'father': self.father.get_ancestors() if self.father else None,
-                'mother': self.mother.get_ancestors() if self.mother else None,
-            }
+            "bird": self,
+            "ancestors": {
+                "father": self.father.get_ancestors() if self.father else None,
+                "mother": self.mother.get_ancestors() if self.mother else None,
+            },
         }
-        ancestors.append(tree)
+        ancestors.update(tree)
         return ancestors
 
 

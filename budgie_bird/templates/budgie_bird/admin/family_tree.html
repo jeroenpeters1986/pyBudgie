@@ -1,9 +1,42 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {% comment %}I had rather used the admins Media class, but this is a custom view {% endcomment %}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
+    <script src="{% static 'js/jquery1.9.1.min.js' %}"></script>
+    <script src="{% static 'js/viz.js' %}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            const family_tree = `{{ family_tree_graphviz|safe }}`;
+            jQuery('#graphviz_family_tree_svg').html(Viz(family_tree, "svg"));
+        });
+    </script>
+{% endblock %}
 
 {% block content %}
 
-    Mooi hoor!
+    <h1>Stamboom van {{ bird }}</h1>
 
-    {{ bird_id }}
+    <div id="content-main">
+        <ul class="object-tools">
+           <li>
+                <a href="/nl/admin/budgie_bird/bird/2/history/" class="historylink">Geschiedenis</a>
+            </li>
+        </ul>
+
+        <div>
+            <div class="submit-row">
+                <input type="submit" value="Opslaan" class="default" name="_save">
+                <p class="deletelink-box"><a href="/nl/admin/budgie_bird/bird/2/delete/" class="deletelink">Verwijderen</a></p>
+                <input type="submit" value="Opslaan als nieuw item" name="_saveasnew">
+                <input type="submit" value="Opslaan en opnieuw bewerken" name="_continue">
+            </div>
+        </div>
+
+        <div id="graphviz_family_tree_svg"></div>
+
+    </div>
 
 {% endblock %}
