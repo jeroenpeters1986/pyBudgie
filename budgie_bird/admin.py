@@ -24,6 +24,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         "split_props",
         "date_of_birth",
         "image_tag",
+        "family_tree"
     ]
     list_filter = [
         "gender",
@@ -69,6 +70,10 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         )
 
     image_tag.short_description = _("Photo")
+
+    def family_tree(self, obj):
+        return mark_safe('<a class="grp-button" href="{}">{}</a>'.format(reverse('admin:budgie_bird_bird_familytree', args=[obj.pk]), _("View")))
+    family_tree.short_description = _('Family tree')
 
     def color_props(self, obj):
         return obj.color_props()
