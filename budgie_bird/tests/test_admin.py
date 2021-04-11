@@ -369,3 +369,54 @@ class DocumentAdminFormTest(TestCase):
             follow=True,
         )
         self.assertContains(response, "That bird does not exist")
+
+    def test_bird_mark_as_owned(self):
+        """ Test if the Mark as owned admin action works """
+
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2022"),
+        selected_birds = [
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2022"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2022"),
+        ]
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        post_data = {
+            "action": "mark_as_owned",
+            "_selected_action": [b.pk for b in selected_birds],
+        }
+        response = self.client.post(self.bird_overview_url, post_data, follow=True)
+
+        self.assertContains(response, "Selected birds are marked as owned")
+        self.assertEqual(3, Bird.objects.filter(user=self.pybudgie_user).count())
+        self.assertEqual(
+            2, Bird.objects.filter(user=self.pybudgie_user, is_owned=True).count()
+        )
+        self.assertTrue(Bird.objects.get(ring_number="5TJJ-0801-2022").is_owned)
+        self.assertTrue(Bird.objects.get(ring_number="5TJJ-2710-2022").is_owned)
+        self.assertFalse(Bird.objects.get(ring_number="5TJJ-2802-2022").is_owned)
+
+    def test_bird_mark_as_for_sale(self):
+        """ Test if the For Sale action works in the admin """
+
+        Bird.objects.create(user=self.pybudgie_user, ring_number="Dunder Mifflin"),
+        sale_bird = Bird.objects.create(user=self.pybudgie_user, ring_number="Staples")
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        post_data = {
+            "action": "mark_as_for_sale",
+            "_selected_action": [sale_bird.pk],
+        }
+        response = self.client.post(self.bird_overview_url, post_data, follow=True)
+
+        self.assertContains(response, "Selected birds are marked as for sale")
+        self.assertEqual(2, Bird.objects.filter(user=self.pybudgie_user).count())
+        self.assertTrue(Bird.objects.get(ring_number="Staples").is_for_sale)
+        self.assertFalse(Bird.objects.get(ring_number="Dunder Mifflin").is_for_sale)

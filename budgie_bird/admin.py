@@ -24,7 +24,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         "split_props",
         "date_of_birth",
         "image_tag",
-        "family_tree"
+        "family_tree",
     ]
     list_filter = [
         "gender",
@@ -41,7 +41,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     autocomplete_fields = ["father", "mother", "breeder", "owner"]
     save_on_top = True
     save_as = True
-    actions = ["export_as_csv"]
+    actions = ["export_as_csv", "mark_as_owned", "mark_as_for_sale"]
 
     change_list_template = "budgie_bird/admin/bird_changelist.html"
 
@@ -72,8 +72,13 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     image_tag.short_description = _("Photo")
 
     def family_tree(self, obj):
-        return mark_safe('<a class="grp-button" href="{}">{}</a>'.format(reverse('admin:budgie_bird_bird_familytree', args=[obj.pk]), _("View")))
-    family_tree.short_description = _('Family tree')
+        return mark_safe(
+            '<a class="grp-button" href="{}">{}</a>'.format(
+                reverse("admin:budgie_bird_bird_familytree", args=[obj.pk]), _("View")
+            )
+        )
+
+    family_tree.short_description = _("Family tree")
 
     def color_props(self, obj):
         return obj.color_props()
@@ -84,6 +89,22 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         return obj.split_props()
 
     split_props.short_description = _("Split properties")
+
+    def mark_as_owned(self, request, queryset):
+        queryset.update(is_owned=True)
+        messages.add_message(
+            request, messages.SUCCESS, _("Selected birds are marked as owned")
+        )
+
+    mark_as_owned.short_description = _("Mark as owned")
+
+    def mark_as_for_sale(self, request, queryset):
+        queryset.update(is_for_sale=True)
+        messages.add_message(
+            request, messages.SUCCESS, _("Selected birds are marked as for sale")
+        )
+
+    mark_as_for_sale.short_description = _("Mark as for sale")
 
     def get_ancestors_graphviz(self, generation):
         """ Generate digraph notation, don't really think it should live here..?! """
@@ -105,7 +126,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         try:
             bird = Bird.objects.get(pk=kwargs["object_id"])
         except Bird.DoesNotExist:
-            messages.add_message(request, messages.INFO, _("That bird does not exist"))
+            messages.add_message(request, messages.ERROR, _("That bird does not exist"))
             return redirect(reverse("admin:budgie_bird_bird_changelist"))
 
         family_tree = bird.get_ancestors()
