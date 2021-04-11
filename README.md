@@ -23,6 +23,7 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://help.alwaysdata.com/en/languages/python/django/
  * https://books.agiliq.com/projects/django-admin-cookbook/en/latest/
  * https://stackoverflow.com/a/54531546 (url list for admin debugging)
+ * https://docs.djangoproject.com/en/3.1/ref/databases/#connecting-to-the-database
 
 ## System requirements
  * Django 3.1 or higher
