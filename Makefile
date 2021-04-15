@@ -4,7 +4,7 @@ MANAGE = ./manage.py
 REQUIREMENTS = requirements.txt
 REQUIREMENTS_DEV = requirements-dev.txt
 ARGS ?=
-PO_FILES := $(shell find . -name '*.po')
+PO_FILES := $(shell find . -name '*.po' |grep -v site-packages)
 MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 
 .PHONY: run
