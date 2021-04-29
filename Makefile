@@ -45,6 +45,9 @@ $(MO_FILES): $(PO_FILES)
 .PHONY: generate-locales
 generate-locales: $(MO_FILES)
 
+.PHONY: translations
+translations: generate-locales
+
 .PHONY: coverage
 coverage:
 	coverage html
