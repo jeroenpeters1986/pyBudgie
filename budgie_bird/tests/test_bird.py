@@ -86,7 +86,7 @@ class BreederModelTest(TestCase):
         self.assertTrue(True, form.is_valid())
 
     def test_bird_family_tree(self):
-        """ Check if all the descendants are genereated correctly """
+        """ Check if all the descendants are generated correctly """
 
         bird_henk = Bird.objects.create(user=self.app_user, ring_number="D")
         bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
@@ -115,6 +115,39 @@ class BreederModelTest(TestCase):
             family_tree["ancestors"]["mother"]["ancestors"]["mother"]["bird"],
             bird_grandmother,
         )
+
+    def test_date_of_birth_and_death_are_sensible(self):
+        """ Check if brith and death dates are validated by sensibility."""
+
+        bird_henk = Bird.objects.create(
+                user=self.app_user,
+                ring_number="D",
+                date_of_birth="2019-01-01",
+                date_of_death="2018-11-11")
+
+        bird_henk.save()
+
+        self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
+
+    def test_date_of_birth_ancestors_are_sensible(self):
+        """ Check if brith and death dates are validated by sensibility."""
+
+        bird_henk = Bird.objects.create(
+                user=self.app_user,
+                ring_number="D",
+                date_of_birth="2019-01-01")
+
+        bird_mother = Bird.objects.create(
+                user=self.app_user,
+                ring_number="M",
+                date_of_birth="2020-01-01")
+
+        bird_henk.mother = bird_mother
+        bird_henk.save()
+        bird_mother.save()
+
+        self.assertGreater(bird_mother.date_of_birth, bird_henk.date_of_birth)
+        self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
 
     def test_bird_color_notation(self):
         """ Test if the color notation and color ranks will be outputted correctly """
