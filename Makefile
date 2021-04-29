@@ -7,6 +7,8 @@ ARGS ?=
 PO_FILES := $(shell find . -name '*.po' |grep -v site-packages)
 MO_FILES = $(patsubst %.po,%.mo,$(PO_FILES))
 
+.DEFAULT_GOAL := run
+
 .PHONY: run
 run: install install-dev
 	$(MANAGE) runserver --settings=$(SETTINGS) $(PORT)
