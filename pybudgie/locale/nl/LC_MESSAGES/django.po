@@ -203,7 +203,7 @@ msgstr "Volgorde van belangrijkheid"
 #: budgie_bird/models.py:200
 msgid "1 is very important, 1000 is not important"
 msgstr ""
-"1 is heel belangrijk (als eerste tonen), 1000 is neit belangrijk/achteraan"
+"1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
 #: budgie_bird/models.py:205
 msgid "Color property"
