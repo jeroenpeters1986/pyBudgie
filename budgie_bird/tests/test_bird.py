@@ -117,30 +117,29 @@ class BreederModelTest(TestCase):
         )
 
     def test_date_of_birth_and_death_are_sensible(self):
-        """ Check if brith and death dates are validated by sensibility."""
+        """Check if birth and death dates are valid."""
 
         bird_henk = Bird.objects.create(
-                user=self.app_user,
-                ring_number="D",
-                date_of_birth="2019-01-01",
-                date_of_death="2018-11-11")
+            user=self.app_user,
+            ring_number="D",
+            date_of_birth="2019-01-01",
+            date_of_death="2018-11-11",
+        )
 
         bird_henk.save()
 
         self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
 
     def test_date_of_birth_ancestors_are_sensible(self):
-        """ Check if brith and death dates are validated by sensibility."""
+        """Check if brith and death dates are not like we created a time-machine."""
 
         bird_henk = Bird.objects.create(
-                user=self.app_user,
-                ring_number="D",
-                date_of_birth="2019-01-01")
+            user=self.app_user, ring_number="D", date_of_birth="2019-01-01"
+        )
 
         bird_mother = Bird.objects.create(
-                user=self.app_user,
-                ring_number="M",
-                date_of_birth="2020-01-01")
+            user=self.app_user, ring_number="M", date_of_birth="2020-01-01"
+        )
 
         bird_henk.mother = bird_mother
         bird_henk.save()
@@ -150,7 +149,7 @@ class BreederModelTest(TestCase):
         self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
 
     def test_bird_color_notation(self):
-        """ Test if the color notation and color ranks will be outputted correctly """
+        """Test if the color notation and color ranks will be outputted correctly"""
 
         new_bird = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-81-2018"
