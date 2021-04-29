@@ -26,7 +26,7 @@ class BreederModelTest(TestCase):
         )
 
     def test_bird_unique_ringnumber_per_user(self):
-        """ Check if the ring number is truly unique """
+        """Check if the ring number is truly unique"""
 
         # Register a bird with a new ring number (which is unique at this point)
         new_bird = Bird.objects.create(
@@ -54,7 +54,7 @@ class BreederModelTest(TestCase):
             )
 
     def test_bird_default_gender(self):
-        """ Check if gender is 'unknown' if user does not make choice """
+        """Check if gender is 'unknown' if user does not make choice"""
 
         new_bird = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="5TJJ-81-2018"
@@ -63,7 +63,7 @@ class BreederModelTest(TestCase):
 
     @override_settings(LANGUAGE_CODE="en-us")
     def test_bird_descendant_validation(self):
-        """ Check if a bird can be it's own parent (kerelll!!) """
+        """Check if a bird can be it's own parent (kerelll!!)"""
 
         bird_henk = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="Henk"
@@ -75,7 +75,7 @@ class BreederModelTest(TestCase):
         self.assertIn("Bird cannot be", form.errors["mother"][0])
 
     def test_bird_descendant_validation_ok(self):
-        """ Check if a bird can have descendants """
+        """Check if a bird can have descendants"""
 
         bird_henk = Bird.objects.create(user=self.app_user, ring_number="D")
         bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
@@ -86,7 +86,7 @@ class BreederModelTest(TestCase):
         self.assertTrue(True, form.is_valid())
 
     def test_bird_family_tree(self):
-        """ Check if all the descendants are generated correctly """
+        """Check if all the descendants are generated correctly"""
 
         bird_henk = Bird.objects.create(user=self.app_user, ring_number="D")
         bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
