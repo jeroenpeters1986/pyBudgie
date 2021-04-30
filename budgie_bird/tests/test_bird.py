@@ -116,6 +116,7 @@ class BreederModelTest(TestCase):
             bird_grandmother,
         )
 
+    @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_and_death_are_sensible(self):
         """Check if birth and death dates are valid."""
 
@@ -128,9 +129,13 @@ class BreederModelTest(TestCase):
 
         bird_henk.save()
 
-        # NOTE: should raise a validation error
-        self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
+        bird_henk = Bird.objects.create(
+            user=self.app_user, breeder=self.breeder1, ring_number="Henk"
+        )
+        form = BirdForm(instance=bird_henk)
+        self.assertIn("Bird cannot die before it's born.", form.errors)
 
+    @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_ancestors_are_sensible(self):
         """Check if brith and death dates are not like we created a time-machine."""
 
@@ -141,13 +146,11 @@ class BreederModelTest(TestCase):
         bird_mother = Bird.objects.create(
             user=self.app_user, ring_number="M", date_of_birth="2020-01-01"
         )
-
-        bird_henk.mother = bird_mother
-        bird_henk.save()
-        bird_mother.save()
-
-        # NOTE: should raise a validation error
-        self.assertGreater(bird_henk.date_of_birth, bird_mother.date_of_birth)
+        form = BirdForm(
+            instance=bird_henk, data={"mother": bird_mother}
+        )
+        breakpoint()
+        self.assertIn("Bird cannot be older than", form.errors["mother"][0])
 
     def test_bird_color_notation(self):
         """Test if the color notation and color ranks will be outputted correctly"""

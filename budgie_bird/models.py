@@ -141,7 +141,7 @@ class Bird(models.Model):
         )
 
     def get_ancestors(self):
-        """ Recursive function to return the family tree """
+        """ Recursive method to return the family tree """
         ancestors = {}
         tree = {
             "bird": self,
