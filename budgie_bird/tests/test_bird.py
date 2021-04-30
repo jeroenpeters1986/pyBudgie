@@ -128,6 +128,7 @@ class BreederModelTest(TestCase):
 
         bird_henk.save()
 
+        # NOTE: should raise a validation error
         self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
 
     def test_date_of_birth_ancestors_are_sensible(self):
@@ -145,8 +146,8 @@ class BreederModelTest(TestCase):
         bird_henk.save()
         bird_mother.save()
 
-        self.assertGreater(bird_mother.date_of_birth, bird_henk.date_of_birth)
-        self.assertGreater(bird_henk.date_of_death, bird_henk.date_of_birth)
+        # NOTE: should raise a validation error
+        self.assertGreater(bird_henk.date_of_birth, bird_mother.date_of_birth)
 
     def test_bird_color_notation(self):
         """Test if the color notation and color ranks will be outputted correctly"""
