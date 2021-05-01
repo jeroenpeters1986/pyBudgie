@@ -139,3 +139,4 @@ dmypy.json
 .pyre/
 .requirements_dev
 .requirements
+tags
