@@ -58,7 +58,9 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         return additional_bird_admin_urls + urls
 
     def get_readonly_fields(self, request, obj=None):
-        """ This makes sure the admin doesn't give away the other usernames to non-admins """
+        """
+        This makes sure the admin doesn't give away the other usernames to non-admins.
+        """
         if not request.user.is_superuser:
             return ["user"]
         return {}
