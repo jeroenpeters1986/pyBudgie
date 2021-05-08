@@ -83,7 +83,7 @@ class BreederModelTest(TestCase):
         form = BirdForm(
             instance=bird_henk, data={"father": bird_father, "mother": bird_mother}
         )
-        self.assertTrue(True, form.is_valid())
+        self.assertTrue(form.is_valid())
 
     def test_bird_family_tree(self):
         """Check if all the descendants are generated correctly"""
