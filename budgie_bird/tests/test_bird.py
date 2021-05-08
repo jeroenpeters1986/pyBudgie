@@ -81,7 +81,15 @@ class BreederModelTest(TestCase):
         bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
         bird_father = Bird.objects.create(user=self.app_user, ring_number="F")
         form = BirdForm(
-            instance=bird_henk, data={"father": bird_father, "mother": bird_mother}
+            instance=bird_henk,
+            data={
+                "father": bird_father,
+                "mother": bird_mother,
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+            },
         )
         self.assertTrue(form.is_valid())
 
@@ -123,8 +131,6 @@ class BreederModelTest(TestCase):
         bird_henk = Bird.objects.create(
             user=self.app_user,
             ring_number="D",
-            date_of_birth="2019-01-01",
-            date_of_death="2018-11-11",
         )
 
         bird_henk.save()
@@ -132,8 +138,21 @@ class BreederModelTest(TestCase):
         bird_henk = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="Henk"
         )
-        form = BirdForm(instance=bird_henk)
-        self.assertIn("Bird cannot die before it's born.", form.errors)
+        form = BirdForm(
+            instance=bird_henk,
+            data={
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+                "date_of_birth": "2020-01-01",
+                "date_of_death": "2018-01-01",
+            },
+        )
+        breakpoint()
+        self.assertEqual(
+            "Bird cannot die before it's born.",
+            form.errors['date_of_death'][0])
 
     @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_ancestors_are_sensible(self):
@@ -147,9 +166,16 @@ class BreederModelTest(TestCase):
             user=self.app_user, ring_number="M", date_of_birth="2020-01-01"
         )
         form = BirdForm(
-            instance=bird_henk, data={"mother": bird_mother}
+            instance=bird_henk,
+            data={
+                "mother": bird_mother,
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+                "date_of_birth": "2020-01-01",
+            },
         )
-        breakpoint()
         self.assertIn("Bird cannot be older than", form.errors["mother"][0])
 
     def test_bird_color_notation(self):

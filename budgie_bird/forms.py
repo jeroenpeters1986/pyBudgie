@@ -1,7 +1,28 @@
+from django.utils.dateparse import parse_date
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from budgie_bird.models import Bird
+
+
+def make_date(date):
+    try:
+        return parse_date(date)
+    except TypeError:
+        return date
+
+
+def validate_birth_date_with_descendans(bird, parent):
+    if all([bird.date_of_birth, parent.date_of_birth]):
+        return make_date(bird.date_of_birth) > make_date(parent.date_of_birth)
+    return True
+
+
+def validate_bird_descendant(bird, parent):
+    if parent:
+        if parent.pk == bird.pk:
+            return False
+    return True
 
 
 class BirdForm(forms.ModelForm):
@@ -15,14 +36,28 @@ class BirdForm(forms.ModelForm):
     def clean_mother(self):
         return self.clean_descendant("mother")
 
-    def clean_descendant(self, parent):
-        """ Make sure a bird can't be it's own parent """
+    def clean_date_of_death(self):
         cleaned_data = self.cleaned_data
+        date_of_birth = cleaned_data["date_of_birth"]
+        date_of_death = cleaned_data["date_of_death"]
+        if all([date_of_birth, date_of_death]):
+            if date_of_birth > date_of_death:
+                return forms.ValidationError(_("Bird cannot die before it's born."))
+        return date_of_death
 
-        if cleaned_data[parent]:
-            if cleaned_data[parent].pk == self.instance.pk:
+    def clean_descendant(self, parent):
+        """Make sure a bird can't be it's own parent"""
+        cleaned_data = self.cleaned_data
+        bird = self.instance
+        parent_cleaned = cleaned_data[parent]
+        if parent_cleaned:
+            if not validate_bird_descendant(bird, parent_cleaned):
                 raise forms.ValidationError(
                     _("Bird cannot be it's own {parent}").format(parent=_(parent))
                 )
+            if not validate_birth_date_with_descendans(bird, parent_cleaned):
+                raise forms.ValidationError(
+                        _("Bird cannot be older than {parent}").format(
+                            parent=_(parent)))
 
-        return cleaned_data[parent]
+        return parent_cleaned
