@@ -36,14 +36,14 @@ class BirdForm(forms.ModelForm):
     def clean_mother(self):
         return self.clean_descendant("mother")
 
-    def clean_date_of_death(self):
-        cleaned_data = self.cleaned_data
-        date_of_birth = cleaned_data["date_of_birth"]
-        date_of_death = cleaned_data["date_of_death"]
+    def clean(self):
+        date_of_birth = self.cleaned_data.get("date_of_birth")
+        date_of_death = self.cleaned_data.get("date_of_death")
         if all([date_of_birth, date_of_death]):
-            if date_of_birth > date_of_death:
-                return forms.ValidationError(_("Bird cannot die before it's born."))
-        return date_of_death
+            if make_date(date_of_birth) > make_date(date_of_death):
+                raise forms.ValidationError(
+                        _("Bird cannot die before it's born."))
+        return super().clean()
 
     def clean_descendant(self, parent):
         """Make sure a bird can't be it's own parent"""

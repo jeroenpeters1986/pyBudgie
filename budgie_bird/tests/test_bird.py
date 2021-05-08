@@ -128,18 +128,7 @@ class BreederModelTest(TestCase):
     def test_date_of_birth_and_death_are_sensible(self):
         """Check if birth and death dates are valid."""
 
-        bird_henk = Bird.objects.create(
-            user=self.app_user,
-            ring_number="D",
-        )
-
-        bird_henk.save()
-
-        bird_henk = Bird.objects.create(
-            user=self.app_user, breeder=self.breeder1, ring_number="Henk"
-        )
         form = BirdForm(
-            instance=bird_henk,
             data={
                 "gender": Bird.Gender.MALE,
                 "ring_number": "D",
@@ -149,10 +138,10 @@ class BreederModelTest(TestCase):
                 "date_of_death": "2018-01-01",
             },
         )
-        breakpoint()
+        self.assertFalse(form.is_valid())
         self.assertEqual(
             "Bird cannot die before it's born.",
-            form.errors['date_of_death'][0])
+            form.errors['__all__'][0])
 
     @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_ancestors_are_sensible(self):
