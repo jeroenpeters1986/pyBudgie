@@ -146,10 +146,7 @@ class BreederModelTest(TestCase):
         bird_mother = Bird.objects.create(
             user=self.app_user, ring_number="M", date_of_birth="2020-01-01"
         )
-        form = BirdForm(
-            instance=bird_henk, data={"mother": bird_mother}
-        )
-        breakpoint()
+        form = BirdForm(instance=bird_henk, data={"mother": bird_mother})
         self.assertIn("Bird cannot be older than", form.errors["mother"][0])
 
     def test_bird_color_notation(self):

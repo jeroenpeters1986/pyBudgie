@@ -38,6 +38,40 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     date_hierarchy = "date_of_birth"
     ordering = ["ring_number"]
 
+    fieldsets = (
+        (
+            _("General information"),
+            {
+                "fields": (
+                    "user",
+                    "ring_number",
+                    "gender",
+                    "date_of_birth",
+                    "date_of_death",
+                )
+            },
+        ),
+        (
+            _("Color properties"),
+            {
+                "fields": ("color", "color_property", "split_property"),
+            },
+        ),
+        (
+            _("Family tree"),
+            {
+                "fields": ("father", "mother", "breeder"),
+            },
+        ),
+        (
+            _("Other information"),
+            {
+                "fields": ("owner", "is_owned", "is_for_sale"),
+            },
+        ),
+        (None, {"fields": ("photo", "notes")}),
+    )
+
     autocomplete_fields = ["father", "mother", "breeder", "owner"]
     save_on_top = True
     save_as = True
