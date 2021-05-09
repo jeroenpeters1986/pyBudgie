@@ -47,6 +47,15 @@ msgstr "Vogeladministratie"
 msgid "Bird cannot be it's own {parent}"
 msgstr "Een vogel kan niet zijn eigen {parent} zijn"
 
+#: budgie_bird/forms.py:75
+#, python-brace-format
+msgid "Bird cannot be older than {parent}."
+msgstr "Een vogel kan niet ouder zijn dan de {parent}."
+
+#: budgie_bird/forms.py:45
+msgid "Bird cannot die before it's born."
+msgstr "Een vogel kan niet doodgaan voordat het geboren is."
+
 #: budgie_bird/mixins.py:23
 msgid "Export selected as .csv"
 msgstr "Exporteer geselecteerde als .csv"

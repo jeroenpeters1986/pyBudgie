@@ -81,9 +81,17 @@ class BreederModelTest(TestCase):
         bird_mother = Bird.objects.create(user=self.app_user, ring_number="M")
         bird_father = Bird.objects.create(user=self.app_user, ring_number="F")
         form = BirdForm(
-            instance=bird_henk, data={"father": bird_father, "mother": bird_mother}
+            instance=bird_henk,
+            data={
+                "father": bird_father,
+                "mother": bird_mother,
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+            },
         )
-        self.assertTrue(True, form.is_valid())
+        self.assertTrue(form.is_valid())
 
     def test_bird_family_tree(self):
         """Check if all the descendants are generated correctly"""
@@ -120,20 +128,20 @@ class BreederModelTest(TestCase):
     def test_date_of_birth_and_death_are_sensible(self):
         """Check if birth and death dates are valid."""
 
-        bird_henk = Bird.objects.create(
-            user=self.app_user,
-            ring_number="D",
-            date_of_birth="2019-01-01",
-            date_of_death="2018-11-11",
+        form = BirdForm(
+            data={
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+                "date_of_birth": "2020-01-01",
+                "date_of_death": "2018-01-01",
+            },
         )
-
-        bird_henk.save()
-
-        bird_henk = Bird.objects.create(
-            user=self.app_user, breeder=self.breeder1, ring_number="Henk"
-        )
-        form = BirdForm(instance=bird_henk)
-        self.assertIn("Bird cannot die before it's born.", form.errors)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            "Bird cannot die before it's born.",
+            form.errors['__all__'][0])
 
     @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_ancestors_are_sensible(self):
@@ -146,7 +154,17 @@ class BreederModelTest(TestCase):
         bird_mother = Bird.objects.create(
             user=self.app_user, ring_number="M", date_of_birth="2020-01-01"
         )
-        form = BirdForm(instance=bird_henk, data={"mother": bird_mother})
+        form = BirdForm(
+            instance=bird_henk,
+            data={
+                "mother": bird_mother,
+                "gender": Bird.Gender.MALE,
+                "ring_number": "D",
+                "user": self.app_user,
+                "color": Bird.Color.BLUE,
+                "date_of_birth": "2020-01-01",
+            },
+        )
         self.assertIn("Bird cannot be older than", form.errors["mother"][0])
 
     def test_bird_color_notation(self):
