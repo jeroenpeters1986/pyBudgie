@@ -177,7 +177,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
             family_tree=family_tree,
             family_tree_graphviz=graphviz_format,
         )
-        return TemplateResponse(request, "budgie_bird/admin/family_tree.html", context)
+        return TemplateResponse(request, "budgie_bird/admin/bird_familytree.html", context)
 
 
 @admin.register(Breeder)
