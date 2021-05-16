@@ -1,15 +1,8 @@
-from django.utils.dateparse import parse_date
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from budgie_bird.models import Bird
-
-
-def make_date(date):
-    try:
-        return parse_date(date)
-    except TypeError:
-        return date
+from budgie_bird.utils import make_date
 
 
 def validate_birth_date_with_descendans(bird, parent):
