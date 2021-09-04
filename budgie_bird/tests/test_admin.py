@@ -368,7 +368,9 @@ class DocumentAdminFormTest(TestCase):
             ),
             follow=True,
         )
-        self.assertContains(response, "That bird does not exist")
+        self.assertContains(
+            response, "bestaat niet"
+        )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
 
     def test_bird_mark_as_owned(self):
         """ Test if the Mark as owned admin action works """
@@ -390,7 +392,9 @@ class DocumentAdminFormTest(TestCase):
         }
         response = self.client.post(self.bird_overview_url, post_data, follow=True)
 
-        self.assertContains(response, "Selected birds are marked as owned")
+        self.assertContains(
+            response, "gemarkeerd als In bezit"
+        )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
         self.assertEqual(3, Bird.objects.filter(user=self.pybudgie_user).count())
         self.assertEqual(
             2, Bird.objects.filter(user=self.pybudgie_user, is_owned=True).count()
@@ -416,7 +420,9 @@ class DocumentAdminFormTest(TestCase):
         }
         response = self.client.post(self.bird_overview_url, post_data, follow=True)
 
-        self.assertContains(response, "Selected birds are marked as for sale")
+        self.assertContains(
+            response, "gemarkeerd als Te koop"
+        )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
         self.assertEqual(2, Bird.objects.filter(user=self.pybudgie_user).count())
         self.assertTrue(Bird.objects.get(ring_number="Staples").is_for_sale)
         self.assertFalse(Bird.objects.get(ring_number="Dunder Mifflin").is_for_sale)

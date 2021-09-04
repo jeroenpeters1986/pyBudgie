@@ -35,8 +35,8 @@ class BirdForm(forms.ModelForm):
         if all([date_of_birth, date_of_death]):
             if make_date(date_of_birth) > make_date(date_of_death):
                 raise forms.ValidationError(
-                        _("Bird cannot die before it's born."),
-                        code="invalid")
+                    _("Bird cannot die before it's born."), code="invalid"
+                )
         return super().clean()
 
     def clean_descendant(self, parent):
@@ -51,7 +51,7 @@ class BirdForm(forms.ModelForm):
                 )
             if not validate_birth_date_with_descendans(bird, parent_cleaned):
                 raise forms.ValidationError(
-                        _("Bird cannot be older than {parent}.").format(
-                            parent=_(parent)))
+                    _("Bird cannot be older than {parent}.").format(parent=_(parent))
+                )
 
         return parent_cleaned

@@ -139,9 +139,7 @@ class BreederModelTest(TestCase):
             },
         )
         self.assertFalse(form.is_valid())
-        self.assertEqual(
-            "Bird cannot die before it's born.",
-            form.errors['__all__'][0])
+        self.assertEqual("Bird cannot die before it's born.", form.errors["__all__"][0])
 
     @override_settings(LANGUAGE_CODE="en-us")
     def test_date_of_birth_ancestors_are_sensible(self):

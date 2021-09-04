@@ -109,8 +109,10 @@ class Bird(models.Model):
         default=False,
         verbose_name=_("I own this bird"),
         help_text=_(
-            ("Sometimes when you are the owner, "
-             "the bird is not at your disposal due to a trade")
+            (
+                "Sometimes when you are the owner, "
+                "the bird is not at your disposal due to a trade"
+            )
         ),
     )
     is_for_sale = models.BooleanField(

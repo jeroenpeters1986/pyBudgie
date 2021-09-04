@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-09 11:33+0200\n"
-"PO-Revision-Date: 2021-04-04 15:35+0200\n"
+"POT-Creation-Date: 2021-07-22 09:22+0200\n"
+"PO-Revision-Date: 2021-09-04 10:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -16,25 +16,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.3\n"
 
-#: budgie_bird/admin.py:71
-msgid "Photo"
-msgstr "Foto"
+#: budgie_bird/admin.py:43
+msgid "General information"
+msgstr "Algemene informatie"
 
-#: budgie_bird/admin.py:76 budgie_bird/models.py:64 budgie_bird/models.py:206
+#: budgie_bird/admin.py:55 budgie_bird/admin.py:122 budgie_bird/models.py:64
+#: budgie_bird/models.py:209
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:81 budgie_bird/models.py:70
+#: budgie_bird/admin.py:61 budgie_bird/admin.py:117
+msgid "Family tree"
+msgstr "Stamboom"
+
+#: budgie_bird/admin.py:67
+msgid "Other information"
+msgstr "Overige informatie"
+
+#: budgie_bird/admin.py:108
+msgid "Photo"
+msgstr "Foto"
+
+#: budgie_bird/admin.py:113
+msgid "View"
+msgstr "Bekijk"
+
+#: budgie_bird/admin.py:127 budgie_bird/models.py:70
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:103
-msgid "That bird does not exist"
-msgstr ""
+#: budgie_bird/admin.py:132
+msgid "Selected birds are marked as owned"
+msgstr "De geselecteerde vogels zijn gemarkeerd als In bezit"
 
-#: budgie_bird/admin.py:130
+#: budgie_bird/admin.py:135
+msgid "Mark as owned"
+msgstr "Markeer als In bezit"
+
+#: budgie_bird/admin.py:140
+msgid "Selected birds are marked as for sale"
+msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
+
+#: budgie_bird/admin.py:143
+msgid "Mark as for sale"
+msgstr "Markeer als Te koop"
+
+#: budgie_bird/admin.py:165
+msgid "That bird does not exist"
+msgstr "Die vogel bestaat niet"
+
+#: budgie_bird/admin.py:194
 msgid "Full name"
 msgstr "Volledige naam"
 
@@ -42,19 +75,19 @@ msgstr "Volledige naam"
 msgid "Bird Administration"
 msgstr "Vogeladministratie"
 
-#: budgie_bird/forms.py:25
+#: budgie_bird/forms.py:38
+msgid "Bird cannot die before it's born."
+msgstr "Een vogel kan niet doodgaan voordat het geboren is."
+
+#: budgie_bird/forms.py:50
 #, python-brace-format
 msgid "Bird cannot be it's own {parent}"
 msgstr "Een vogel kan niet zijn eigen {parent} zijn"
 
-#: budgie_bird/forms.py:75
+#: budgie_bird/forms.py:54
 #, python-brace-format
 msgid "Bird cannot be older than {parent}."
 msgstr "Een vogel kan niet ouder zijn dan de {parent}."
-
-#: budgie_bird/forms.py:45
-msgid "Bird cannot die before it's born."
-msgstr "Een vogel kan niet doodgaan voordat het geboren is."
 
 #: budgie_bird/mixins.py:23
 msgid "Export selected as .csv"
@@ -118,8 +151,7 @@ msgstr "Ringnummer"
 
 #: budgie_bird/models.py:42
 msgid "This is to uniquely identify the bird and to determine its breeder"
-msgstr ""
-"Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
+msgstr "Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
 
 #: budgie_bird/models.py:51
 msgid "Gender"
@@ -149,80 +181,71 @@ msgstr "moeder"
 msgid "I own this bird"
 msgstr "In bezit"
 
-#: budgie_bird/models.py:112
-msgid ""
-"Sometimes when you are the owner, the bird is not at your disposal due to a "
-"trade"
-msgstr ""
-"Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
-"bezit is, bijvoorbeeld vanwege een broedruil"
-
-#: budgie_bird/models.py:116
+#: budgie_bird/models.py:119
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:118 budgie_bird/models.py:173 budgie_user/models.py:11
+#: budgie_bird/models.py:121 budgie_bird/models.py:176 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:127
+#: budgie_bird/models.py:130
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:128
+#: budgie_bird/models.py:131
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:161
+#: budgie_bird/models.py:164
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:162
+#: budgie_bird/models.py:165
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:167 budgie_user/models.py:8
+#: budgie_bird/models.py:170 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:169
+#: budgie_bird/models.py:172
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:171
+#: budgie_bird/models.py:174
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:177
+#: budgie_bird/models.py:180
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:178
+#: budgie_bird/models.py:181
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:196
+#: budgie_bird/models.py:199
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:199
+#: budgie_bird/models.py:202
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:200
+#: budgie_bird/models.py:203
 msgid "1 is very important, 1000 is not important"
-msgstr ""
-"1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
+msgstr "1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
-#: budgie_bird/models.py:205
+#: budgie_bird/models.py:208
 msgid "Color property"
 msgstr "Kleurslagen"
 
-#: budgie_bird/templates/budgie_bird/admin/family_tree.html:22
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:22
 msgid "Family tree of"
 msgstr "Stamboom van"
 
-#: budgie_bird/templates/budgie_bird/admin/family_tree.html:28
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:28
 msgid "Back to the overview"
 msgstr "Terug naar het overzicht"
 
@@ -241,3 +264,6 @@ msgstr "Nederlands"
 #: pybudgie/config/base.py:132
 msgid "English"
 msgstr "Engels"
+
+#~ msgid "Sometimes when you are the owner, the bird is not at your disposal due to a trade"
+#~ msgstr "Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je bezit is, bijvoorbeeld vanwege een broedruil"
