@@ -89,7 +89,7 @@ class DocumentAdminFormTest(TestCase):
             breeder.save()
 
     def test_admin_bird_add_by_admin(self):
-        """ Test if the admin can add a new bird """
+        """Test if the admin can add a new bird"""
         self.setup_assign_breeders(self.pybudgie_admin)
         self.client.login(
             username=self.admin_credentials["username"],
@@ -112,7 +112,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(1, Bird.objects.count())
 
     def test_admin_user_without_group_or_permission(self):
-        """ Test if a staff user without the proper permissions gets a 403 """
+        """Test if a staff user without the proper permissions gets a 403"""
 
         content_type = ContentType.objects.get_for_model(Bird)
         for permission in Permission.objects.filter(content_type=content_type):
@@ -126,7 +126,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(view_page.status_code, 403)
 
     def test_admin_bird_add_by_user(self):
-        """ Test if a normal user can add a new bird """
+        """Test if a normal user can add a new bird"""
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
@@ -146,7 +146,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(1, Bird.objects.count())
 
     def test_admin_bird_photo_preview(self):
-        """ Test if the birdpreview is displayed """
+        """Test if the birdpreview is displayed"""
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
@@ -162,7 +162,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertContains(response, settings.BIRD_PICTURE_DEFAULT)
 
     def test_admin_bird_photo_upload_test(self):
-        """ Test if user can attach a photo """
+        """Test if user can attach a photo"""
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
@@ -190,7 +190,7 @@ class DocumentAdminFormTest(TestCase):
         )  # We dont want the default
 
     def test_bird_get_queryset_mixin_called(self):
-        """ Test if the BudgieUser mixin is used in the admin """
+        """Test if the BudgieUser mixin is used in the admin"""
 
         self.client.login(
             username=self.user_credentials["username"],
@@ -205,7 +205,7 @@ class DocumentAdminFormTest(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_userfilter_mixin_working_for_user(self):
-        """ Test if the BudgieUser mixin is used in the admin """
+        """Test if the BudgieUser mixin is used in the admin"""
 
         Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021")
         Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021")
@@ -223,7 +223,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertNotContains(response, "5TJJ-2011-2021")
 
     def test_admin_userfilter_mixin_admin_user(self):
-        """ Test if the BudgieUser does not limit the administrator user """
+        """Test if the BudgieUser does not limit the administrator user"""
 
         Bird.objects.create(user=self.pybudgie_admin, ring_number="6TJJ-1-2021")
         Bird.objects.create(user=self.pybudgie_user, ring_number="6TJJ-2-2021")
@@ -241,7 +241,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertContains(response, "6TJJ-4-2021")
 
     def test_admin_userfilter_color(self):
-        """ Test if the BudgieUsers colorlist is limited to the current user """
+        """Test if the BudgieUsers colorlist is limited to the current user"""
 
         ColorProperty.objects.create(
             user=self.pybudgie_user, color_name="DarkBlue", rank=1
@@ -263,7 +263,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertContains(response, "DarkYellow")
 
     def test_bird_get_form_mixin_called(self):
-        """ Test if the BudgieUser mixin is used in the admin """
+        """Test if the BudgieUser mixin is used in the admin"""
 
         self.client.login(
             username=self.user_credentials["username"],
@@ -277,7 +277,7 @@ class DocumentAdminFormTest(TestCase):
             mocked.assert_called()
 
     def test_admin_breeder_add_by_user(self):
-        """ Test if a normal user can add a new breeder """
+        """Test if a normal user can add a new breeder"""
         self.client.login(
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
@@ -297,7 +297,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(1, Breeder.objects.filter(user=self.pybudgie_user).count())
 
     def test_bird_csv_export(self):
-        """ Test if the CSV-export works """
+        """Test if the CSV-export works"""
 
         testbirds = [
             Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021"),
@@ -328,7 +328,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(response.headers["Content-Type"], "text/csv")
 
     def test_admin_bird_familytree(self):
-        """ Test if user can view a birds familytree """
+        """Test if user can view a birds familytree"""
 
         self.client.login(
             username=self.user_credentials["username"],
@@ -351,7 +351,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_bird_familytree_non_existing_bird(self):
-        """ Test if user can view a birds familytree """
+        """Test if user can view a birds familytree"""
 
         self.client.login(
             username=self.user_credentials["username"],
@@ -373,7 +373,7 @@ class DocumentAdminFormTest(TestCase):
         )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
 
     def test_bird_mark_as_owned(self):
-        """ Test if the Mark as owned admin action works """
+        """Test if the Mark as owned admin action works"""
 
         Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2022"),
         selected_birds = [
@@ -404,7 +404,7 @@ class DocumentAdminFormTest(TestCase):
         self.assertFalse(Bird.objects.get(ring_number="5TJJ-2802-2022").is_owned)
 
     def test_bird_mark_as_for_sale(self):
-        """ Test if the For Sale action works in the admin """
+        """Test if the For Sale action works in the admin"""
 
         Bird.objects.create(user=self.pybudgie_user, ring_number="Dunder Mifflin"),
         sale_bird = Bird.objects.create(user=self.pybudgie_user, ring_number="Staples")

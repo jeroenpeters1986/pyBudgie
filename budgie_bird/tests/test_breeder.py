@@ -22,7 +22,7 @@ class BreederModelTest(TestCase):
         )
 
     def test_breeder_information(self):
-        """ Check if the breeder's information is saved"""
+        """Check if the breeder's information is saved"""
         self.assertIsInstance(self.breeder1.first_name, str)
         self.assertIsInstance(self.breeder1.last_name, str)
         self.assertIsInstance(self.breeder1.breeding_reg_nr, str)
@@ -30,5 +30,5 @@ class BreederModelTest(TestCase):
         self.assertEqual(self.breeder1.__str__(), "de Vries, Henk (NAVI-2000)")
 
     def test_breeder_display_name(self):
-        """ Check if the display name is still consistent """
+        """Check if the display name is still consistent"""
         self.assertEqual(self.breeder1.display_name(), "de Vries, Henk")

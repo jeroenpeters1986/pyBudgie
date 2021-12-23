@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 class AdminExportCsvMixin:
     def export_as_csv(self, request, queryset):
-        """ Export a model as CSV """
+        """Export a model as CSV"""
 
         meta = self.model._meta
         field_names = [field.name for field in meta.fields]

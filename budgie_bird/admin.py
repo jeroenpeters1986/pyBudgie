@@ -23,6 +23,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         "color_props",
         "split_props",
         "date_of_birth",
+        "current_age",
         "image_tag",
         "family_tree",
     ]
@@ -80,7 +81,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     change_list_template = "budgie_bird/admin/bird_changelist.html"
 
     def get_urls(self):
-        """ Extend the urls of the Django admin with new views """
+        """Extend the urls of the Django admin with new views"""
         urls = super().get_urls()
         additional_bird_admin_urls = [
             path(
@@ -100,12 +101,35 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         return {}
 
     def image_tag(self, obj):
-        """ Render the image tag of the birds photo """
+        """Render the image tag of the birds photo"""
         return mark_safe(
             '<img src="{}" height="48" class="birdpreview" />'.format(obj.photo.url)
         )
 
     image_tag.short_description = _("Photo")
+
+    def current_age(self, obj):
+        """Calculate the age of the bird"""
+
+        if not obj.date_of_birth:
+            return "-"
+
+        today = obj.date_of_birth.today()
+        years = (
+            today.year
+            - obj.date_of_birth.year
+            - (
+                (today.month, today.day)
+                < (obj.date_of_birth.month, obj.date_of_birth.day)
+            )
+        )
+        months = today.month - obj.date_of_birth.month
+        if months < 0:
+            months += 12
+
+        return "{} {}, {} {}".format(years, _("years"), months, _("months"))
+
+    current_age.short_description = _("Age")
 
     def family_tree(self, obj):
         return mark_safe(
@@ -143,7 +167,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     mark_as_for_sale.short_description = _("Mark as for sale")
 
     def get_ancestors_graphviz(self, generation):
-        """ Generate digraph notation, don't really think it should live here..?! """
+        """Generate digraph notation, don't really think it should live here..?!"""
         graphviz_notation = ""
         for parent_type in ["father", "mother"]:
             if generation["ancestors"][parent_type]:
@@ -158,7 +182,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         return graphviz_notation
 
     def family_tree_view(self, request, *args, **kwargs):
-        """ Custom admin view to show the family tree """
+        """Custom admin view to show the family tree"""
         try:
             bird = Bird.objects.get(pk=kwargs["object_id"])
         except Bird.DoesNotExist:

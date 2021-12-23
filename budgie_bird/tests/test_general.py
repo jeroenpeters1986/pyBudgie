@@ -20,7 +20,7 @@ class PyBudgieGeneralTest(TestCase):
 
     @override_settings(LANGUAGE_CODE="nl")
     def test_dutch_translation(self):
-        """ Check if an error message will be returned in Dutch """
+        """Check if an error message will be returned in Dutch"""
 
         bird_henk = Bird.objects.create(
             user=self.app_user, breeder=self.breeder1, ring_number="Henk"

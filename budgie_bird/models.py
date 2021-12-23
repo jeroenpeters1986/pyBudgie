@@ -7,10 +7,10 @@ from budgie_user.models import BudgieUser
 
 
 class Bird(models.Model):
-    """ Representation of a bird and all its characteristics/properties """
+    """Representation of a bird and all its characteristics/properties"""
 
     class Gender(models.TextChoices):
-        """ Gender of the bird """
+        """Gender of the bird"""
 
         UNKNOWN = "unknown", _("Unknown")
         MALE = "male", _("Male")
@@ -144,7 +144,7 @@ class Bird(models.Model):
         )
 
     def get_ancestors(self):
-        """ Recursive method to return the family tree """
+        """Recursive method to return the family tree"""
         ancestors = {}
         tree = {
             "bird": self,
@@ -158,7 +158,7 @@ class Bird(models.Model):
 
 
 class Breeder(models.Model):
-    """ Breeder (contacts) model """
+    """Breeder (contacts) model"""
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=60, verbose_name=_("First name"))
@@ -181,7 +181,7 @@ class Breeder(models.Model):
         verbose_name_plural = _("Breeders")
 
     def __str__(self):
-        """ Represent a breed with his name and regnumber """
+        """Represent a breed with his name and regnumber"""
         return "{}, {} ({})".format(
             self.last_name, self.first_name, self.breeding_reg_nr
         )
@@ -209,5 +209,5 @@ class ColorProperty(models.Model):
         verbose_name_plural = _("Color properties")
 
     def __str__(self):
-        """ Use the color name as the field representation"""
+        """Use the color name as the field representation"""
         return self.color_name
