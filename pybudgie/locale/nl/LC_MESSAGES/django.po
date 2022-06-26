@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-22 09:22+0200\n"
-"PO-Revision-Date: 2021-09-04 10:22+0200\n"
+"POT-Creation-Date: 2022-06-26 10:53+0200\n"
+"PO-Revision-Date: 2022-06-26 11:02+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,56 +18,68 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: budgie_bird/admin.py:43
+#: budgie_bird/admin.py:44
 msgid "General information"
 msgstr "Algemene informatie"
 
-#: budgie_bird/admin.py:55 budgie_bird/admin.py:122 budgie_bird/models.py:64
+#: budgie_bird/admin.py:56 budgie_bird/admin.py:146 budgie_bird/models.py:64
 #: budgie_bird/models.py:209
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:61 budgie_bird/admin.py:117
+#: budgie_bird/admin.py:62 budgie_bird/admin.py:141
 msgid "Family tree"
 msgstr "Stamboom"
 
-#: budgie_bird/admin.py:67
+#: budgie_bird/admin.py:68
 msgid "Other information"
 msgstr "Overige informatie"
 
-#: budgie_bird/admin.py:108
+#: budgie_bird/admin.py:109
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:113
+#: budgie_bird/admin.py:130
+msgid "years"
+msgstr "jaren"
+
+#: budgie_bird/admin.py:130
+msgid "months"
+msgstr "maanden"
+
+#: budgie_bird/admin.py:132
+msgid "Age"
+msgstr "Leeftijd"
+
+#: budgie_bird/admin.py:137
 msgid "View"
 msgstr "Bekijk"
 
-#: budgie_bird/admin.py:127 budgie_bird/models.py:70
+#: budgie_bird/admin.py:151 budgie_bird/models.py:70
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:132
+#: budgie_bird/admin.py:156
 msgid "Selected birds are marked as owned"
 msgstr "De geselecteerde vogels zijn gemarkeerd als In bezit"
 
-#: budgie_bird/admin.py:135
+#: budgie_bird/admin.py:159
 msgid "Mark as owned"
 msgstr "Markeer als In bezit"
 
-#: budgie_bird/admin.py:140
+#: budgie_bird/admin.py:164
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:143
+#: budgie_bird/admin.py:167
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:165
+#: budgie_bird/admin.py:189
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:194
+#: budgie_bird/admin.py:218
 msgid "Full name"
 msgstr "Volledige naam"
 
@@ -97,11 +109,11 @@ msgstr "Exporteer geselecteerde als .csv"
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: budgie_bird/models.py:16
+#: budgie_bird/models.py:16 budgie_breeding/models.py:29
 msgid "Male"
 msgstr "Man"
 
-#: budgie_bird/models.py:17
+#: budgie_bird/models.py:17 budgie_breeding/models.py:30
 msgid "Female"
 msgstr "Pop"
 
@@ -185,7 +197,8 @@ msgstr "In bezit"
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:121 budgie_bird/models.py:176 budgie_user/models.py:11
+#: budgie_bird/models.py:121 budgie_bird/models.py:176
+#: budgie_breeding/models.py:32 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
@@ -248,6 +261,38 @@ msgstr "Stamboom van"
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:28
 msgid "Back to the overview"
 msgstr "Terug naar het overzicht"
+
+#: budgie_breeding/models.py:10
+msgid "Year"
+msgstr "Jaar"
+
+#: budgie_breeding/models.py:12
+msgid "Starting month"
+msgstr "Start maand"
+
+#: budgie_breeding/models.py:14
+msgid "This allows you to distinguish breeding rounds if you have multiple per year"
+msgstr "Hiermee kun je de verschillende broedseizoenen uit elkaar houden als je meerdere rondes per jaar kweekt"
+
+#: budgie_breeding/models.py:19
+msgid "Label"
+msgstr "Label"
+
+#: budgie_breeding/models.py:20
+msgid "Optional label to find it quicker"
+msgstr "Optioneel label om sneller te kunnen vinden"
+
+#: budgie_breeding/models.py:28
+msgid "Breeding season"
+msgstr "Broedseizoen"
+
+#: budgie_breeding/models.py:31
+msgid "Start date"
+msgstr "Startdatum"
+
+#: budgie_breeding/models.py:38
+msgid "Date found"
+msgstr "Datum gevonden"
 
 #: budgie_user/admin.py:21
 msgid "PyBudgie properties"
