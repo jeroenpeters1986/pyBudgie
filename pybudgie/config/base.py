@@ -59,7 +59,7 @@ ROOT_URLCONF = "pybudgie.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -134,3 +134,6 @@ LANGUAGES = [
 MIDDLEWARE += ["django.middleware.locale.LocaleMiddleware"]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]

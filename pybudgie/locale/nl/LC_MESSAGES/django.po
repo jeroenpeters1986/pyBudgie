@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-26 10:53+0200\n"
-"PO-Revision-Date: 2022-06-26 11:02+0200\n"
+"POT-Creation-Date: 2022-08-03 08:24+0200\n"
+"PO-Revision-Date: 2022-08-03 08:32+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -163,7 +163,8 @@ msgstr "Ringnummer"
 
 #: budgie_bird/models.py:42
 msgid "This is to uniquely identify the bird and to determine its breeder"
-msgstr "Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
+msgstr ""
+"Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
 
 #: budgie_bird/models.py:51
 msgid "Gender"
@@ -248,11 +249,20 @@ msgstr "Volgorde van belangrijkheid"
 
 #: budgie_bird/models.py:203
 msgid "1 is very important, 1000 is not important"
-msgstr "1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
+msgstr ""
+"1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
 #: budgie_bird/models.py:208
 msgid "Color property"
 msgstr "Kleurslagen"
+
+#: budgie_bird/templates/admin/budgie_bird/change_form.html:11
+msgid "View this bird in a new window"
+msgstr "Bekijk deze vogel in een nieuw venster"
+
+#: budgie_bird/templates/budgie_bird/admin/bird_changelist.html:7
+msgid "Create exportlist"
+msgstr "Exportlijst maken"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:22
 msgid "Family tree of"
@@ -271,8 +281,11 @@ msgid "Starting month"
 msgstr "Start maand"
 
 #: budgie_breeding/models.py:14
-msgid "This allows you to distinguish breeding rounds if you have multiple per year"
-msgstr "Hiermee kun je de verschillende broedseizoenen uit elkaar houden als je meerdere rondes per jaar kweekt"
+msgid ""
+"This allows you to distinguish breeding rounds if you have multiple per year"
+msgstr ""
+"Hiermee kun je de verschillende broedseizoenen uit elkaar houden als je "
+"meerdere rondes per jaar kweekt"
 
 #: budgie_breeding/models.py:19
 msgid "Label"
@@ -310,5 +323,9 @@ msgstr "Nederlands"
 msgid "English"
 msgstr "Engels"
 
-#~ msgid "Sometimes when you are the owner, the bird is not at your disposal due to a trade"
-#~ msgstr "Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je bezit is, bijvoorbeeld vanwege een broedruil"
+msgid ""
+"Sometimes when you are the owner, the bird is not at your disposal due to "
+"a trade"
+msgstr ""
+"Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
+"bezit is, bijvoorbeeld vanwege een broedruil"

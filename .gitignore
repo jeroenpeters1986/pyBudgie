@@ -4,6 +4,7 @@ pybudgie/settings.py
 pybudgie/db.sqlite3
 pybudgie/budgie.sqlite3
 private_fixtures/
+assets/uploads/bird_pics/
 # admin-interface/ # Let's just use it
 
 

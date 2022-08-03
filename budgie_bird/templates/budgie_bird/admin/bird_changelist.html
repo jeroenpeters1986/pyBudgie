@@ -1,12 +1,12 @@
 {% extends 'admin/change_list.html' %}
+{% load i18n %}
 
 {% block object-tools-items %}
     <li>
         <a href="/nl/admin/budgie_bird/bird/add/" class="golink">
-            Exportlijst maken
+            {% translate "Create exportlist" %}
         </a>
     </li>
-
 
     {{ block.super }}
 {% endblock %}
