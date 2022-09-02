@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-03 08:24+0200\n"
-"PO-Revision-Date: 2022-08-03 08:32+0200\n"
+"POT-Creation-Date: 2022-09-01 20:34+0200\n"
+"PO-Revision-Date: 2022-09-01 22:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -23,7 +23,7 @@ msgid "General information"
 msgstr "Algemene informatie"
 
 #: budgie_bird/admin.py:56 budgie_bird/admin.py:146 budgie_bird/models.py:64
-#: budgie_bird/models.py:209
+#: budgie_bird/models.py:210
 msgid "Color properties"
 msgstr "Kleurslagen"
 
@@ -190,73 +190,77 @@ msgstr "vader"
 msgid "mother"
 msgstr "moeder"
 
-#: budgie_bird/models.py:110
+#: budgie_bird/models.py:105
+msgid "Owner"
+msgstr ""
+
+#: budgie_bird/models.py:111
 msgid "I own this bird"
 msgstr "In bezit"
 
-#: budgie_bird/models.py:119
+#: budgie_bird/models.py:120
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:121 budgie_bird/models.py:176
+#: budgie_bird/models.py:122 budgie_bird/models.py:177
 #: budgie_breeding/models.py:32 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:130
+#: budgie_bird/models.py:131
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:131
+#: budgie_bird/models.py:132
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:164
+#: budgie_bird/models.py:165
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:165
+#: budgie_bird/models.py:166
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:170 budgie_user/models.py:8
+#: budgie_bird/models.py:171 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:172
+#: budgie_bird/models.py:173
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:174
+#: budgie_bird/models.py:175
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:180
+#: budgie_bird/models.py:181
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:181
+#: budgie_bird/models.py:182
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:199
+#: budgie_bird/models.py:200
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:202
+#: budgie_bird/models.py:203
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:203
+#: budgie_bird/models.py:204
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
-#: budgie_bird/models.py:208
+#: budgie_bird/models.py:209
 msgid "Color property"
 msgstr "Kleurslagen"
 
-#: budgie_bird/templates/admin/budgie_bird/change_form.html:11
+#: budgie_bird/templates/admin/budgie_bird/change_form.html:9
 msgid "View this bird in a new window"
 msgstr "Bekijk deze vogel in een nieuw venster"
 
@@ -307,6 +311,44 @@ msgstr "Startdatum"
 msgid "Date found"
 msgstr "Datum gevonden"
 
+#: budgie_import/apps.py:8
+msgid "Bird Administration Tools"
+msgstr "Vogeladministratie Tools"
+
+#: budgie_import/models.py:13 budgie_import/models.py:36
+msgid "Import file"
+msgstr "Bestand importeren"
+
+#: budgie_import/models.py:15
+msgid "Upload an Excel file (.xlsx or .csv) to import new birds or update them"
+msgstr ""
+"Upload een Excel bestand (.xlsx of .csv) om nieuwe vogels toe te voegen of "
+"ze bij te werken"
+
+#: budgie_import/models.py:20
+msgid "Upload date"
+msgstr "Uploaddatum"
+
+#: budgie_import/models.py:23
+msgid "Completed successfully"
+msgstr "Succesvol geïmporteerd"
+
+#: budgie_import/models.py:26
+msgid "Notes after import"
+msgstr "Notities (na import)"
+
+#: budgie_import/models.py:28
+msgid ""
+"This field contains information about the import process, when something "
+"special happens on import"
+msgstr ""
+"Dit veld bevat informatie over het importeerproces, bijvoorbeeld als er iets "
+"speciaals gebeurt tijdens het importeren"
+
+#: budgie_import/models.py:37
+msgid "Import files"
+msgstr "Bestanden importeren"
+
 #: budgie_user/admin.py:21
 msgid "PyBudgie properties"
 msgstr "PyBudgie eigenschappen"
@@ -315,17 +357,17 @@ msgstr "PyBudgie eigenschappen"
 msgid "PyBudgie User Administration"
 msgstr "PyBudgie Gebruikersbeheer"
 
-#: pybudgie/config/base.py:131
+#: pybudgie/config/base.py:132
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: pybudgie/config/base.py:132
+#: pybudgie/config/base.py:133
 msgid "English"
 msgstr "Engels"
 
 msgid ""
-"Sometimes when you are the owner, the bird is not at your disposal due to "
-"a trade"
+"Sometimes when you are the owner, the bird is not at your disposal due to a "
+"trade"
 msgstr ""
 "Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
 "bezit is, bijvoorbeeld vanwege een broedruil"

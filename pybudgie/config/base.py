@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "budgie_user.apps.BudgieUserConfig",
     "budgie_bird.apps.BudgieBirdConfig",
+    "budgie_import.apps.BudgieImportFileConfig",
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,7 @@ STATIC_URL = "/static/"
 AUTH_USER_MODEL = "budgie_user.BudgieUser"
 BIRD_PICTURE_DEFAULT = "assets/budgie-silhouette.png"
 BIRD_PICTURE_UPLOAD_LOCATION = "assets/uploads/bird_pics"
+BIRD_EXCELFILE_UPLOAD_LOCATION = "assets/uploads/import"
 
 LANGUAGE_CODE = "nl"
 TIME_ZONE = "Europe/Amsterdam"

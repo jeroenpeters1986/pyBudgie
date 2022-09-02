@@ -102,6 +102,7 @@ class Bird(models.Model):
         "Breeder",
         blank=True,
         null=True,
+        verbose_name=_("Owner"),
         on_delete=models.SET_NULL,
         related_name="owner",
     )
@@ -181,7 +182,7 @@ class Breeder(models.Model):
         verbose_name_plural = _("Breeders")
 
     def __str__(self):
-        """Represent a breed with his name and regnumber"""
+        """Represent a breeder with his name and regnumber"""
         return "{}, {} ({})".format(
             self.last_name, self.first_name, self.breeding_reg_nr
         )
