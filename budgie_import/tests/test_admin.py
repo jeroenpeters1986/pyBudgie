@@ -47,7 +47,7 @@ class ImportFileAdminTest(TestCase):
 
     def tearDown(self):
         for filename in glob.glob(
-            "{}/test_test_import*".format(settings.BIRD_PICTURE_UPLOAD_LOCATION)
+            "{}/test_test_import*".format(settings.BIRD_EXCELFILE_UPLOAD_LOCATION)
         ):
             os.remove(filename)
 
@@ -67,9 +67,13 @@ class ImportFileAdminTest(TestCase):
             ),
             "rb",
         ).read()
-        uploadfile = SimpleUploadedFile(upload_filename, excel_file)
+        upload_file = SimpleUploadedFile(upload_filename, excel_file)
 
-        import_form = {"import_file": uploadfile, "user": "1", "photo": uploadfile}
+        import_form = {
+            "user": 1,
+            "import_file": upload_file,
+            "completed": False,
+        }
 
         response = self.client.post(self.add_file_url, import_form)
         self.assertEqual(response.status_code, 302)

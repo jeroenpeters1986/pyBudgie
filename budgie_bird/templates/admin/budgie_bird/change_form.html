@@ -1,0 +1,36 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+
+    <script>
+        let view_text = "{% translate "View this bird in a new window" %}";
+        let base_admin_link = "{% url 'admin:budgie_bird_bird_changelist' %}";
+
+        function createParentViewLink(bird_id, type)
+        {
+            django.jQuery(".form-row.field-" + type + " ." + type + "link").remove();
+            if(bird_id)
+            {
+                django.jQuery(".form-row.field-" + type).append("<div style='clear: both;' class='" + type + "link'>" +
+                    "<label>&nbsp;</label><div class='related-widget-wrapper'>" +
+                    "<a class='related-widget-wrapper-link change-related' href='" + base_admin_link + bird_id + "/change/' style='padding: 0.5em; display: inline-block;'><img src='/static/admin/img/icon-viewlink.svg'> " + view_text + "</a>" +
+                    "</div></div>");
+            }
+        }
+
+        django.jQuery(document).ready(function () {
+            createParentViewLink(django.jQuery('#id_father').val(), 'father');
+            createParentViewLink(django.jQuery('#id_mother').val(), 'mother');
+
+            django.jQuery('#id_father').on('change', function(){
+                createParentViewLink(django.jQuery('#id_father').val(), 'father');
+            });
+            django.jQuery('#id_mother').on('change', function(){
+                createParentViewLink(django.jQuery('#id_mother').val(), 'mother');
+            });
+        });
+    </script>
+{% endblock %}

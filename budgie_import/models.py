@@ -9,7 +9,9 @@ from budgie_user.models import BudgieUser
 class ImportFile(models.Model):
     """This represents all the import-uploads of a user, to complement/change their inventory"""
 
-    user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        BudgieUser, on_delete=models.CASCADE, null=True, blank=True
+    )
     import_file = models.FileField(
         verbose_name=_("Import file"),
         help_text=_(
