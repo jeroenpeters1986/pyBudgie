@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "budgie_user.apps.BudgieUserConfig",
     "budgie_bird.apps.BudgieBirdConfig",
+    "budgie_breeding.apps.BudgieBreedingConfig",
     "budgie_import.apps.BudgieImportFileConfig",
 ]
 
