@@ -262,40 +262,6 @@ class DocumentAdminFormTest(TestCase):
         self.assertContains(response, "DarkBlue")
         self.assertContains(response, "DarkYellow")
 
-    def test_bird_get_form_mixin_called(self):
-        """Test if the BudgieUser mixin is used in the admin"""
-
-        self.client.login(
-            username=self.user_credentials["username"],
-            password=self.user_credentials["password"],
-        )
-
-        with mock.patch(
-            "budgie_user.mixins.BudgieUserMixin.formfield_for_manytomany"
-        ) as mocked:
-            self.client.post(self.add_bird_url, self.bird_data)
-            mocked.assert_called()
-
-    def test_admin_breeder_add_by_user(self):
-        """Test if a normal user can add a new breeder"""
-        self.client.login(
-            username=self.user_credentials["username"],
-            password=self.user_credentials["password"],
-        )
-
-        # Try to create a new breeder-contact
-        response = self.client.post(
-            self.add_breeder_url,
-            {
-                "user": self.pybudgie_user.pk,
-                "first_name": "Jim",
-                "last_name": "Halpert",
-            },
-        )
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, self.breeder_overview_url)
-        self.assertEqual(1, Breeder.objects.filter(user=self.pybudgie_user).count())
-
     def test_bird_csv_export(self):
         """Test if the CSV-export works"""
 

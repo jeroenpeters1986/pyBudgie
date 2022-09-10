@@ -1,6 +1,3 @@
-from budgie_bird.models import ColorProperty, Bird
-
-
 class BudgieUserMixin:
     def save_model(self, request, obj, form, change):
         # For non-superusers, always save as own user instance
@@ -18,27 +15,20 @@ class BudgieUserMixin:
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         # For non-superusers, always show own instances
         if not request.user.is_superuser:
-            if db_field.name in ["color_property", "split_property"]:
-                kwargs["queryset"] = ColorProperty.objects.filter(user=request.user)
+            if db_field.is_relation:
+                kwargs["queryset"] = db_field.related_model.objects.filter(
+                    user=request.user
+                )
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-
         # For non-superusers, always show own instances
         if not request.user.is_superuser:
-
-            if db_field.name == "male":
-                kwargs["queryset"] = Bird.objects.filter(
-                    user=request.user, gender=Bird.Gender.MALE
+            if db_field.is_relation:
+                kwargs["queryset"] = db_field.related_model.objects.filter(
+                    user=request.user
                 )
-
-        #
-        #
-        # print(db_field)
-        # print(db_field.is_relation)
-        # print(db_field._limit_choices_to)
-        # print(kwargs)
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 

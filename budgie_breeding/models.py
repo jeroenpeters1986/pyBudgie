@@ -65,7 +65,7 @@ class BreedingSeason(models.Model):
 
 
 class BreedingCouple(models.Model):
-    """Represents two bird who are"""
+    """Represents two bird who are a breeding couple together"""
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     season = models.ForeignKey(
@@ -77,6 +77,7 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="male",
+        limit_choices_to={"gender": Bird.Gender.MALE},
     )
     female = models.ForeignKey(
         Bird,
@@ -84,6 +85,7 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="female",
+        limit_choices_to={"gender": Bird.Gender.FEMALE},
     )
     start_date = models.DateField(verbose_name=_("Start date"), blank=True, null=True)
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
