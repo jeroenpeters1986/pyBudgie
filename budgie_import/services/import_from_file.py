@@ -6,7 +6,6 @@ from budgie_bird.models import Bird, Breeder, ColorProperty
 
 
 def import_from_file(file_path, user):
-
     file_type = file_path.split(".")[-1]
 
     if file_type == "xlsx":
@@ -27,7 +26,6 @@ def import_from_file(file_path, user):
 
 
 def import_or_update_bird(bird_data, user):
-
     if "ringnummer" not in bird_data:
         return False
 
@@ -67,14 +65,24 @@ def import_or_update_bird(bird_data, user):
 
     # Breeder
     if "kweker" in bird_data:
-        bird.breeder = Breeder.objects.get_or_create(
-            user=user,
-            breeding_reg_nr=bird_data["ringnummer"].split("-")[0],
-            defaults={
-                "last_name": bird_data["kweker"].split(",")[0],
-                "first_name": bird_data["kweker"].split(",")[1].strip(),
-            },
-        )[0]
+
+        if "onbekend" not in bird_data["kweker"].lower():
+
+            try:
+                last_name = bird_data["kweker"].split(",")[0]
+                first_name = bird_data["kweker"].split(",")[1].strip()
+            except IndexError:
+                last_name = bird_data["kweker"]
+                first_name = ""
+
+            bird.breeder = Breeder.objects.get_or_create(
+                user=user,
+                breeding_reg_nr=bird_data["ringnummer"].split("-")[0],
+                defaults={
+                    "last_name": last_name,
+                    "first_name": first_name,
+                },
+            )[0]
 
     # Is the bird currently owned?
     if "in bezit" in bird_data and bird_data["in bezit"].lower() == "ja":

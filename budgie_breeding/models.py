@@ -1,6 +1,5 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import Value
 from django.utils.translation import gettext_lazy as _
 
 from budgie_bird.models import Bird
@@ -114,10 +113,7 @@ class Egg(models.Model):
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     couple = models.ForeignKey(
-        BreedingCouple,
-        on_delete=models.CASCADE,
-        verbose_name=_("Breeding couple"),
-        limit_choices_to={"user": Value("user")},
+        BreedingCouple, on_delete=models.CASCADE, verbose_name=_("Breeding couple")
     )
     date = models.DateField(verbose_name=_("Date found"))
     status = models.CharField(

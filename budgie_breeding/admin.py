@@ -8,6 +8,11 @@ from budgie_user.mixins import BudgieUserMixin
 from .models import BreedingSeason, BreedingCouple, Egg
 
 
+class EggInline(BudgieUserMixin, admin.TabularInline):
+    model = Egg
+    exclude = ["user"]
+
+
 @admin.register(BreedingSeason)
 class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["starting_year", "starting_month", "label", "couple_count"]
@@ -29,6 +34,9 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["full_name", "male", "female", "start_date", "season_link"]
     list_filter = ["season"]
     date_hierarchy = "start_date"
+    inlines = [
+        EggInline,
+    ]
 
     def full_name(self, obj):
         return obj.__str__()
@@ -47,6 +55,21 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
         )
 
     season_link.short_description = _("(Current) Breeding season")
+
+    def get_inline_instances(self, request, obj=None):
+        return obj and super().get_inline_instances(request, obj) or []
+
+    def save_formset(self, request, form, formset, change):
+        # Just be normal on everything that isn't our inline model
+        if formset.model != Egg:
+            return super().save_formset(request, form, formset, change)
+
+        # Add users for the eggs
+        instances = formset.save(commit=False)
+        for instance in instances:
+            instance.user = request.user
+            instance.save()
+        formset.save_m2m()
 
 
 @admin.register(Egg)

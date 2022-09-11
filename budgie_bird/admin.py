@@ -36,6 +36,10 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         "is_for_sale",
     ]
     search_fields = ["ring_number", "gender"]
+    search_help_text = _(
+        "Search for ring numbers. "
+        "You can also narrow down your search using the filters on the right."
+    )
     date_hierarchy = "date_of_birth"
     ordering = ["ring_number"]
 

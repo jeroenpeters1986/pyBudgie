@@ -36,6 +36,9 @@ class ImportFile(models.Model):
         null=True,
     )
 
+    def __str__(self):
+        return "{}".format(self.import_file.path.split("/")[-1])
+
     class Meta:
         ordering = ["uploaded_date"]
         verbose_name = _("Import file")
