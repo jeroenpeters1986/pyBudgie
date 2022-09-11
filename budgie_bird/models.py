@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
@@ -82,6 +83,7 @@ class Bird(models.Model):
         verbose_name=_("father").capitalize(),
         on_delete=models.SET_NULL,
         related_name="ancestor_father",
+        limit_choices_to=Q(gender=Gender.MALE) | Q(gender=Gender.UNKNOWN),
     )
     mother = models.ForeignKey(
         "self",
@@ -90,6 +92,7 @@ class Bird(models.Model):
         verbose_name=_("mother").capitalize(),
         on_delete=models.SET_NULL,
         related_name="ancestor_mother",
+        limit_choices_to=Q(gender=Gender.FEMALE) | Q(gender=Gender.UNKNOWN),
     )
     breeder = models.ForeignKey(
         "Breeder",

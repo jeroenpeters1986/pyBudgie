@@ -13,10 +13,18 @@ class EggInline(BudgieUserMixin, admin.TabularInline):
     exclude = ["user"]
 
 
+class BreedingCoupleInline(BudgieUserMixin, admin.TabularInline):
+    model = BreedingCouple
+    exclude = ["user", "notes"]
+
+
 @admin.register(BreedingSeason)
 class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["starting_year", "starting_month", "label", "couple_count"]
     list_filter = ["starting_year"]
+    inlines = [
+        BreedingCoupleInline,
+    ]
 
     def couple_count(self, obj):
         return obj.couple_count
@@ -27,6 +35,18 @@ class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
         queryset = super().get_queryset(request)
         queryset = queryset.annotate(couple_count=Count("breedingcouple"))
         return queryset
+
+    def save_formset(self, request, form, formset, change):
+        # Just be normal on everything that isn't our inline model
+        if formset.model != BreedingCouple:
+            return super().save_formset(request, form, formset, change)
+
+        # Add users for the breeding couples
+        instances = formset.save(commit=False)
+        for instance in instances:
+            instance.user = request.user
+            instance.save()
+        formset.save_m2m()
 
 
 @admin.register(BreedingCouple)

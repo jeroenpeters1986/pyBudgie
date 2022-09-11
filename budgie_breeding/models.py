@@ -1,5 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from budgie_bird.models import Bird
@@ -77,7 +78,7 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="male",
-        limit_choices_to={"gender": Bird.Gender.MALE},
+        limit_choices_to=Q(gender=Bird.Gender.MALE) | Q(gender=Bird.Gender.UNKNOWN),
     )
     female = models.ForeignKey(
         Bird,
@@ -85,7 +86,7 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="female",
-        limit_choices_to={"gender": Bird.Gender.FEMALE},
+        limit_choices_to=Q(gender=Bird.Gender.FEMALE) | Q(gender=Bird.Gender.UNKNOWN),
     )
     start_date = models.DateField(verbose_name=_("Start date"), blank=True, null=True)
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))

@@ -83,7 +83,7 @@ class DocumentAdminFormTest(TestCase):
             os.remove(filename)
 
     def setup_assign_breeders(self, user):
-        # Update template breeders
+        # Update templates breeders
         for breeder in Breeder.objects.all():
             breeder.user = user
             breeder.save()
