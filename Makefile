@@ -1,4 +1,4 @@
-SETTINGS ?= pybudgie.config.settings_dev
+SETTINGS ?= pybudgie.config.settings_test
 PORT ?= 9000
 MANAGE = ./manage.py
 REQUIREMENTS = requirements.txt
