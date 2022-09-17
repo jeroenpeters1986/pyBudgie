@@ -1,6 +1,7 @@
 # Project specific
 .idea/
 pybudgie/settings.py
+pybudgie/config/settings_live.py
 pybudgie/db.sqlite3
 pybudgie/budgie.sqlite3
 private_fixtures/
