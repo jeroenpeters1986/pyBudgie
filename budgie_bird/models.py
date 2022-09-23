@@ -36,7 +36,7 @@ class Bird(models.Model):
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     ring_number = models.CharField(
-        max_length=20,
+        max_length=40,
         blank=False,
         verbose_name=_("Ring number"),
         help_text=_(
@@ -165,7 +165,7 @@ class Breeder(models.Model):
     first_name = models.CharField(max_length=60, verbose_name=_("First name"))
     last_name = models.CharField(max_length=60, verbose_name=_("Last name"))
     breeding_reg_nr = models.CharField(
-        max_length=20,
+        max_length=40,
         null=True,
         blank=True,
         verbose_name=_("Breeding registration number"),

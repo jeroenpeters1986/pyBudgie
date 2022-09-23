@@ -1,0 +1,76 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extrahead %}
+
+    <script src="{% url 'admin:jsi18n' %}"></script>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    <script src="{% static 'admin/js/calendar.js' %}"></script>
+    <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+    <h1>{% translate "Add eggs for multiple couples" %}</h1>
+
+    <div id="content-main">
+        <div>
+            <div class="submit-row">
+                <p class="deletelink-box">
+                    <a class="button" href="{% url 'admin:budgie_breeding_egg_changelist' %}">{% translate "Back to the overview" %}</a>
+                </p>
+            </div>
+        </div>
+
+        <form method="post" id="egg_form" novalidate="">
+            {% csrf_token %}
+            <div>
+                <fieldset class="module aligned ">
+                    <div class="form-row field-couple">
+                        <label class="required" for="id_couples">{% translate 'Breeding couples' %}:</label>
+                        <div style="display: inline-block;">
+
+                            {% for couple in breeding_couples %}
+
+                                <label for="ccb{{ couple.id }}" style="width: 100%;"><input type="checkbox" name="couples[]" id="ccb{{ couple.id }}" value="{{ couple.id }}"> {{ couple }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-row field-date">
+                        <div>
+                            <label class="required" for="id_date">{% translate 'Date found' %}:</label>
+                            <input type="text" name="date" value="{% now "d-m-Y" %}" class="vDateField" size="10" required="" id="id_date">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row field-status">
+                        <div>
+                            <label class="required" for="id_status">{% translate 'Status' %}:</label>
+
+                            <select name="status" id="id_status">
+                                <option value="">----</option>
+                                {% for status, status_display in statusses %}
+                                    <option value="{{ status }}">{{ status_display }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <div class="submit-row">
+                    <input type="submit" value="Opslaan" class="default" name="_save">
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
