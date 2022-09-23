@@ -1,0 +1,61 @@
+[
+  {
+    "model": "budgie_user.budgieuser",
+    "pk": 1,
+    "fields": {
+      "password": "bier",
+      "last_login": "2021-03-27T11:23:01.502Z",
+      "is_superuser": true,
+      "username": "ryan",
+      "first_name": "Ryan",
+      "last_name": "Howard",
+      "email": "ryan.howard@dundermifflininfinity.com",
+      "is_staff": true,
+      "is_active": false,
+      "date_joined": "2021-03-25T20:15:57.082Z",
+      "breeding_reg_nr": "RyRy",
+      "notes": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "budgie_bird.breeder",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "first_name": "Jan",
+      "last_name": "Jansen",
+      "breeding_reg_nr": "Henk",
+      "address": "",
+      "phone_number": null,
+      "notes": ""
+    }
+  },
+  {
+    "model": "budgie_bird.breeder",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "first_name": "Piet",
+      "last_name": "Pieters",
+      "breeding_reg_nr": "PI3T",
+      "address": "",
+      "phone_number": null,
+      "notes": ""
+    }
+  },
+  {
+    "model": "budgie_bird.breeder",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "first_name": "Klaas",
+      "last_name": "Klaassen",
+      "breeding_reg_nr": "Jansen2",
+      "address": "",
+      "phone_number": null,
+      "notes": ""
+    }
+  }
+]

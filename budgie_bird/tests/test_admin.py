@@ -14,7 +14,7 @@ from budgie_bird.models import Breeder, Bird, ColorProperty
 from budgie_user.models import BudgieUser
 
 
-class DocumentAdminFormTest(TestCase):
+class BirdAppAdminTest(TestCase):
     fixtures = ["test_breeders.json"]
     bird_overview_url = reverse("admin:budgie_bird_bird_changelist")
     add_bird_url = reverse("admin:budgie_bird_bird_add")

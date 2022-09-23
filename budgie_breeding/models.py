@@ -1,3 +1,6 @@
+import datetime
+
+from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
@@ -125,6 +128,15 @@ class Egg(models.Model):
         null=False,
         verbose_name=_("Status"),
     )
+
+    @property
+    @admin.display(
+        description=_("Expected hatch date"),
+    )
+    def expected_hatch_date(self):
+        if self.status == self.Status.FERTILIZED:
+            return self.date + datetime.timedelta(days=18)
+        return None
 
     def __str__(self):
         return "{} #{}".format(_("Egg"), self.id)

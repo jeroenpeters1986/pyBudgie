@@ -1,6 +1,10 @@
-from django.contrib import admin
+import datetime
+
+from django.contrib import admin, messages
 from django.db.models import Count
-from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
@@ -94,5 +98,58 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
 
 @admin.register(Egg)
 class EggAdmin(BudgieUserMixin, admin.ModelAdmin):
-    list_display = ["couple", "date", "status"]
+    list_display = ["couple", "date", "status", "expected_hatch_date"]
     list_filter = ["couple", "status"]
+
+    change_list_template = "budgie_breeding/admin/egg_changelist.html"
+
+    def get_urls(self):
+        # Add our bulk-add view to the urls of Django Admin
+        urls = super().get_urls()
+        custom_url = [
+            path(
+                "bulk_add/",
+                self.admin_site.admin_view(self.bulk_add),
+                name="budgie_breeding_egg_bulk_add",
+            )
+        ]
+        return custom_url + urls
+
+    def bulk_add(self, request):
+        """Bulk add view for eggs"""
+
+        if request.POST:
+            if not request.POST.get("status") or not request.POST.get("couples[]"):
+                messages.error(request, _("Some fields were empty, please retry"))
+                return HttpResponseRedirect(
+                    reverse("admin:budgie_breeding_egg_bulk_add")
+                )
+
+            for couple_id in request.POST.getlist("couples[]"):
+                if BreedingCouple.objects.filter(
+                    user=request.user, pk=couple_id
+                ).exists():
+                    found_date = datetime.datetime.strptime(
+                        request.POST["date"], "%d-%m-%Y"
+                    )
+                    Egg.objects.create(
+                        user=request.user,
+                        status=request.POST["status"],
+                        couple_id=couple_id,
+                        date=found_date,
+                    )
+
+            messages.info(
+                request, _("Added an egg for the selected couples succeeded!")
+            )
+            return HttpResponseRedirect(reverse("admin:budgie_breeding_egg_changelist"))
+
+        context = dict(
+            self.admin_site.each_context(request),
+            breeding_couples=BreedingCouple.objects.filter(user=request.user),
+            statusses=Egg.Status.choices,
+        )
+
+        return TemplateResponse(
+            request, "budgie_breeding/admin/egg_bulk_add.html", context
+        )
