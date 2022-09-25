@@ -14,9 +14,10 @@ class ImportFileAdmin(BudgieUserMixin, admin.ModelAdmin):
         """
         This makes sure the admin doesn't give away the other usernames to non-admins.
         """
-        if not request.user.is_superuser:
-            return ["user"]
-        return {}
+        if request.user.is_superuser:
+            return {}
+
+        return ["user"]
 
     def save_model(self, request, obj, form, change):
 
@@ -25,12 +26,14 @@ class ImportFileAdmin(BudgieUserMixin, admin.ModelAdmin):
         if not request.user.is_superuser:
             obj.user = request.user
 
+        # ?? Somehow this is needed for tests.??
+        if not obj.user:
+            obj.user = request.user
+
         if not obj.completed:
-            imported = budgie_import.services.import_from_file.import_from_file(
+            budgie_import.services.import_from_file.import_from_file(
                 obj.import_file.path, obj.user
             )
-
-            if imported:
-                obj.completed = True
+            obj.completed = True
 
         obj.save()

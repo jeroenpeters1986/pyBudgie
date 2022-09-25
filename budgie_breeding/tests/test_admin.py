@@ -62,7 +62,13 @@ class BreedingAppAdminTest(TestCase):
         ct_breedseason = ContentType.objects.get_for_model(BreedingSeason)
         ct_egg = ContentType.objects.get_for_model(Egg)
         permissions = Permission.objects.filter(
-            content_type__in=(ct_bird, ct_breeder, ct_breedcouple, ct_breedseason, ct_egg)
+            content_type__in=(
+                ct_bird,
+                ct_breeder,
+                ct_breedcouple,
+                ct_breedseason,
+                ct_egg,
+            )
         )
         self.pybudgie_user.user_permissions.set(permissions)
 
@@ -134,6 +140,8 @@ class BreedingAppAdminTest(TestCase):
         }
         response = self.client.post(self.add_season_url, season_params)
         self.assertEqual(response.status_code, 302)
+        view_page = self.client.get(self.season_overview_url)
+        self.assertEqual(view_page.status_code, 200)
         self.assertEqual(1, BreedingSeason.objects.count())
 
     def test_admin_add_birds_as_breeding_couple(self):
@@ -161,6 +169,9 @@ class BreedingAppAdminTest(TestCase):
         }
         response = self.client.post(self.add_season_url, season_params)
         self.assertEqual(response.status_code, 302)
+
+        view_page = self.client.get(self.season_overview_url)
+        self.assertEqual(view_page.status_code, 200)
         self.assertEqual(1, BreedingSeason.objects.count())
 
         new_bird = self.bird_data_male
@@ -191,6 +202,13 @@ class BreedingAppAdminTest(TestCase):
         }
         self.client.post(self.add_couple_url, couple)
         self.assertEqual(1, BreedingCouple.objects.count())
+        view_page = self.client.get(self.couple_overview_url)
+        self.assertEqual(view_page.status_code, 200)
+
+        view_page = self.client.get(
+            reverse("admin:budgie_breeding_breedingcouple_change", args=[1])
+        )
+        self.assertEqual(view_page.status_code, 200)
 
     def test_admin_add_egg_to_breeding_couple(self):
         """Test if the admin can add a new breeding couple"""
@@ -256,7 +274,6 @@ class BreedingAppAdminTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(1, Egg.objects.count())
 
-
     def test_admin_can_bulk_add_eggs_to_breedcouples(self):
         """Test if the admin can bulk-add eggs to breeding couples"""
 
@@ -265,6 +282,9 @@ class BreedingAppAdminTest(TestCase):
             username=self.user_credentials["username"],
             password=self.user_credentials["password"],
         )
+
+        view_page = self.client.get(self.add_season_url)
+        self.assertEqual(view_page.status_code, 200)
 
         view_page = self.client.get(self.season_overview_url)
         self.assertEqual(view_page.status_code, 200)
@@ -326,16 +346,54 @@ class BreedingAppAdminTest(TestCase):
         self.client.post(self.add_couple_url, andercouple)
         self.assertEqual(2, BreedingCouple.objects.count())
 
+        view_page = self.client.get(self.add_egg_url)
+        self.assertEqual(view_page.status_code, 200)
+
         view_page = self.client.get(self.bulkadd_egg_url)
         self.assertEqual(view_page.status_code, 200)
         self.assertEqual(0, Egg.objects.count())
 
         egg_params = {
-            "couples[]": [1, 2],
+            "couples[]": [1, 2, 25],
             "date": "01-08-2022",
-            "status": "fertilized",
         }
+        response = self.client.post(self.bulkadd_egg_url, egg_params)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.bulkadd_egg_url)
+
+        response = self.client.post(self.bulkadd_egg_url, egg_params, follow=True)
+        messages = list(response.context["messages"])
+        self.assertEqual(len(messages), 1)
+        self.assertContains(response, "Er zijn velden leeggelaten")
+
+        egg_params.update({"status": "fertilized"})
         response = self.client.post(self.bulkadd_egg_url, egg_params)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(2, Egg.objects.count())
         self.assertEqual(2, Egg.objects.filter(user=self.pybudgie_user).count())
+
+    def test_admin_no_breeding_couple_on_formset_seasons(self):
+        """Test the formset of Breeding Couples"""
+
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        view_page = self.client.get(self.add_couple_url)
+        self.assertEquals([], view_page.context["inline_admin_formsets"])
+
+        Bird.objects.create(user=self.pybudgie_user, ring_number="henk")
+        Bird.objects.create(user=self.pybudgie_user, ring_number="nina")
+        BreedingSeason.objects.create(
+            user=self.pybudgie_user, starting_year=2022, starting_month=1
+        )
+        BreedingCouple.objects.create(
+            user=self.pybudgie_user, male_id=1, female_id=2, season_id=1
+        )
+        view_page = self.client.get(
+            reverse("admin:budgie_breeding_breedingcouple_change", args=[1])
+        )
+        self.assertNotEquals([], view_page.context["inline_admin_formsets"])
+        self.assertEquals(list, type(view_page.context["inline_admin_formsets"]))
