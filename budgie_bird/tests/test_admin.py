@@ -10,6 +10,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
+from budgie_bird.forms import BirdForm
 from budgie_bird.models import Breeder, Bird, ColorProperty
 from budgie_user.models import BudgieUser
 
@@ -102,7 +103,7 @@ class BirdAppAdminTest(TestCase):
 
         new_bird = self.bird_data
         new_bird["user"] = self.pybudgie_admin.pk
-        response = self.client.post(self.add_bird_url, self.bird_data)
+        response = self.client.post(self.add_bird_url, new_bird)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.bird_overview_url)
 
@@ -110,6 +111,79 @@ class BirdAppAdminTest(TestCase):
         self.assertIsInstance(bird, Bird)
         self.assertEqual(bird.user, self.pybudgie_admin)
         self.assertEqual(1, Bird.objects.count())
+
+    def test_admin_bird_add_cannot_die_before_born_date(self):
+        """Test if the cannot-die-before-birthdate check works"""
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        view_page = self.client.get(self.add_bird_url)
+        self.assertEqual(view_page.status_code, 200)
+        self.assertEqual(0, Bird.objects.count())
+
+        spullen_bird = {
+            "ring_number": "5TJJ-12-2010",
+            "gender": "male",
+            "color": "18.004.003",
+            "date_of_birth": "2017-10-02",
+            "date_of_death": "2015-10-02",
+            "owner": 1,
+            "breeder": 2,
+            "is_owned": True,
+            "is_for_sale": False,
+            "notes": "",
+            "photo": "assets/budgie-silhouette.png",
+            "color_property": [],
+            "split_property": [],
+        }
+        response = self.client.post(self.add_bird_url, spullen_bird)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response, "Een vogel kan niet doodgaan voordat het geboren is"
+        )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
+
+    def test_bird_form_date_of_death(self):
+        spullen_bird = {
+            "user": 1,
+            "ring_number": "5TJJ-12-2010",
+            "gender": "male",
+            "color": "18.004.003",
+            "date_of_birth": "2017-10-02",
+            "date_of_death": "2015-10-02",
+            "owner": 1,
+            "breeder": 2,
+            "is_owned": True,
+            "is_for_sale": False,
+            "notes": "",
+            "photo": "assets/budgie-silhouette.png",
+            "color_property": [],
+            "split_property": [],
+        }
+        form = BirdForm(spullen_bird)
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, "date_of_death", [])
+
+        goeie_bird = {
+            "user": 1,
+            "ring_number": "5TJJ-12-2010",
+            "gender": "male",
+            "color": "18.004.003",
+            "date_of_birth": "2017-10-02",
+            "date_of_death": "2019-10-02",
+            "owner": 1,
+            "breeder": 2,
+            "is_owned": True,
+            "is_for_sale": False,
+            "notes": "",
+            "photo": "assets/budgie-silhouette.png",
+            "color_property": [],
+            "split_property": [],
+        }
+        form = BirdForm(goeie_bird)
+        self.assertTrue(form.is_valid())
 
     def test_admin_user_without_group_or_permission(self):
         """Test if a staff user without the proper permissions gets a 403"""
@@ -262,6 +336,24 @@ class BirdAppAdminTest(TestCase):
         self.assertContains(response, "DarkBlue")
         self.assertContains(response, "DarkYellow")
 
+    def test_admin_display_age_calculation(self):
+        """Test if the age calculation works (also test the minus-zero clause)"""
+
+        for num in range(1, 13):
+            stringnum = "{:02d}".format(num)
+            Bird.objects.create(
+                user=self.pybudgie_user,
+                ring_number="5TJJ-2802-20{}".format(stringnum),
+                date_of_birth="2018-{}-14".format(stringnum),
+            ),
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+        response = self.client.get(self.bird_overview_url)
+        self.assertContains(response, "jaren")  # FIXME, test in English
+
     def test_bird_csv_export(self):
         """Test if the CSV-export works"""
 
@@ -392,3 +484,14 @@ class BirdAppAdminTest(TestCase):
         self.assertEqual(2, Bird.objects.filter(user=self.pybudgie_user).count())
         self.assertTrue(Bird.objects.get(ring_number="Staples").is_for_sale)
         self.assertFalse(Bird.objects.get(ring_number="Dunder Mifflin").is_for_sale)
+
+    def test_admin_breeders(self):
+        """Test if the admin can view the breeders"""
+        self.setup_assign_breeders(self.pybudgie_admin)
+        self.client.login(
+            username=self.admin_credentials["username"],
+            password=self.admin_credentials["password"],
+        )
+
+        view_page = self.client.get(self.breeder_overview_url)
+        self.assertEqual(view_page.status_code, 200)

@@ -8,14 +8,13 @@ def read_csv(file_path, **args):
     # else:
     #     has_header = False
 
+    rows = []
+
     # opening the CSV file
     with open(file_path, mode="r") as file:
+        reader = csv.reader(file)
+        headers = next(reader)
+        for row in reader:
+            rows.append({key.lower(): value for key, value in zip(headers, row)})
 
-        # reading the CSV file
-        csvFile = csv.reader(file)
-
-        # displaying the contents of the CSV file
-        for lines in csvFile:
-            print(lines)
-
-        return csvFile
+    return rows
