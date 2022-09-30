@@ -130,9 +130,7 @@ class Egg(models.Model):
     )
 
     @property
-    @admin.display(
-        description=_("Expected hatch date"),
-    )
+    @admin.display(description=_("Expected hatch date"), ordering="date")
     def expected_hatch_date(self):
         if self.status == self.Status.FERTILIZED:
             return self.date + datetime.timedelta(days=18)
