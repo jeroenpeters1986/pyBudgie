@@ -24,6 +24,7 @@
         <div>
             <div class="submit-row">
                 <p class="deletelink-box">
+                    <a class="button" href="{% url 'admin:budgie_bird_bird_change' bird.pk %}">{% translate "Back to the bird" %}</a>
                     <a class="button" href="{% url 'admin:budgie_bird_bird_changelist' %}">{% translate "Back to the overview" %}</a>
                 </p>
             </div>
