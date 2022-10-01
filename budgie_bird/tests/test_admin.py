@@ -495,3 +495,16 @@ class BirdAppAdminTest(TestCase):
 
         view_page = self.client.get(self.breeder_overview_url)
         self.assertEqual(view_page.status_code, 200)
+
+    def test_admin_changeform_family_tree_links(self):
+        """Test if the familytree button on the detail-view works"""
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        birdie = Bird.objects.create(ring_number="HENK", color=1, user=self.pybudgie_user)
+        bird_change_url = reverse("admin:budgie_bird_bird_change", args=[birdie.pk])
+        response = self.client.get(bird_change_url)
+        self.assertContains(response, reverse("admin:budgie_bird_bird_familytree", args=[birdie.pk]))
