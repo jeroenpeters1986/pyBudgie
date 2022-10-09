@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from budgie_bird.models import Breeder, Bird
-from budgie_breeding.models import BreedingCouple, BreedingSeason, Egg
+from budgie_breeding.models import BreedingCouple, BreedingSeason, Egg, Location
 from budgie_user.models import BudgieUser
 
 
@@ -19,6 +19,8 @@ class BreedingAppAdminTest(TestCase):
     season_overview_url = reverse("admin:budgie_breeding_breedingseason_changelist")
     add_season_url = reverse("admin:budgie_breeding_breedingseason_add")
     add_bird_url = reverse("admin:budgie_bird_bird_add")
+    location_overview_url = reverse("admin:budgie_breeding_location_changelist")
+    add_location_url = reverse("admin:budgie_breeding_location_add")
     egg_overview_url = reverse("admin:budgie_breeding_egg_changelist")
     add_egg_url = reverse("admin:budgie_breeding_egg_add")
     bulkadd_egg_url = reverse("admin:budgie_breeding_egg_bulk_add")
@@ -61,6 +63,7 @@ class BreedingAppAdminTest(TestCase):
         ct_breedcouple = ContentType.objects.get_for_model(BreedingCouple)
         ct_breedseason = ContentType.objects.get_for_model(BreedingSeason)
         ct_egg = ContentType.objects.get_for_model(Egg)
+        ct_location = ContentType.objects.get_for_model(Location)
         permissions = Permission.objects.filter(
             content_type__in=(
                 ct_bird,
@@ -68,6 +71,7 @@ class BreedingAppAdminTest(TestCase):
                 ct_breedcouple,
                 ct_breedseason,
                 ct_egg,
+                ct_location,
             )
         )
         self.pybudgie_user.user_permissions.set(permissions)
@@ -274,8 +278,8 @@ class BreedingAppAdminTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(1, Egg.objects.count())
 
-    def test_admin_can_bulk_add_eggs_to_breedcouples(self):
-        """Test if the admin can bulk-add eggs to breeding couples"""
+    def test_admin_can_bulk_add_eggs_to_breedcouples_and_test_expected_dates(self):
+        """Test if the admin can bulk-add eggs to breeding couples, also test expecting-dates"""
 
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
@@ -372,6 +376,14 @@ class BreedingAppAdminTest(TestCase):
         self.assertEqual(2, Egg.objects.count())
         self.assertEqual(2, Egg.objects.filter(user=self.pybudgie_user).count())
 
+        last_egg = Egg.objects.last()
+        self.assertEqual(
+            "19-08-2022", last_egg.expected_hatch_date.strftime("%d-%m-%Y")
+        )
+        last_egg.status = Egg.Status.UNFERTILIZED
+        last_egg.save()
+        self.assertEqual(None, last_egg.expected_hatch_date)
+
     def test_admin_no_breeding_couple_on_formset_seasons(self):
         """Test the formset of Breeding Couples"""
 
@@ -397,3 +409,81 @@ class BreedingAppAdminTest(TestCase):
         )
         self.assertNotEquals([], view_page.context["inline_admin_formsets"])
         self.assertEquals(list, type(view_page.context["inline_admin_formsets"]))
+
+    def test_admin_location_overview(self):
+        """Test the location overview"""
+
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        view_page = self.client.get(self.location_overview_url)
+        self.assertEqual(view_page.status_code, 200)
+
+        view_page = self.client.get(self.add_location_url)
+        self.assertEqual(view_page.status_code, 200)
+
+    def test_location_string_taken_status(self):
+        """Test the location string and the eventual Taken (vrij) status"""
+
+        location_name = "Kooi 1."
+
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        new_bird = self.bird_data_male
+        new_bird["user"] = self.pybudgie_admin.pk
+        response = self.client.post(self.add_bird_url, new_bird)
+        self.assertEqual(response.status_code, 302)
+
+        new_bird2 = self.bird_data_female
+        new_bird2["user"] = self.pybudgie_admin.pk
+        response = self.client.post(self.add_bird_url, new_bird2)
+        self.assertEqual(response.status_code, 302)
+
+        bird = Bird.objects.get(ring_number=self.bird_data_male["ring_number"])
+        bird2 = Bird.objects.get(ring_number=self.bird_data_female["ring_number"])
+
+        BreedingSeason.objects.create(
+            user=self.pybudgie_user, starting_year=2022, starting_month=1
+        )
+
+        couple = {
+            "male": bird.pk,
+            "female": bird2.pk,
+            "user": self.pybudgie_admin.pk,
+            "season": 1,
+            # Because of th inlines...
+            "egg_set-TOTAL_FORMS": 1,
+            "egg_set-INITIAL_FORMS": 0,
+            "egg_set-MIN_NUM_FORMS": 0,
+            "egg_set-MAX_NUM_FORMS": 5,
+        }
+        self.client.post(self.add_couple_url, couple)
+        self.assertEqual(1, BreedingCouple.objects.count())
+
+        view_page = self.client.get(self.add_location_url)
+        self.assertEqual(view_page.status_code, 200)
+
+        loc = {
+            "code": location_name,
+            "description": "In de hoek jung",
+            "user": self.pybudgie_admin.pk,
+            "current_breeding_couple": 1,
+        }
+        self.client.post(self.add_location_url, loc)
+        self.assertEqual(1, Location.objects.count())
+
+        locatie = Location.objects.first()
+        self.assertEqual(location_name, locatie.code)
+        self.assertEqual(
+            "{} (Bezet)".format(location_name), locatie.__str__()
+        )  # TODO: Check for English?
+        locatie.current_breeding_couple = None
+        locatie.save()
+        self.assertEqual("{}".format(location_name), locatie.__str__())
