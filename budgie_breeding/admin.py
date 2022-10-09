@@ -9,7 +9,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.mixins import BudgieUserMixin
-from .models import BreedingSeason, BreedingCouple, Egg
+from .models import BreedingSeason, BreedingCouple, Egg, Location
 
 
 class EggInline(BudgieUserMixin, admin.TabularInline):
@@ -56,7 +56,7 @@ class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
 @admin.register(BreedingCouple)
 class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["full_name", "male", "female", "start_date", "season_link"]
-    list_filter = ["season"]
+    list_filter = ["location", "season"]
     date_hierarchy = "start_date"
     inlines = [
         EggInline,
@@ -100,6 +100,7 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
 class EggAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["couple", "date", "status", "expected_hatch_date"]
     list_filter = ["couple", "status"]
+    ordering = ["couple", "date"]
 
     change_list_template = "budgie_breeding/admin/egg_changelist.html"
 
@@ -153,3 +154,31 @@ class EggAdmin(BudgieUserMixin, admin.ModelAdmin):
         return TemplateResponse(
             request, "budgie_breeding/admin/egg_bulk_add.html", context
         )
+
+
+@admin.register(Location)
+class LocationAdmin(BudgieUserMixin, admin.ModelAdmin):
+    list_display = ["code", "notes", "is_taken", "current_breeding_couple_url"]
+    ordering = ["code"]
+
+    @admin.display(description=_("Taken"), boolean=True)
+    def is_taken(self, obj):
+        if obj.current_breeding_couple:
+            return True
+        return False
+
+    def current_breeding_couple_url(self, obj):
+        if not obj.current_breeding_couple:
+            return _("None")
+        link = reverse(
+            "admin:budgie_breeding_breedingcouple_change",
+            args=[obj.current_breeding_couple.pk],
+        )
+        return format_html(
+            '<a href="{}" title="{}" style="text-decoration: underline;">{}</a>',
+            link,
+            _("View"),
+            obj.current_breeding_couple,
+        )
+
+    current_breeding_couple_url.short_description = _("Current breeding couple")

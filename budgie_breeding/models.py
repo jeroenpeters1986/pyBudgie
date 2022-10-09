@@ -92,6 +92,13 @@ class BreedingCouple(models.Model):
         limit_choices_to=Q(gender=Bird.Gender.FEMALE) | Q(gender=Bird.Gender.UNKNOWN),
     )
     start_date = models.DateField(verbose_name=_("Start date"), blank=True, null=True)
+    location = models.ForeignKey(
+        to="budgie_breeding.Location",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Location / Cage"),
+    )
     notes = models.TextField(blank=True, verbose_name=_("Remarks / Notes"))
 
     def __str__(self):
@@ -102,6 +109,38 @@ class BreedingCouple(models.Model):
     class Meta:
         verbose_name = _("Breeding couple")
         verbose_name_plural = _("Breeding couples")
+
+
+class Location(models.Model):
+    """This represents a breeding location/cage.
+    Can be reference by many, there is only one (or 0) 'current' couple"""
+
+    user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
+    code = models.CharField(
+        max_length=50, help_text=_("A code to represent the location of this cage")
+    )
+    notes = models.TextField(blank=True, verbose_name=_("Description"))
+    current_breeding_couple = models.ForeignKey(
+        BreedingCouple,
+        blank=True,
+        null=True,
+        help_text=_(
+            "This is the couple that is currently breeding here, can also be empty"
+        ),
+        on_delete=models.SET_NULL,
+        related_name="current_couple",
+        verbose_name=_("Current breeding couple"),
+    )
+
+    def __str__(self):
+        return "{}{}".format(
+            self.code,
+            " ({})".format(_("Taken")) if self.current_breeding_couple else "",
+        )
+
+    class Meta:
+        verbose_name = _("Location / Cage")
+        verbose_name_plural = _("Locations / Cages")
 
 
 class Egg(models.Model):
@@ -130,9 +169,7 @@ class Egg(models.Model):
     )
 
     @property
-    @admin.display(
-        description=_("Expected hatch date"),
-    )
+    @admin.display(description=_("Expected hatch date"), ordering="date")
     def expected_hatch_date(self):
         if self.status == self.Status.FERTILIZED:
             return self.date + datetime.timedelta(days=18)

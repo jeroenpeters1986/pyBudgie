@@ -34,3 +34,13 @@
         });
     </script>
 {% endblock %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="{% url "admin:budgie_bird_bird_familytree" original.pk %}" class="golink">
+            {% translate "Family tree" %}
+        </a>
+    </li>
+
+    {{ block.super }}
+{% endblock %}
