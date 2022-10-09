@@ -1,3 +1,6 @@
+from budgie_user.models import BudgieUser
+
+
 class BudgieUserMixin:
     def save_model(self, request, obj, form, change):
         # For non-superusers, always save as own user instance
@@ -24,8 +27,10 @@ class BudgieUserMixin:
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # For non-superusers, always show own instances
-        if not request.user.is_superuser:
-            if db_field.is_relation:
+        if not request.user.is_superuser and db_field.related_model != BudgieUser:
+            if "queryset" in kwargs:
+                kwargs["queryset"] = kwargs.get("queryset").filter(user=request.user)
+            else:
                 kwargs["queryset"] = db_field.related_model.objects.filter(
                     user=request.user
                 )

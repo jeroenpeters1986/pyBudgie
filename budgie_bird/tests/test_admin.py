@@ -21,6 +21,8 @@ class BirdAppAdminTest(TestCase):
     add_bird_url = reverse("admin:budgie_bird_bird_add")
     breeder_overview_url = reverse("admin:budgie_bird_breeder_changelist")
     add_breeder_url = reverse("admin:budgie_bird_breeder_add")
+    color_overview_url = reverse("admin:budgie_bird_colorproperty_changelist")
+    add_color_url = reverse("admin:budgie_bird_colorproperty_add")
 
     def setUp(self):
 
@@ -56,8 +58,13 @@ class BirdAppAdminTest(TestCase):
         )
         content_type_bird = ContentType.objects.get_for_model(Bird)
         content_type_breeder = ContentType.objects.get_for_model(Breeder)
+        content_type_color = ContentType.objects.get_for_model(ColorProperty)
         permissions = Permission.objects.filter(
-            content_type__in=(content_type_bird, content_type_breeder)
+            content_type__in=(
+                content_type_bird,
+                content_type_breeder,
+                content_type_color,
+            )
         )
         self.pybudgie_user.user_permissions.set(permissions)
 
@@ -494,6 +501,18 @@ class BirdAppAdminTest(TestCase):
         )
 
         view_page = self.client.get(self.breeder_overview_url)
+        self.assertEqual(view_page.status_code, 200)
+
+    def test_admin_colors(self):
+        """Test if a user can access colors"""
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        view_page = self.client.get(self.color_overview_url)
+        self.assertEqual(view_page.status_code, 200)
+        view_page = self.client.get(self.add_color_url)
         self.assertEqual(view_page.status_code, 200)
 
     def test_admin_changeform_family_tree_links(self):
