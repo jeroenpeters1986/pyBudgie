@@ -113,7 +113,7 @@ class BreedingCouple(models.Model):
 
 class Location(models.Model):
     """This represents a breeding location/cage.
-        Can be reference by many, there is only one (or 0) 'current' couple"""
+    Can be reference by many, there is only one (or 0) 'current' couple"""
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     code = models.CharField(
