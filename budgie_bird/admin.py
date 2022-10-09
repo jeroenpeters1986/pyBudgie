@@ -226,3 +226,4 @@ class BreederAdmin(BudgieUserMixin, admin.ModelAdmin):
 class ColorPropertyAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["color_name"]
     list_display = ["color_name", "rank"]
+    list_editable = ["rank"]
