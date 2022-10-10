@@ -12,9 +12,8 @@ def validate_birth_date_with_descendans(bird, parent):
 
 
 def validate_bird_descendant(bird, parent):
-    if parent:
-        if parent.pk == bird.pk:
-            return False
+    if parent.pk == bird.pk:
+        return False
     return True
 
 

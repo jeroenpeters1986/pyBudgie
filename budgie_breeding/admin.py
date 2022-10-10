@@ -8,6 +8,7 @@ from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from budgie_bird.models import Bird
 from budgie_user.mixins import BudgieUserMixin
 from .models import BreedingSeason, BreedingCouple, Egg, Location
 
@@ -61,6 +62,7 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
     inlines = [
         EggInline,
     ]
+    autocomplete_fields = ["male", "female"]
 
     def full_name(self, obj):
         return obj.__str__()
@@ -82,6 +84,11 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
 
     def get_inline_instances(self, request, obj=None):
         return obj and super().get_inline_instances(request, obj) or []
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "male" or db_field.name == "female":
+            kwargs["queryset"] = Bird.objects.filter(is_owned=True, user=request.user)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_formset(self, request, form, formset, change):
         # Just be normal on everything that isn't our inline model
