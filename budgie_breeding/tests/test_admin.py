@@ -487,3 +487,77 @@ class BreedingAppAdminTest(TestCase):
         locatie.current_breeding_couple = None
         locatie.save()
         self.assertEqual("{}".format(location_name), locatie.__str__())
+
+    def test_admin_add_egg_to_breeding_couple_inline(self):
+        """Test if the admin can inline add a new breeding couple"""
+        self.setup_assign_breeders(self.pybudgie_user)
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        view_page = self.client.get(self.season_overview_url)
+        self.assertEqual(view_page.status_code, 200)
+        self.assertEqual(0, BreedingSeason.objects.count())
+
+        season_params = {
+            "starting_year": 2021,
+            "starting_month": 3,
+            "label": "BIER",
+            # Because of th inlines...
+            "breedingcouple_set-TOTAL_FORMS": 1,
+            "breedingcouple_set-INITIAL_FORMS": 0,
+            "breedingcouple_set-MIN_NUM_FORMS": 0,
+            "breedingcouple_set-MAX_NUM_FORMS": 5,
+        }
+        response = self.client.post(self.add_season_url, season_params)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(1, BreedingSeason.objects.count())
+
+        new_bird = self.bird_data_male
+        response = self.client.post(self.add_bird_url, new_bird)
+        self.assertEqual(response.status_code, 302)
+
+        new_bird2 = self.bird_data_female
+        response = self.client.post(self.add_bird_url, new_bird2)
+        self.assertEqual(response.status_code, 302)
+
+        bird = Bird.objects.get(ring_number=self.bird_data_male["ring_number"])
+        bird2 = Bird.objects.get(ring_number=self.bird_data_female["ring_number"])
+
+        couple = {
+            "male": bird.pk,
+            "female": bird2.pk,
+            "season": 1,
+            # Because of th inlines...
+            "egg_set-TOTAL_FORMS": 1,
+            "egg_set-INITIAL_FORMS": 0,
+            "egg_set-MIN_NUM_FORMS": 0,
+            "egg_set-MAX_NUM_FORMS": 5,
+        }
+        self.client.post(self.add_couple_url, couple)
+        self.assertEqual(1, BreedingCouple.objects.count())
+
+        view_page = self.client.get(
+            reverse("admin:budgie_breeding_breedingcouple_change", args=[1])
+        )
+        self.assertEqual(view_page.status_code, 200)
+        couple = {
+            "male": bird.pk,
+            "female": bird2.pk,
+            "season": 1,
+            # Because of th inlines...
+            "egg_set-TOTAL_FORMS": 1,
+            "egg_set-INITIAL_FORMS": 0,
+            "egg_set-MIN_NUM_FORMS": 0,
+            "egg_set-MAX_NUM_FORMS": 5,
+            "egg_set-0-id": "",
+            "egg_set-0-couple": 1,
+            "egg_set-0-date": "11-10-2022",
+            "egg_set-0-status": "died_off",
+        }
+        response = self.client.post(
+            reverse("admin:budgie_breeding_breedingcouple_change", args=[1]), couple
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(1, Egg.objects.count())

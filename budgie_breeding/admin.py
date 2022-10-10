@@ -62,6 +62,7 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
     inlines = [
         EggInline,
     ]
+    autocomplete_fields = ["male", "female"]
 
     def full_name(self, obj):
         return obj.__str__()

@@ -18,10 +18,9 @@ class BudgieUserMixin:
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         # For non-superusers, always show own instances
         if not request.user.is_superuser:
-            if db_field.is_relation:
-                kwargs["queryset"] = db_field.related_model.objects.filter(
-                    user=request.user
-                )
+            kwargs["queryset"] = db_field.related_model.objects.filter(
+                user=request.user
+            )
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
