@@ -81,7 +81,8 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="male",
-        limit_choices_to=Q(gender=Bird.Gender.MALE) | Q(gender=Bird.Gender.UNKNOWN),
+        limit_choices_to=Q(gender=Bird.Gender.MALE, is_owned=True)
+        | Q(gender=Bird.Gender.UNKNOWN, is_owned=True),
     )
     female = models.ForeignKey(
         Bird,
@@ -89,7 +90,8 @@ class BreedingCouple(models.Model):
         null=True,
         on_delete=models.SET_NULL,
         related_name="female",
-        limit_choices_to=Q(gender=Bird.Gender.FEMALE) | Q(gender=Bird.Gender.UNKNOWN),
+        limit_choices_to=Q(gender=Bird.Gender.FEMALE, is_owned=True)
+        | Q(gender=Bird.Gender.UNKNOWN, is_owned=True),
     )
     start_date = models.DateField(verbose_name=_("Start date"), blank=True, null=True)
     location = models.ForeignKey(
