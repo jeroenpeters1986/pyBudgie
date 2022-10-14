@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +20,7 @@ class ImportFile(models.Model):
         ),
         validators=[FileExtensionValidator(["csv", "xlsx"])],
         upload_to=settings.BIRD_EXCELFILE_UPLOAD_LOCATION,
+        storage=FileSystemStorage,
     )
     uploaded_date = models.DateTimeField(
         verbose_name=_("Upload date"), auto_now_add=True
