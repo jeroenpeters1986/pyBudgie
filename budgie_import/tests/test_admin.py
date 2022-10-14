@@ -165,7 +165,7 @@ class ImportFileAdminTest(TestCase):
                 user=self.pybudgie_user, ring_number="5TJJ-2016-44"
             ).exists()
         )
-        self.assertEqual(Bird.objects.filter(user=self.pybudgie_user).count(), 7)
+        self.assertEqual(Bird.objects.filter(user=self.pybudgie_user).count(), 9)
 
     def test_admin_upload_excel_file_superuser(self):
         """Test if a super user can upload an excel file in the admin"""
