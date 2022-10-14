@@ -5,14 +5,11 @@ from xml.etree.ElementTree import iterparse
 # readXlsx("mysheet.xlsx", sheet=1, header=True)
 def read_xlsx(file_path, **args):
 
-    if "sheet" in args:
-        sheet = args["sheet"]
-    else:
-        sheet = 1
+    has_header = False
+    sheet = 1
+
     if "header" in args:
         has_header = args["header"]
-    else:
-        has_header = False
 
     rows = []
     row = {}
