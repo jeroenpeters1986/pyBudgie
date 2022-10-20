@@ -7,11 +7,46 @@
     {% comment %}I had rather used the admins Media class, but this is a custom view {% endcomment %}
     <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
     <script src="{% static 'js/jquery1.9.1.min.js' %}"></script>
-    <script src="{% static 'js/viz.min.js' %}"></script>
+    <script src="{% static 'js/tree.js' %}"></script>
+{% endblock %}
+
+{% block footer %}
+    {{ block.super }}
+
     <script>
-        jQuery(document).ready(function () {
-            const family_tree = `{{ family_tree_graphviz|safe }}`;
-            jQuery('#graphviz_family_tree_svg').html(Viz(family_tree, "svg"));
+
+        OrgChart.templates.male = Object.assign({}, OrgChart.templates.ana);
+        OrgChart.templates.male.node = '<rect x="0" y="0" height="{h}" width="{w}" fill="#ffffff" stroke-width="2" stroke="#335BBB" rx="7" ry="7"></rect>';
+        OrgChart.templates.male.field_0 = '<text '+OrgChart.attr.width+'="230" style="font-size: 18px;" fill="#000000" x="125" y="95" text-anchor="middle">{val}</text>';
+        OrgChart.templates.male.field_1 = '<text '+OrgChart.attr.width+'="130" '+OrgChart.attr.text_overflow+'="multiline" style="font-size: 14px;" fill="#000000" x="230" y="30" text-anchor="end">{val}</text>';
+
+        OrgChart.templates.female = Object.assign({}, OrgChart.templates.male);
+        OrgChart.templates.female.node = '<rect x="0" y="0" height="{h}" width="{w}" fill="#ffffff" stroke-width="2" stroke="#B632B2" rx="7" ry="7"></rect>';
+
+        let chart = new OrgChart(document.getElementById("family_tree"), {
+            mouseScrool: OrgChart.action.none,
+            scaleInitial: OrgChart.match.boundary,
+            orientation: OrgChart.orientation.left,
+            enableSearch: false,
+            template: "base",
+            tags: {
+                "mother": { template: "female" },
+                "father": { template: "male" },
+                "female": { template: "female" },
+                "male": { template: "male" },
+            },
+            nodeBinding: {
+                field_0: "Ringnummer",
+                field_1: "Kleurslagen",
+                img_0: "Afbeelding"
+            },
+            nodes: [ {{ family_tree_js }}
+            ],
+            menu: {
+                pdf: { text: "{% trans "Exporteer als PDF" %}" },
+                png: { text: "{% trans "Exporteer als PNG" %}" },
+                csv: { text: "{% trans "Exporteer als CSV" %}" },
+            },
         });
     </script>
 {% endblock %}
@@ -30,7 +65,7 @@
             </div>
         </div>
 
-        <div id="graphviz_family_tree_svg"></div>
+        <div id="family_tree"></div>
 
     </div>
 
