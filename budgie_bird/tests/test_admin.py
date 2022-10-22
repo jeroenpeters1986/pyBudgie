@@ -400,7 +400,9 @@ class BirdAppAdminTest(TestCase):
             password=self.user_credentials["password"],
         )
 
-        bird_henk = Bird.objects.create(user=self.pybudgie_user, ring_number="D")
+        bird_henk = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="D", gender=Bird.Gender.MALE
+        )
         bird_mother = Bird.objects.create(user=self.pybudgie_user, ring_number="M")
         bird_father = Bird.objects.create(user=self.pybudgie_user, ring_number="F")
         bird_henk.father = bird_father
@@ -412,7 +414,9 @@ class BirdAppAdminTest(TestCase):
                 "admin:budgie_bird_bird_familytree", kwargs={"object_id": bird_henk.pk}
             )
         )
-        self.assertContains(response, "digraph G {")  # Graphviz notation
+        self.assertContains(response, "OrgChart")
+        # Test the tree notation
+        self.assertContains(response, "{ id: 1, pid: null, tags: ['male'], Ringnummer: 'D'")
         self.assertEqual(response.status_code, 200)
 
     def test_admin_bird_familytree_non_existing_bird(self):

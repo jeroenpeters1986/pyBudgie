@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin, messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -170,20 +171,44 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
 
     mark_as_for_sale.short_description = _("Mark as for sale")
 
-    def get_ancestors_graphviz(self, generation):
+    def get_ancestors_javascript_tree(self, generation, is_origin_bird=False):
         """Generate digraph notation, don't really think it should live here..?!"""
-        graphviz_notation = ""
+        js_tree_notation = ""
+        notation_template = (
+            "\n\t\t\t{{ id: {}, pid: {}, tags: ['{}'], Ringnummer: '{}', "
+            "Kleurslagen: '{}', Geslacht: '{}', Afbeelding: '{}' }},"
+        )
+
+        if is_origin_bird:
+            js_tree_notation += notation_template.format(
+                generation["bird"].pk,
+                "null",
+                generation["bird"].gender,
+                generation["bird"].ring_number,
+                generation["bird"].color_props(),
+                generation["bird"].get_gender_display(),
+                "{}{}".format(settings.MEDIA_URL, generation["bird"].photo),
+            )
+
         for parent_type in ["father", "mother"]:
             if generation["ancestors"][parent_type]:
-                graphviz_notation += '\n  "{}" -> "{}"'.format(
-                    generation["bird"].__str__(),
-                    generation["ancestors"][parent_type]["bird"].__str__(),
+                js_tree_notation += notation_template.format(
+                    generation["ancestors"][parent_type]["bird"].pk,
+                    generation["bird"].pk,
+                    parent_type,
+                    generation["ancestors"][parent_type]["bird"].ring_number,
+                    generation["ancestors"][parent_type]["bird"].color_props(),
+                    generation["ancestors"][parent_type]["bird"].get_gender_display(),
+                    "{}{}".format(
+                        settings.MEDIA_URL,
+                        generation["ancestors"][parent_type]["bird"].photo,
+                    ),
                 )
-                graphviz_notation += self.get_ancestors_graphviz(
+                js_tree_notation += self.get_ancestors_javascript_tree(
                     generation["ancestors"][parent_type]
                 )
 
-        return graphviz_notation
+        return js_tree_notation
 
     def family_tree_view(self, request, *args, **kwargs):
         """Custom admin view to show the family tree"""
@@ -195,15 +220,13 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
 
         family_tree = bird.get_ancestors()
 
-        graphviz_format = "digraph G {"
-        graphviz_format += self.get_ancestors_graphviz(family_tree)
-        graphviz_format += "}"
-
         context = dict(
             self.admin_site.each_context(request),  # Common admin things
             bird=bird,
             family_tree=family_tree,
-            family_tree_graphviz=graphviz_format,
+            family_tree_js=mark_safe(
+                self.get_ancestors_javascript_tree(family_tree, True)
+            ),
         )
         return TemplateResponse(
             request, "budgie_bird/admin/bird_familytree.html", context
