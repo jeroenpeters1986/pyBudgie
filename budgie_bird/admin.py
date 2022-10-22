@@ -176,7 +176,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
         js_tree_notation = ""
         notation_template = (
             "\n\t\t\t{{ id: {}, pid: {}, tags: ['{}'], Ringnummer: '{}', "
-            "Kleurslagen: '{}', Afbeelding: '{}' }},"
+            "Kleurslagen: '{}', Geslacht: '{}', Afbeelding: '{}' }},"
         )
 
         if is_origin_bird:
@@ -186,6 +186,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
                 generation["bird"].gender,
                 generation["bird"].ring_number,
                 generation["bird"].color_props(),
+                generation["bird"].get_gender_display(),
                 "{}{}".format(settings.MEDIA_URL, generation["bird"].photo),
             )
 
@@ -197,6 +198,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
                     parent_type,
                     generation["ancestors"][parent_type]["bird"].ring_number,
                     generation["ancestors"][parent_type]["bird"].color_props(),
+                    generation["ancestors"][parent_type]["bird"].get_gender_display(),
                     "{}{}".format(
                         settings.MEDIA_URL,
                         generation["ancestors"][parent_type]["bird"].photo,
