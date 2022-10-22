@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
     <script src="{% static 'js/jquery1.9.1.min.js' %}"></script>
     <script src="{% static 'js/tree.js' %}"></script>
+    <style>
+    .submit-row {
+        padding: 20px 14px;
+    }
+    .admin-interface a.button {
+        padding: 10px 15px;
+        line-height: 15px;
+        margin: 0 0 5px 5px;
+    }
+    </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:index' %}budgie_bird/">{% trans 'Bird Administration' %}</a>
+  &rsaquo; <a href="{% url 'admin:budgie_bird_bird_changelist' %}">{% trans 'Birds' %}</a>
+  &rsaquo; <a href="{% url 'admin:budgie_bird_bird_change' bird.pk %}">{{ bird }}</a>
+  &rsaquo; Stamboom
+</div>
 {% endblock %}
 
 {% block footer %}
@@ -23,11 +43,12 @@
         OrgChart.templates.female = Object.assign({}, OrgChart.templates.male);
         OrgChart.templates.female.node = '<rect x="0" y="0" height="{h}" width="{w}" fill="#ffffff" stroke-width="2" stroke="#B632B2" rx="7" ry="7"></rect>';
 
+        // TODO: Translate the fieldnames?
         let chart = new OrgChart(document.getElementById("family_tree"), {
             mouseScrool: OrgChart.action.none,
             scaleInitial: OrgChart.match.boundary,
             orientation: OrgChart.orientation.left,
-            enableSearch: false,
+            searchFields: ["Ringnummer"],
             template: "base",
             tags: {
                 "mother": { template: "female" },
@@ -38,14 +59,15 @@
             nodeBinding: {
                 field_0: "Ringnummer",
                 field_1: "Kleurslagen",
+                field_2: "Geslacht",
                 img_0: "Afbeelding"
             },
             nodes: [ {{ family_tree_js }}
             ],
             menu: {
-                pdf: { text: "{% trans "Exporteer als PDF" %}" },
-                png: { text: "{% trans "Exporteer als PNG" %}" },
-                csv: { text: "{% trans "Exporteer als CSV" %}" },
+                pdf: { text: "{% trans "Export as PDF" %}" },
+                png: { text: "{% trans "Export as PNG" %}" },
+                csv: { text: "{% trans "Export as CSV" %}" },
             },
         });
     </script>
@@ -58,10 +80,8 @@
     <div id="content-main">
         <div>
             <div class="submit-row">
-                <p class="deletelink-box">
                     <a class="button" href="{% url 'admin:budgie_bird_bird_change' bird.pk %}">{% translate "Back to the bird" %}</a>
                     <a class="button" href="{% url 'admin:budgie_bird_bird_changelist' %}">{% translate "Back to the overview" %}</a>
-                </p>
             </div>
         </div>
 
