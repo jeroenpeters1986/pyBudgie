@@ -29,9 +29,9 @@ class Bird(models.Model):
         GREY_GREEN = "18.002.003", _("Grey Green")
         VIOLET_GREEN = "18.002.004", _("Violet Green")
         BLUE = "18.004.001", _("Sky Blue")
-        D_BLUE = "18.004.002", _("Mauve")
-        DD_BLUE = "18.004.003", _("Gray")
-        GREY_BLUE = "18.004.004", _("Violet Grey")
+        COBALT_BLUE = "18.004.002", _("Cobalt Blue")
+        D_BLUE = "18.004.003", _("Mauve")
+        DD_BLUE = "18.004.004", _("Gray")
         VIOLET_BLUE = "18.004.005", _("Violet Blue")
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
