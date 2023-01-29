@@ -54,8 +54,7 @@ class Bird(models.Model):
     color = models.CharField(
         choices=Color.choices,
         max_length=15,
-        blank=False,
-        null=False,
+        blank=True,
         verbose_name=_("Color"),
     )
     color_property = models.ManyToManyField(
