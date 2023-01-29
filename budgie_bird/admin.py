@@ -8,12 +8,12 @@ from django.utils.translation import gettext_lazy as _
 
 from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
-from .mixins import AdminExportCsvMixin
+from .mixins import AdminExportCsvMixin, AdminExportAllCsvMixin
 from .models import Bird, Breeder, ColorProperty
 
 
 @admin.register(Bird)
-class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
+class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin, AdminExportAllCsvMixin):
 
     form = BirdForm
 
@@ -81,7 +81,7 @@ class BirdAdmin(BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin):
     autocomplete_fields = ["father", "mother", "breeder", "owner"]
     save_on_top = True
     save_as = True
-    actions = ["export_as_csv", "mark_as_owned", "mark_as_for_sale"]
+    actions = ["export_as_csv", "export_all_as_csv", "mark_as_owned", "mark_as_for_sale"]
 
     change_list_template = "budgie_bird/admin/bird_changelist.html"
 
