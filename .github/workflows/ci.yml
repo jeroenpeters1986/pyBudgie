@@ -40,16 +40,16 @@ jobs:
           MYSQL_PASSWORD: root
     steps:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache dependency # caching dependency will make our build faster.
-        uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
+        uses: actions/cache@v3 # for more info checkout pip section documentation at https://github.com/actions/cache
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: Setup python environment # setting python environment to 3.x
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
       - name: Install gettext (dependency for locale generation)
