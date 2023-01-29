@@ -449,7 +449,9 @@ class BirdAppAdminTest(TestCase):
         )
         self.assertContains(response, "OrgChart")
         # Test the tree notation
-        self.assertContains(response, "{ id: 1, pid: null, tags: ['male'], Ringnummer: 'D'")
+        self.assertContains(
+            response, "{ id: 1, pid: null, tags: ['male'], Ringnummer: 'D'"
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_admin_bird_familytree_non_existing_bird(self):
