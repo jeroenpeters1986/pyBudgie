@@ -392,6 +392,39 @@ class BirdAppAdminTest(TestCase):
         self.assertContains(response, "5TJJ-2710-2021")
         self.assertEqual(response.headers["Content-Type"], "text/csv")
 
+    def test_bird_csv_all_export(self):
+        """Test if the all CSV-export works"""
+
+        testbirds = [
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2022"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2023"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2021"),
+            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-1805-2021"),
+        ]
+
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        post_data = {
+            "action": "export_all_as_csv",
+            "_selected_action": [testbirds[0].pk],
+        }
+        response = self.client.post(self.bird_overview_url, post_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "id,user,ring_number,gender,color,date_of_birth,date_of_death,father,"
+            "mother,breeder,owner,is_owned,is_for_sale,notes,photo",
+        )
+        for bird in testbirds:
+            self.assertContains(response, bird.ring_number)
+        self.assertEqual(response.headers["Content-Type"], "text/csv")
+
     def test_admin_bird_familytree(self):
         """Test if user can view a birds familytree"""
 
