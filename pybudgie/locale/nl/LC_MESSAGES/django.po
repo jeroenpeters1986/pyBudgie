@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 11:44+0100\n"
+"POT-Creation-Date: 2023-01-29 13:06+0100\n"
 "PO-Revision-Date: 2023-01-29 11:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: budgie_bird/admin.py:41
+#: budgie_bird/admin.py:43
 msgid ""
 "Search for ring numbers. You can also narrow down your search using the "
 "filters on the right."
@@ -26,70 +26,70 @@ msgstr ""
 "Zoeken kan naar ringnummers. Je kunt ook deze lijst filteren door gebruik te "
 "maken van de filters rechts."
 
-#: budgie_bird/admin.py:49
+#: budgie_bird/admin.py:51
 msgid "General information"
 msgstr "Algemene informatie"
 
-#: budgie_bird/admin.py:61 budgie_bird/admin.py:151 budgie_bird/models.py:65
+#: budgie_bird/admin.py:63 budgie_bird/admin.py:158 budgie_bird/models.py:65
 #: budgie_bird/models.py:210
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:67 budgie_bird/admin.py:146
+#: budgie_bird/admin.py:69 budgie_bird/admin.py:153
 #: budgie_bird/templates/admin/budgie_bird/change_form.html:41
 msgid "Family tree"
 msgstr "Stamboom"
 
-#: budgie_bird/admin.py:73
+#: budgie_bird/admin.py:75
 msgid "Other information"
 msgstr "Overige informatie"
 
-#: budgie_bird/admin.py:114
+#: budgie_bird/admin.py:121
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:135
+#: budgie_bird/admin.py:142
 msgid "years"
 msgstr "jaren"
 
-#: budgie_bird/admin.py:135
+#: budgie_bird/admin.py:142
 msgid "months"
 msgstr "maanden"
 
-#: budgie_bird/admin.py:137
+#: budgie_bird/admin.py:144
 msgid "Age"
 msgstr "Leeftijd"
 
-#: budgie_bird/admin.py:142 budgie_breeding/admin.py:79
+#: budgie_bird/admin.py:149 budgie_breeding/admin.py:79
 #: budgie_breeding/admin.py:187
 msgid "View"
 msgstr "Bekijk"
 
-#: budgie_bird/admin.py:156 budgie_bird/models.py:71
+#: budgie_bird/admin.py:163 budgie_bird/models.py:71
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:161
+#: budgie_bird/admin.py:168
 msgid "Selected birds are marked as owned"
 msgstr "De geselecteerde vogels zijn gemarkeerd als In bezit"
 
-#: budgie_bird/admin.py:164
+#: budgie_bird/admin.py:171
 msgid "Mark as owned"
 msgstr "Markeer als In bezit"
 
-#: budgie_bird/admin.py:169
+#: budgie_bird/admin.py:176
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:172
+#: budgie_bird/admin.py:179
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:218
+#: budgie_bird/admin.py:225
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:245
+#: budgie_bird/admin.py:252
 msgid "Full name"
 msgstr "Volledige naam"
 
@@ -120,7 +120,7 @@ msgstr "Exporteer geselecteerde naar .csv"
 msgid "Export all to .csv"
 msgstr "Exporteer alles naar .csv"
 
-#: budgie_bird/models.py:16
+#: budgie_bird/models.py:16 budgie_bird/models.py:36
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -172,16 +172,16 @@ msgstr "Grijs"
 msgid "Violet Blue"
 msgstr "Violet blauw"
 
-#: budgie_bird/models.py:41
+#: budgie_bird/models.py:42
 msgid "Ring number"
 msgstr "Ringnummer"
 
-#: budgie_bird/models.py:43
+#: budgie_bird/models.py:44
 msgid "This is to uniquely identify the bird and to determine its breeder"
 msgstr ""
 "Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
 
-#: budgie_bird/models.py:52
+#: budgie_bird/models.py:53
 msgid "Gender"
 msgstr "Geslacht"
 
