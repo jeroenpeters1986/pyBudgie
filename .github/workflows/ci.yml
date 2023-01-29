@@ -64,5 +64,9 @@ jobs:
         run: python manage.py compilemessages --settings=pybudgie.config.settings_ci
       - name: Run Migrations
         run: python manage.py migrate --settings=pybudgie.config.settings_ci
-      - name: Run Tests
-        run: python manage.py test --settings=pybudgie.config.settings_ci
+      - name: Run Test with coverage
+        run: coverage run ./manage.py test --settings=pybudgie.config.settings_ci
+      - name: Generate coverage
+        run: coverage json
+      - name: Update Coverage Badge
+        uses: jeroenpeters1986/coverage-badge-action@main

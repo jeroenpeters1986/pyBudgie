@@ -12,3 +12,7 @@ directory = coverage-reports/html
 
 [xml]
 output = coverage-reports/xml/coverage.xml
+
+[json]
+# This is required for the GitHub badge
+output = coverage/coverage-summary.json

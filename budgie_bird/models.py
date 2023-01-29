@@ -33,6 +33,7 @@ class Bird(models.Model):
         D_BLUE = "18.004.003", _("Mauve")
         DD_BLUE = "18.004.004", _("Gray")
         VIOLET_BLUE = "18.004.005", _("Violet Blue")
+        UNKNOWN = "00.000.000", _("Unknown")
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     ring_number = models.CharField(

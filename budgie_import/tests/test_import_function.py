@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 import budgie_import.services.import_from_file
-from budgie_bird.models import ColorProperty, Bird
+from budgie_bird.models import ColorProperty, Bird, Breeder
 from budgie_user.models import BudgieUser
 
 
@@ -58,7 +58,26 @@ class ImportFileAdminTest(TestCase):
             )
 
     def test_color_import(self):
-        """Test if self named colors are recognized during import"""
+        """Test if self-named colors are recognized during import"""
+
+        Breeder.objects.create(
+            user=self.pybudgie_user,
+            first_name="Henk",
+            last_name="Velzen",
+            breeding_reg_nr="NAVI-2000",
+        )
+        Breeder.objects.create(
+            user=self.pybudgie_user,
+            first_name="Mickey",
+            last_name="Velzen",
+            breeding_reg_nr="MICKS-2000",
+        )
+        Breeder.objects.create(
+            user=self.pybudgie_user,
+            first_name="Harry",
+            last_name="van iene van Gradus van Shots van Berend",
+            breeding_reg_nr="HENK-2000",
+        )
 
         ColorProperty.objects.create(
             user=self.pybudgie_user, color_name="Grijs", rank=1
