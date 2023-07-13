@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:index' %}budgie_bird/">{% trans 'Bird Administration' %}</a>
+  &rsaquo; <a href="{% url 'admin:budgie_bird_bird_changelist' %}">{% trans 'Birds' %}</a>
+  &rsaquo; {% trans 'Export birds' %}
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class="module">
+    <h2>{% trans 'Export all birds to .csv-file' %}</h2>
+    <form method="post">
+      {% csrf_token %}
+        <p>{% trans 'Press the button below to start the export and download' %}</p>
+        <p>
+            <input type="submit" value="{% trans 'Export now' %}" class="default" />
+            <a href="{{ object_url }}" class="cancel-link" style="margin-left: 2em;">{% trans 'Back' %}</a>
+        </p>
+    </form>
+  </div>
+{% endblock %}

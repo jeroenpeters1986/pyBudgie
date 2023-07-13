@@ -6,7 +6,6 @@ from budgie_user.models import BudgieUser
 
 class BreederModelTest(TestCase):
     def setUp(self):
-
         self.app_user = BudgieUser.objects.create(
             username="henk", breeding_reg_nr="OMG1337"
         )

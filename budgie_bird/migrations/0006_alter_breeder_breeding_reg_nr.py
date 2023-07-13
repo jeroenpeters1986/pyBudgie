@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("budgie_bird", "0005_alter_bird_father_alter_bird_mother_and_more"),
     ]

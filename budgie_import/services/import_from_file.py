@@ -65,9 +65,7 @@ def import_or_update_bird(bird_data, user):
 
     # Breeder
     if "kweker" in bird_data:
-
         if "onbekend" not in bird_data["kweker"].lower():
-
             try:
                 last_name = bird_data["kweker"].split(",")[0]
                 first_name = bird_data["kweker"].split(",")[1].strip()
@@ -106,7 +104,6 @@ def import_or_update_bird(bird_data, user):
 
     # All sorts of colors and properties
     if "kleur" in bird_data:
-
         # Primary color
         for color in Bird.Color.choices:
             if color[1].lower() in bird_data["kleur"].lower():

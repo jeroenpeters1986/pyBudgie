@@ -20,7 +20,6 @@ class ImportFileAdmin(BudgieUserMixin, admin.ModelAdmin):
         return ["user"]
 
     def save_model(self, request, obj, form, change):
-
         form.save()
 
         if not request.user.is_superuser:

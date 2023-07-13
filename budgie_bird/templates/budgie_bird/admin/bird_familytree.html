@@ -26,7 +26,7 @@
   &rsaquo; <a href="{% url 'admin:index' %}budgie_bird/">{% trans 'Bird Administration' %}</a>
   &rsaquo; <a href="{% url 'admin:budgie_bird_bird_changelist' %}">{% trans 'Birds' %}</a>
   &rsaquo; <a href="{% url 'admin:budgie_bird_bird_change' bird.pk %}">{{ bird }}</a>
-  &rsaquo; Stamboom
+  &rsaquo; {% trans 'Family tree' %}
 </div>
 {% endblock %}
 

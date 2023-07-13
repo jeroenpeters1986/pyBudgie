@@ -7,11 +7,9 @@ from budgie_user.models import BudgieUser
 
 
 class BreederModelTest(TestCase):
-
     fixtures = ["test_colors.json"]
 
     def setUp(self):
-
         self.app_user = BudgieUser.objects.create_user(
             username="henk", breeding_reg_nr="OMG1337"
         )

@@ -4,7 +4,6 @@ from xml.etree.ElementTree import iterparse
 
 # readXlsx("mysheet.xlsx", sheet=1, header=True)
 def read_xlsx(file_path, **args):
-
     has_header = False
     sheet = 1
 
@@ -30,7 +29,6 @@ def read_xlsx(file_path, **args):
         if el.tag.endswith("}v"):  # <v>84</v>
             value = el.text
         if el.tag.endswith("}c"):  # <c r="A3" t="s"><v>84</v></c>
-
             # If value is a shared string, use value as an index
             if el.attrib.get("t") == "s":
                 value = strings[int(value)]
@@ -46,7 +44,6 @@ def read_xlsx(file_path, **args):
                 header[letter] = value
             else:
                 if value != "":
-
                     # if there is a header row, use the first row's names as the row hash index
                     if has_header and letter in header:
                         row[header[letter].lower()] = value
