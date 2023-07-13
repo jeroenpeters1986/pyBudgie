@@ -345,10 +345,10 @@ class ExportBirdAdmin(admin.ModelAdmin):
             )
             excel_sheet.cell(
                 row=row_num,
-                column=11,
+                column=12,
                 value=str(self.get_value_yes_no(bird.is_for_sale)),
             )
-            excel_sheet.cell(row=row_num, column=11, value=bird.notes)
+            excel_sheet.cell(row=row_num, column=13, value=bird.notes)
 
         response = HttpResponse(
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
