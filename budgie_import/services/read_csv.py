@@ -2,7 +2,6 @@ import csv
 
 
 def read_csv(file_path, **args):
-
     # if "header" in args:
     #     has_header = args["header"]
     # else:

@@ -1,5 +1,9 @@
+import openpyxl
+from datetime import datetime
+
 from django.conf import settings
 from django.contrib import admin, messages
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
@@ -9,14 +13,13 @@ from django.utils.translation import gettext_lazy as _
 from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
 from .mixins import AdminExportCsvMixin, AdminExportAllCsvMixin
-from .models import Bird, Breeder, ColorProperty
+from .models import Bird, Breeder, ColorProperty, BirdProxy
 
 
 @admin.register(Bird)
 class BirdAdmin(
     BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin, AdminExportAllCsvMixin
 ):
-
     form = BirdForm
 
     list_display = [
@@ -257,3 +260,124 @@ class ColorPropertyAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["color_name"]
     list_display = ["color_name", "rank"]
     list_editable = ["rank"]
+
+
+@admin.register(BirdProxy)
+class ExportBirdAdmin(admin.ModelAdmin):
+    def export_view(self, request):
+        if request.method != "POST":
+            # Display the download-button page
+            opts = self.model._meta
+            app_label = opts.app_label
+            object_name = opts.verbose_name
+            object_url = reverse(
+                "admin:%s_%s_changelist" % (app_label, opts.model_name)
+            )
+            context = dict(
+                self.admin_site.each_context(request),
+                title="Download %s" % object_name,
+                object_name=object_name,
+                object_url=object_url,
+            )
+            return TemplateResponse(
+                request, "budgie_bird/admin/bird_export.html", context
+            )
+
+        queryset = self.model.objects.filter(user=request.user)
+
+        # Maak een nieuw Excel-werkboek en werkblad
+        excel_workbook = openpyxl.Workbook()
+        excel_sheet = excel_workbook.active
+
+        # Definieer de veldnamen/headers
+        headers = [
+            "Ringnummer",
+            "Kleur",
+            "Kleurslagen",
+            "Split voor",
+            "Vader",
+            "Moeder",
+            "Geboren",
+            "Kweker",
+            "Eigenaar",
+            "Geslacht",
+            "In bezit",
+            "Te Koop",
+            "Notities",
+        ]
+
+        # Headers
+        for col_num, header in enumerate(headers, 1):
+            excel_sheet.cell(row=1, column=col_num, value=header)
+
+        # Bird data
+        for row_num, bird in enumerate(queryset, 2):
+            excel_sheet.cell(row=row_num, column=1, value=bird.ring_number)
+            excel_sheet.cell(row=row_num, column=2, value=bird.get_color_display())
+            excel_sheet.cell(
+                row=row_num,
+                column=3,
+                value=self.get_color_collection_values(bird.color_property),
+            )
+            excel_sheet.cell(
+                row=row_num,
+                column=4,
+                value=self.get_color_collection_values(bird.split_property),
+            )
+            excel_sheet.cell(
+                row=row_num, column=5, value=self.get_model_string_or_empty(bird.father)
+            )
+            excel_sheet.cell(
+                row=row_num, column=6, value=self.get_model_string_or_empty(bird.mother)
+            )
+            excel_sheet.cell(row=row_num, column=7, value=bird.date_of_birth)
+            excel_sheet.cell(
+                row=row_num,
+                column=8,
+                value=self.get_model_string_or_empty(bird.breeder),
+            )
+            excel_sheet.cell(
+                row=row_num, column=9, value=self.get_model_string_or_empty(bird.owner)
+            )
+            excel_sheet.cell(row=row_num, column=10, value=bird.get_gender_display())
+            excel_sheet.cell(
+                row=row_num, column=11, value=str(self.get_value_yes_no(bird.is_owned))
+            )
+            excel_sheet.cell(
+                row=row_num,
+                column=11,
+                value=str(self.get_value_yes_no(bird.is_for_sale)),
+            )
+            excel_sheet.cell(row=row_num, column=11, value=bird.notes)
+
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response[
+            "Content-Disposition"
+        ] = "attachment; filename={filename}-{timestamp}.xlsx".format(
+            filename=_("bird_export"),
+            timestamp=str(datetime.now().strftime("%Y-%m-%d")),
+        )
+
+        # Sla het Excel-bestand op in de HTTP-respons
+        excel_workbook.save(response)
+
+        return response
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path("export_file/", self.admin_site.admin_view(self.export_view)),
+        ]
+        return my_urls + urls
+
+    def get_model_string_or_empty(self, bird):
+        return str(bird) if bird else ""
+
+    def get_value_yes_no(self, bird_boolean):
+        return _("Yes") if bird_boolean else _("No")
+
+    def get_color_collection_values(self, collection):
+        collection_values = collection.values_list("color_name", flat=True)
+        return ", ".join(collection_values)

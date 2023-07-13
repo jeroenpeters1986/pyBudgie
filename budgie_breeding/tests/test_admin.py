@@ -26,7 +26,6 @@ class BreedingAppAdminTest(TestCase):
     bulkadd_egg_url = reverse("admin:budgie_breeding_egg_bulk_add")
 
     def setUp(self):
-
         self.admin_credentials = {
             "username": "m.scott",
             "password": "RyanIsMyFriend",

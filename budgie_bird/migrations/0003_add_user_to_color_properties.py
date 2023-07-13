@@ -7,7 +7,6 @@ import django.db.models.functions.text
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("budgie_bird", "0002_allow_blank_properties"),

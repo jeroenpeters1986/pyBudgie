@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("budgie_bird", "0003_add_user_to_color_properties"),
     ]

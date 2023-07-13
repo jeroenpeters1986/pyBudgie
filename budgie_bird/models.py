@@ -212,3 +212,11 @@ class ColorProperty(models.Model):
     def __str__(self):
         """Use the color name as the field representation"""
         return self.color_name
+
+
+class BirdProxy(Bird):
+    # This proxy is necessary to facilitate the ExportBirdAdmin view
+    class Meta:
+        proxy = True
+        verbose_name = _("Bird")
+        verbose_name_plural = _("Birds")

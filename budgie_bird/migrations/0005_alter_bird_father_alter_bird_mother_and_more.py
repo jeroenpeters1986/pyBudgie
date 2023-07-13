@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("budgie_bird", "0004_alter_bird_owner"),
     ]

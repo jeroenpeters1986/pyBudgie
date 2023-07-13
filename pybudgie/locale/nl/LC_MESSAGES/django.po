@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 13:06+0100\n"
-"PO-Revision-Date: 2023-01-29 11:44+0100\n"
+"POT-Creation-Date: 2023-07-13 02:04+0200\n"
+"PO-Revision-Date: 2023-07-13 02:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: budgie_bird/admin.py:43
+#: budgie_bird/admin.py:48
 msgid ""
 "Search for ring numbers. You can also narrow down your search using the "
 "filters on the right."
@@ -26,74 +26,88 @@ msgstr ""
 "Zoeken kan naar ringnummers. Je kunt ook deze lijst filteren door gebruik te "
 "maken van de filters rechts."
 
-#: budgie_bird/admin.py:51
+#: budgie_bird/admin.py:56
 msgid "General information"
 msgstr "Algemene informatie"
 
-#: budgie_bird/admin.py:63 budgie_bird/admin.py:158 budgie_bird/models.py:65
+#: budgie_bird/admin.py:68 budgie_bird/admin.py:163 budgie_bird/models.py:65
 #: budgie_bird/models.py:210
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:69 budgie_bird/admin.py:153
+#: budgie_bird/admin.py:74 budgie_bird/admin.py:158
 #: budgie_bird/templates/admin/budgie_bird/change_form.html:41
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:30
 msgid "Family tree"
 msgstr "Stamboom"
 
-#: budgie_bird/admin.py:75
+#: budgie_bird/admin.py:80
 msgid "Other information"
 msgstr "Overige informatie"
 
-#: budgie_bird/admin.py:121
+#: budgie_bird/admin.py:126
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:142
+#: budgie_bird/admin.py:147
 msgid "years"
 msgstr "jaren"
 
-#: budgie_bird/admin.py:142
+#: budgie_bird/admin.py:147
 msgid "months"
 msgstr "maanden"
 
-#: budgie_bird/admin.py:144
+#: budgie_bird/admin.py:149
 msgid "Age"
 msgstr "Leeftijd"
 
-#: budgie_bird/admin.py:149 budgie_breeding/admin.py:79
+#: budgie_bird/admin.py:154 budgie_breeding/admin.py:79
 #: budgie_breeding/admin.py:187
 msgid "View"
 msgstr "Bekijk"
 
-#: budgie_bird/admin.py:163 budgie_bird/models.py:71
+#: budgie_bird/admin.py:168 budgie_bird/models.py:71
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:168
+#: budgie_bird/admin.py:173
 msgid "Selected birds are marked as owned"
 msgstr "De geselecteerde vogels zijn gemarkeerd als In bezit"
 
-#: budgie_bird/admin.py:171
+#: budgie_bird/admin.py:176
 msgid "Mark as owned"
 msgstr "Markeer als In bezit"
 
-#: budgie_bird/admin.py:176
+#: budgie_bird/admin.py:181
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:179
+#: budgie_bird/admin.py:184
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:225
+#: budgie_bird/admin.py:230
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:252
+#: budgie_bird/admin.py:257
 msgid "Full name"
 msgstr "Volledige naam"
 
+#: budgie_bird/admin.py:361
+msgid "bird_export"
+msgstr "vogel_export"
+
+#: budgie_bird/admin.py:380
+msgid "Yes"
+msgstr "Ja"
+
+#: budgie_bird/admin.py:380
+msgid "No"
+msgstr "Nee"
+
 #: budgie_bird/apps.py:8
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:8
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:27
 msgid "Bird Administration"
 msgstr "Vogeladministratie"
@@ -116,7 +130,7 @@ msgstr "Een vogel kan niet ouder zijn dan de {parent}."
 msgid "Export selected to .csv"
 msgstr "Exporteer geselecteerde naar .csv"
 
-#: budgie_bird/mixins.py:43
+#: budgie_bird/mixins.py:59
 msgid "Export all to .csv"
 msgstr "Exporteer alles naar .csv"
 
@@ -230,11 +244,12 @@ msgstr "Deze vogel is te koop"
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:131
+#: budgie_bird/models.py:131 budgie_bird/models.py:221
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:132
+#: budgie_bird/models.py:132 budgie_bird/models.py:222
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:9
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:28
 msgid "Birds"
 msgstr "Vogels"
@@ -289,12 +304,35 @@ msgid "View this bird in a new window"
 msgstr "Bekijk deze vogel in een nieuw venster"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_changelist.html:7
-msgid "Create exportlist"
-msgstr "Exportlijst maken"
+msgid "Export"
+msgstr "Exporteren"
 
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:7
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:26
 msgid "Home"
 msgstr "Begin"
+
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:10
+msgid "Export birds"
+msgstr "Exporteer vogels"
+
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:16
+#, fuzzy
+#| msgid "Export all to .csv"
+msgid "Export all birds to .csv-file"
+msgstr "Exporteer alles naar .csv"
+
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:19
+msgid "Press the button below to start the export and download"
+msgstr ""
+
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:21
+msgid "Export now"
+msgstr "Nu exporteren"
+
+#: budgie_bird/templates/budgie_bird/admin/bird_export.html:22
+msgid "Back"
+msgstr "Terug"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:69
 msgid "Export as PDF"
@@ -575,6 +613,9 @@ msgstr "Nederlands"
 #: pybudgie/config/base.py:135
 msgid "English"
 msgstr "Engels"
+
+#~ msgid "Create exportlist"
+#~ msgstr "Exportlijst maken"
 
 #~ msgid "Violet Grey"
 #~ msgstr "Violet grijs"
