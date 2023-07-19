@@ -293,6 +293,7 @@ class ExportBirdAdmin(admin.ModelAdmin):
         headers = [
             "Ringnummer",
             "Kleur",
+            "Kleurcategorie",
             "Kleurslagen",
             "Split voor",
             "Vader",
@@ -312,43 +313,73 @@ class ExportBirdAdmin(admin.ModelAdmin):
 
         # Bird data
         for row_num, bird in enumerate(queryset, 2):
-            excel_sheet.cell(row=row_num, column=1, value=bird.ring_number)
-            excel_sheet.cell(row=row_num, column=2, value=bird.get_color_display())
+            column_num = 0
+            
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=bird.ring_number)
+
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=self.get_color_combination(bird))
+
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=bird.get_color_display())
+            
+            column_num += 1
             excel_sheet.cell(
                 row=row_num,
-                column=3,
-                value=self.get_color_collection_values(bird.color_property),
+                column=column_num,
+                value=bird.color_props(),
             )
+            
+            column_num += 1
             excel_sheet.cell(
                 row=row_num,
-                column=4,
-                value=self.get_color_collection_values(bird.split_property),
+                column=column_num,
+                value=bird.split_props(),
             )
+            
+            column_num += 1
             excel_sheet.cell(
-                row=row_num, column=5, value=self.get_model_string_or_empty(bird.father)
+                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.father)
             )
+
+            column_num += 1
             excel_sheet.cell(
-                row=row_num, column=6, value=self.get_model_string_or_empty(bird.mother)
+                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.mother)
             )
-            excel_sheet.cell(row=row_num, column=7, value=bird.date_of_birth)
+
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=bird.date_of_birth)
+
+            column_num += 1
             excel_sheet.cell(
                 row=row_num,
                 column=8,
                 value=self.get_model_string_or_empty(bird.breeder),
             )
+
+            column_num += 1
             excel_sheet.cell(
-                row=row_num, column=9, value=self.get_model_string_or_empty(bird.owner)
+                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.owner)
             )
-            excel_sheet.cell(row=row_num, column=10, value=bird.get_gender_display())
+
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=bird.get_gender_display())
+
+            column_num += 1
             excel_sheet.cell(
-                row=row_num, column=11, value=str(self.get_value_yes_no(bird.is_owned))
+                row=row_num, column=column_num, value=str(self.get_value_yes_no(bird.is_owned))
             )
+
+            column_num += 1
             excel_sheet.cell(
                 row=row_num,
-                column=12,
+                column=column_num,
                 value=str(self.get_value_yes_no(bird.is_for_sale)),
             )
-            excel_sheet.cell(row=row_num, column=13, value=bird.notes)
+
+            column_num += 1
+            excel_sheet.cell(row=row_num, column=column_num, value=bird.notes)
 
         response = HttpResponse(
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -378,6 +409,5 @@ class ExportBirdAdmin(admin.ModelAdmin):
     def get_value_yes_no(self, bird_boolean):
         return _("Yes") if bird_boolean else _("No")
 
-    def get_color_collection_values(self, collection):
-        collection_values = collection.values_list("color_name", flat=True)
-        return ", ".join(collection_values)
+    def get_color_combination(self, bird):
+        return "{props} {color} {sep} {split}".format(props=bird.color_props(), color=bird.get_color_display(), sep="/" if bird.split_props() else "", split=bird.split_props()).strip()
