@@ -448,10 +448,10 @@ class BirdAppAdminTest(TestCase):
                 "admin:budgie_bird_bird_familytree", kwargs={"object_id": bird_henk.pk}
             )
         )
-        self.assertContains(response, "OrgChart")
+        self.assertContains(response, "Treant(familyTreeConfig)")
         # Test the tree notation
         self.assertContains(
-            response, "{ id: 1, pid: null, tags: ['male'], Ringnummer: 'D'"
+            response, "nodeStructure: {'HTMLclass': 'pyBudgie_male', 'text': {'name': 'D', 'desc': '"
         )
         self.assertEqual(response.status_code, 200)
 
