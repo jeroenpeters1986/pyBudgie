@@ -144,6 +144,14 @@ class Bird(models.Model):
             x.color_name for x in self.split_property.all().order_by("rank")
         )
 
+    def descriptive_color(self):
+        return "{props} {color} {sep} {split}".format(
+            props=self.color_props(),
+            color=self.get_color_display(),
+            sep="/" if self.split_props() else "",
+            split=self.split_props(),
+        ).strip()
+
     def get_ancestors(self):
         """Recursive method to return the family tree"""
         ancestors = {}

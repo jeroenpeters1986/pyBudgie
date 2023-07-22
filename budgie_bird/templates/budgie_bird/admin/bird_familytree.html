@@ -6,8 +6,11 @@
     {{ block.super }}
     {% comment %}I had rather used the admins Media class, but this is a custom view {% endcomment %}
     <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}" />
-    <script src="{% static 'js/jquery1.9.1.min.js' %}"></script>
-    <script src="{% static 'js/tree.js' %}"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <script src="{% static 'js/treant.js' %}"></script>
+
     <style>
     .submit-row {
         padding: 20px 14px;
@@ -17,6 +20,34 @@
         line-height: 15px;
         margin: 0 0 5px 5px;
     }
+
+    .family-node {
+        padding: 4px;
+        border-radius: 5px;
+        background-color: #ffffff;
+        border: 2px solid #000;
+        width: 200px;
+        font-size: small;
+    }
+
+    .family-node img {
+        margin: 0 0 0 10px;
+        max-width: 90px;
+        float: right !important;
+    }
+
+    .family-node.pyBudgie_female {
+        border-color: deeppink;
+    }
+
+    .family-node.pyBudgie_male {
+        border-color: dodgerblue;
+    }
+    .node-name {
+        font-weight: bold;
+    }
+
+
     </style>
 {% endblock %}
 
@@ -34,44 +65,31 @@
     {{ block.super }}
 
     <script>
-
-        OrgChart.templates.male = Object.assign({}, OrgChart.templates.ana);
-        OrgChart.templates.male.node = '<rect x="0" y="0" height="{h}" width="{w}" fill="#ffffff" stroke-width="2" stroke="#335BBB" rx="7" ry="7"></rect>';
-        OrgChart.templates.male.field_0 = '<text '+OrgChart.attr.width+'="230" style="font-size: 18px;" fill="#000000" x="125" y="95" text-anchor="middle">{val}</text>';
-        OrgChart.templates.male.field_1 = '<text '+OrgChart.attr.width+'="130" '+OrgChart.attr.text_overflow+'="multiline" style="font-size: 14px;" fill="#000000" x="230" y="30" text-anchor="end">{val}</text>';
-
-        OrgChart.templates.female = Object.assign({}, OrgChart.templates.male);
-        OrgChart.templates.female.node = '<rect x="0" y="0" height="{h}" width="{w}" fill="#ffffff" stroke-width="2" stroke="#B632B2" rx="7" ry="7"></rect>';
-
-        // TODO: Translate the fieldnames?
-        let chart = new OrgChart(document.getElementById("family_tree"), {
-            mouseScrool: OrgChart.action.none,
-            scaleInitial: OrgChart.match.boundary,
-            orientation: OrgChart.orientation.left,
-            searchFields: ["Ringnummer"],
-            template: "base",
-            tags: {
-                "mother": { template: "female" },
-                "father": { template: "male" },
-                "female": { template: "female" },
-                "male": { template: "male" },
+        const familyTreeConfig = {
+            chart: {
+                rootOrientation: 'WEST',
+                container: "#family_tree",
+                connectors: {
+                    type: "step",
+                    style: {
+                        "stroke-width": 2,
+                        stroke: "#ccc"
+                    }
+                },
+                levelSeparation: 50,
+                siblingSeparation: 40,
+                node: {
+                    HTMLclass: "family-node",
+                }
             },
-            nodeBinding: {
-                field_0: "Ringnummer",
-                field_1: "Kleurslagen",
-                field_2: "Geslacht",
-                img_0: "Afbeelding"
-            },
-            nodes: [ {{ family_tree_js }}
-            ],
-            menu: {
-                pdf: { text: "{% trans "Export as PDF" %}" },
-                png: { text: "{% trans "Export as PNG" %}" },
-                csv: { text: "{% trans "Export as CSV" %}" },
-            },
-        });
+            nodeStructure: {{ family_tree_data|safe }}
+        };
+
+        new Treant(familyTreeConfig);
     </script>
 {% endblock %}
+
+{% block title %}{% translate "Family tree of" %} {{ bird }}{% endblock %}
 
 {% block content %}
 

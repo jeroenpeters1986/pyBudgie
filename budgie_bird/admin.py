@@ -1,7 +1,6 @@
 import openpyxl
 from datetime import datetime
 
-from django.conf import settings
 from django.contrib import admin, messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -181,44 +180,27 @@ class BirdAdmin(
 
     mark_as_for_sale.short_description = _("Mark as for sale")
 
-    def get_ancestors_javascript_tree(self, generation, is_origin_bird=False):
-        """Generate digraph notation, don't really think it should live here..?!"""
-        js_tree_notation = ""
-        notation_template = (
-            "\n\t\t\t{{ id: {}, pid: {}, tags: ['{}'], Ringnummer: '{}', "
-            "Kleurslagen: '{}', Geslacht: '{}', Afbeelding: '{}' }},"
-        )
+    def convert_bird_to_treantjs_data(self, bird):
+        tree_data = {
+            "HTMLclass": "pyBudgie_{}".format(bird.gender),
+            "text": {
+                "name": bird.ring_number,
+                "desc": "{}: {}".format(_("Date of birth"), bird.date_of_birth or ""),
+                "contact": bird.descriptive_color(),
+            },
+            "image": bird.photo.url,
+        }
 
-        if is_origin_bird:
-            js_tree_notation += notation_template.format(
-                generation["bird"].pk,
-                "null",
-                generation["bird"].gender,
-                generation["bird"].ring_number,
-                generation["bird"].color_props(),
-                generation["bird"].get_gender_display(),
-                "{}{}".format(settings.MEDIA_URL, generation["bird"].photo),
-            )
+        children = []
+        if bird.father:
+            children.append(self.convert_bird_to_treantjs_data(bird.father))
+        if bird.mother:
+            children.append(self.convert_bird_to_treantjs_data(bird.mother))
 
-        for parent_type in ["father", "mother"]:
-            if generation["ancestors"][parent_type]:
-                js_tree_notation += notation_template.format(
-                    generation["ancestors"][parent_type]["bird"].pk,
-                    generation["bird"].pk,
-                    parent_type,
-                    generation["ancestors"][parent_type]["bird"].ring_number,
-                    generation["ancestors"][parent_type]["bird"].color_props(),
-                    generation["ancestors"][parent_type]["bird"].get_gender_display(),
-                    "{}{}".format(
-                        settings.MEDIA_URL,
-                        generation["ancestors"][parent_type]["bird"].photo,
-                    ),
-                )
-                js_tree_notation += self.get_ancestors_javascript_tree(
-                    generation["ancestors"][parent_type]
-                )
+        if children:
+            tree_data["children"] = children
 
-        return js_tree_notation
+        return tree_data
 
     def family_tree_view(self, request, *args, **kwargs):
         """Custom admin view to show the family tree"""
@@ -228,15 +210,10 @@ class BirdAdmin(
             messages.add_message(request, messages.ERROR, _("That bird does not exist"))
             return redirect(reverse("admin:budgie_bird_bird_changelist"))
 
-        family_tree = bird.get_ancestors()
-
         context = dict(
             self.admin_site.each_context(request),  # Common admin things
             bird=bird,
-            family_tree=family_tree,
-            family_tree_js=mark_safe(
-                self.get_ancestors_javascript_tree(family_tree, True)
-            ),
+            family_tree_data=mark_safe(self.convert_bird_to_treantjs_data(bird)),
         )
         return TemplateResponse(
             request, "budgie_bird/admin/bird_familytree.html", context
@@ -314,38 +291,46 @@ class ExportBirdAdmin(admin.ModelAdmin):
         # Bird data
         for row_num, bird in enumerate(queryset, 2):
             column_num = 0
-            
+
             column_num += 1
             excel_sheet.cell(row=row_num, column=column_num, value=bird.ring_number)
 
             column_num += 1
-            excel_sheet.cell(row=row_num, column=column_num, value=self.get_color_combination(bird))
+            excel_sheet.cell(
+                row=row_num, column=column_num, value=bird.descriptive_color()
+            )
 
             column_num += 1
-            excel_sheet.cell(row=row_num, column=column_num, value=bird.get_color_display())
-            
+            excel_sheet.cell(
+                row=row_num, column=column_num, value=bird.get_color_display()
+            )
+
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
                 column=column_num,
                 value=bird.color_props(),
             )
-            
+
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
                 column=column_num,
                 value=bird.split_props(),
             )
-            
+
             column_num += 1
             excel_sheet.cell(
-                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.father)
+                row=row_num,
+                column=column_num,
+                value=self.get_model_string_or_empty(bird.father),
             )
 
             column_num += 1
             excel_sheet.cell(
-                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.mother)
+                row=row_num,
+                column=column_num,
+                value=self.get_model_string_or_empty(bird.mother),
             )
 
             column_num += 1
@@ -360,15 +345,21 @@ class ExportBirdAdmin(admin.ModelAdmin):
 
             column_num += 1
             excel_sheet.cell(
-                row=row_num, column=column_num, value=self.get_model_string_or_empty(bird.owner)
+                row=row_num,
+                column=column_num,
+                value=self.get_model_string_or_empty(bird.owner),
             )
 
             column_num += 1
-            excel_sheet.cell(row=row_num, column=column_num, value=bird.get_gender_display())
+            excel_sheet.cell(
+                row=row_num, column=column_num, value=bird.get_gender_display()
+            )
 
             column_num += 1
             excel_sheet.cell(
-                row=row_num, column=column_num, value=str(self.get_value_yes_no(bird.is_owned))
+                row=row_num,
+                column=column_num,
+                value=str(self.get_value_yes_no(bird.is_owned)),
             )
 
             column_num += 1
@@ -408,6 +399,3 @@ class ExportBirdAdmin(admin.ModelAdmin):
 
     def get_value_yes_no(self, bird_boolean):
         return _("Yes") if bird_boolean else _("No")
-
-    def get_color_combination(self, bird):
-        return "{props} {color} {sep} {split}".format(props=bird.color_props(), color=bird.get_color_display(), sep="/" if bird.split_props() else "", split=bird.split_props()).strip()
