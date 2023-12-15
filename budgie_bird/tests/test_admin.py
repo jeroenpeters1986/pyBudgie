@@ -451,7 +451,8 @@ class BirdAppAdminTest(TestCase):
         self.assertContains(response, "Treant(familyTreeConfig)")
         # Test the tree notation
         self.assertContains(
-            response, "nodeStructure: {'HTMLclass': 'pyBudgie_male', 'text': {'name': 'D', 'desc': '"
+            response,
+            "nodeStructure: {'HTMLclass': 'pyBudgie_male', 'text': {'name': 'D', 'desc': '",
         )
         self.assertEqual(response.status_code, 200)
 
