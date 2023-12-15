@@ -35,3 +35,24 @@ select[multiple] {
    min-width: 20em;
 }
 ```
+
+```
+#!/bin/bash
+
+set -e
+
+#
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+source ~/.virtualenvs/pyBudgie/bin/activate
+black .
+pylama
+coverage run manage.py test -v2 --noinput --settings=pybudgie.config.settings_test
+coverage html
+```
+
