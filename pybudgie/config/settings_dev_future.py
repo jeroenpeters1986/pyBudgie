@@ -18,15 +18,28 @@ DATABASES = {
     }
 }
 
-DEFAULT_FILE_STORAGE = "storages.backends.sftpstorage.SFTPStorage"
-SFTP_STORAGE_HOST = "web0083.zxcs.nl"
-SFTP_STORAGE_ROOT = "/home/uwvogelcdn/public_html"
-SFTP_STORAGE_INTERACTIVE = False
-SFTP_STORAGE_PARAMS = {
-    "username": "uwvogelcdn",
-    "port": 7685,
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.sftpstorage.SFTPStorage",
+        "OPTIONS": {
+            "host": "web0083.zxcs.nl",
+            "root_path": "/home/uwvogelcdn/public_html",
+            "interactive": False,
+            "params": {
+                "hostname": "web0083.zxcs.nl",
+                "username": "uwvogelcdn",
+                "port": 7685,
+            },
+            "base_url": "https://cdn.uwvogels.nl/",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }
+
 MEDIA_URL = "https://cdn.uwvogels.nl/"
+# Set the static root to the media root
 
 
 # #ddev-generated code to import DDEV settings

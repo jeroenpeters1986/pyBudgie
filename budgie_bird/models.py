@@ -226,5 +226,5 @@ class BirdProxy(Bird):
     # This proxy is necessary to facilitate the ExportBirdAdmin view
     class Meta:
         proxy = True
-        verbose_name = _("Bird")
-        verbose_name_plural = _("Birds")
+        verbose_name = "{} {}".format(_("Not in use:"), _("Bird"))
+        verbose_name_plural = "{} {}".format(_("Not in use:"), _("Birds"))

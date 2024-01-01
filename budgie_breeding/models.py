@@ -60,11 +60,14 @@ class BreedingSeason(models.Model):
         verbose_name_plural = _("Breeding seasons")
 
     def __str__(self):
-        return "{} {}, {} {}".format(
-            _("Breeding round"),
-            self.starting_year,
-            self.Month.labels[int(self.starting_month) - 1],
-            "({})".format(self.label) if self.label else "",
+        return (
+            self.label
+            if self.label
+            else "{} {}, {}".format(
+                _("Breeding round"),
+                self.starting_year,
+                self.Month.labels[int(self.starting_month) - 1],
+            )
         )
 
 
