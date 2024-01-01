@@ -141,7 +141,19 @@ class BirdAdmin(
         if months < 0:
             months += 12
 
-        return "{} {}, {} {}".format(years, _("years"), months, _("months"))
+        return mark_safe(
+            "<abbr title='{} {}, {} {}'>{}{}, {}{}</abbr>".format(
+                years,
+                _("years"),
+                months,
+                _("months"),
+                years,
+                _("years")[0],
+                months,
+                _("months")[0],
+            )
+        )
+        ## Too long?  return "{} {}, {} {}".format(years, _("years"), months, _("months"))
 
     current_age.short_description = _("Age")
 

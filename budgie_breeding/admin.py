@@ -106,7 +106,7 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
 @admin.register(Egg)
 class EggAdmin(BudgieUserMixin, admin.ModelAdmin):
     list_display = ["couple", "date", "status", "expected_hatch_date"]
-    list_filter = ["couple", "status"]
+    list_filter = ["couple", "status", "couple__season"]
     ordering = ["couple", "date"]
 
     change_list_template = "budgie_breeding/admin/egg_changelist.html"

@@ -15,7 +15,7 @@
             if(bird_id)
             {
                 django.jQuery(".form-row.field-" + type).append("<div style='clear: both;' class='" + type + "link'>" +
-                    "<label>&nbsp;</label><div class='related-widget-wrapper'>" +
+                    "<div class='related-widget-wrapper'>" +
                     "<a class='related-widget-wrapper-link change-related' href='" + base_admin_link + bird_id + "/change/' style='padding: 0.5em; display: inline-block;'><img src='/static/admin/img/icon-viewlink.svg'> " + view_text + "</a>" +
                     "</div></div>");
             }

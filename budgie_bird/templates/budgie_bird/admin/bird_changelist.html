@@ -3,7 +3,7 @@
 
 {% block object-tools-items %}
     <li>
-        <a href="/nl/admin/budgie_bird/birdproxy/export_file/" class="viewsitelink">
+        <a href="{% url 'admin:budgie_bird_birdproxy_changelist' %}export_file/" class="viewsitelink">
             {% translate "Export" %}
         </a>
     </li>

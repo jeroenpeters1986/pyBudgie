@@ -13,7 +13,10 @@ use_dns_when_possible: true
 composer_version: "2"
 web_environment:
     - DJANGO_SETTINGS_MODULE=pybudgie.settings
-webimage_extra_packages: [python3-dev, default-libmysqlclient-dev, libmariadb-dev, build-essential]
+webimage_extra_packages: [python3-dev, default-libmysqlclient-dev, libmariadb-dev, build-essential, screen]
+hooks:
+  post-start:
+    - exec: "screen -dmS runserver bash -c 'python manage.py runserver 0.0.0.0:8001; exec bash'"
 
 # Key features of DDEV's config.yaml:
 

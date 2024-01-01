@@ -1,0 +1,44 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block admin_change_form_document_ready %}
+    {{ block.super }}
+
+    <script>
+        const base_admin_link = "{% url "admin:budgie_bird_bird_add" %}";
+
+        function createAddChildBirdLink()
+        {
+            const father = django.jQuery('#id_male').val();
+            const mother = django.jQuery('#id_female').val();
+
+            if(father || mother)
+            {
+                django.jQuery("#add_child_bird_link").attr('href', base_admin_link + '?father=' + father + '&mother=' + mother + '&is_owned=1');
+            }
+        }
+
+        django.jQuery(document).ready(function () {
+            createAddChildBirdLink();
+
+            django.jQuery('#id_male').on('change', function(){
+                createAddChildBirdLink();
+            });
+            django.jQuery('#id_female').on('change', function(){
+                createAddChildBirdLink();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="" id="add_child_bird_link" class="golink">
+            {% translate "Add child bird" %}
+        </a>
+    </li>
+
+    {{ block.super }}
+{% endblock %}
