@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-01 23:11+0100\n"
-"PO-Revision-Date: 2024-01-01 23:14+0100\n"
+"POT-Creation-Date: 2024-01-14 00:12+0100\n"
+"PO-Revision-Date: 2024-01-14 00:13+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -61,8 +61,8 @@ msgstr "maanden"
 msgid "Age"
 msgstr "Leeftijd"
 
-#: budgie_bird/admin.py:163 budgie_breeding/admin.py:79
-#: budgie_breeding/admin.py:187
+#: budgie_bird/admin.py:163 budgie_breeding/admin.py:86
+#: budgie_breeding/admin.py:204
 msgid "View"
 msgstr "Bekijk"
 
@@ -354,32 +354,40 @@ msgstr "Terug naar het overzicht"
 msgid "Number of couples"
 msgstr "Aantal koppels"
 
-#: budgie_breeding/admin.py:70 budgie_breeding/models.py:115
-#: budgie_breeding/models.py:164
+#: budgie_breeding/admin.py:77 budgie_breeding/models.py:115
+#: budgie_breeding/models.py:166
 msgid "Breeding couple"
 msgstr "Broedkoppel"
 
-#: budgie_breeding/admin.py:83
+#: budgie_breeding/admin.py:90
 msgid "(Current) Breeding season"
 msgstr "(Huidige) Broedseizoen"
 
-#: budgie_breeding/admin.py:131
+#: budgie_breeding/admin.py:95 budgie_breeding/models.py:191
+msgid "Eggs"
+msgstr "Eieren"
+
+#: budgie_breeding/admin.py:100 budgie_breeding/models.py:157
+msgid "Fertilized"
+msgstr "Bevrucht"
+
+#: budgie_breeding/admin.py:148
 msgid "Some fields were empty, please retry"
 msgstr "Er zijn velden leeggelaten, probeer het opnieuw"
 
-#: budgie_breeding/admin.py:151
+#: budgie_breeding/admin.py:168
 msgid "Added an egg for the selected couples succeeded!"
 msgstr "Voor alle geselecteerde koppels is er een ei aangemaakt!"
 
-#: budgie_breeding/admin.py:171 budgie_breeding/models.py:143
+#: budgie_breeding/admin.py:188 budgie_breeding/models.py:143
 msgid "Taken"
 msgstr "Bezet"
 
-#: budgie_breeding/admin.py:179
+#: budgie_breeding/admin.py:196
 msgid "None"
 msgstr "Geen"
 
-#: budgie_breeding/admin.py:191 budgie_breeding/models.py:137
+#: budgie_breeding/admin.py:208 budgie_breeding/models.py:137
 msgid "Current breeding couple"
 msgstr "Huidig broedkoppel"
 
@@ -479,8 +487,8 @@ msgid "Location / Cage"
 msgstr "Locatie / Kooi"
 
 #: budgie_breeding/models.py:111
-msgid "Breeding couple; M: {}, F: {}"
-msgstr "Broedkoppel; M: {}, V: {}"
+msgid "M: {}, F: {} @ {}"
+msgstr "M: {}, P: {} @ {}"
 
 #: budgie_breeding/models.py:116
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:35
@@ -505,10 +513,6 @@ msgstr "Dit is het huidige broedkoppel dat hier broedt, mag ook leeg zijn"
 msgid "Locations / Cages"
 msgstr "Locaties / Kooien"
 
-#: budgie_breeding/models.py:157
-msgid "Fertilized"
-msgstr "Bevrucht"
-
 #: budgie_breeding/models.py:158
 msgid "Unfertilized"
 msgstr "Onbevrucht"
@@ -521,27 +525,23 @@ msgstr "Afgestorven"
 msgid "Broken"
 msgstr "Kapot gegaan"
 
-#: budgie_breeding/models.py:166
+#: budgie_breeding/models.py:169
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:47
 msgid "Date found"
 msgstr "Datum gevonden"
 
-#: budgie_breeding/models.py:173
+#: budgie_breeding/models.py:176
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:55
 msgid "Status"
 msgstr "Status"
 
-#: budgie_breeding/models.py:177
+#: budgie_breeding/models.py:180
 msgid "Expected hatch date"
 msgstr "Uitgerekende datum"
 
-#: budgie_breeding/models.py:184 budgie_breeding/models.py:187
+#: budgie_breeding/models.py:187 budgie_breeding/models.py:190
 msgid "Egg"
 msgstr "Ei"
-
-#: budgie_breeding/models.py:188
-msgid "Eggs"
-msgstr "Eieren"
 
 #: budgie_breeding/templates/admin/budgie_breeding/change_form.html:39
 msgid "Add child bird"
@@ -608,6 +608,9 @@ msgstr "Nederlands"
 #: pybudgie/config/base.py:134
 msgid "English"
 msgstr "Engels"
+
+#~ msgid "Breeding couple; M: {}, F: {}"
+#~ msgstr "Broedkoppel; M: {}, V: {}"
 
 #~ msgid "Export as PDF"
 #~ msgstr "Exporteer als .pdf-document"

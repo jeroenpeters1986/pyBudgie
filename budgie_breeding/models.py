@@ -108,7 +108,7 @@ class BreedingCouple(models.Model):
 
     def __str__(self):
         return "{}".format(
-            _("Breeding couple; M: {}, F: {}").format(self.male, self.female)
+            _("M: {}, F: {} @ {}").format(self.male, self.female, self.location)
         )
 
     class Meta:
@@ -152,7 +152,7 @@ class Egg(models.Model):
     """Represents an egg laid in a breeding season by a breeding couple of birds"""
 
     class Status(models.TextChoices):
-        """Gender of the bird"""
+        """Status of the egg"""
 
         FERTILIZED = "fertilized", _("Fertilized")
         UNFERTILIZED = "unfertilized", _("Unfertilized")
@@ -161,7 +161,10 @@ class Egg(models.Model):
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     couple = models.ForeignKey(
-        BreedingCouple, on_delete=models.CASCADE, verbose_name=_("Breeding couple")
+        BreedingCouple,
+        on_delete=models.CASCADE,
+        verbose_name=_("Breeding couple"),
+        related_name="eggs",
     )
     date = models.DateField(verbose_name=_("Date found"))
     status = models.CharField(
