@@ -144,3 +144,5 @@ dmypy.json
 .requirements_dev
 .requirements
 tags
+
+.ddev/commands/web/manage.py
