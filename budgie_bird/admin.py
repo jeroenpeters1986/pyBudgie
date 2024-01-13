@@ -153,7 +153,7 @@ class BirdAdmin(
                 _("months")[0],
             )
         )
-        ## Too long?  return "{} {}, {} {}".format(years, _("years"), months, _("months"))
+        # Too long?  return "{} {}, {} {}".format(years, _("years"), months, _("months"))
 
     current_age.short_description = _("Age")
 
