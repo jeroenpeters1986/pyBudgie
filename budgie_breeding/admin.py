@@ -56,7 +56,14 @@ class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
 
 @admin.register(BreedingCouple)
 class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
-    list_display = ["full_name", "male", "female", "start_date", "season_link"]
+    list_display = [
+        "full_name",
+        "male",
+        "female",
+        "start_date",
+        "egg_count",
+        "eggs_fertilized",
+    ]
     list_filter = ["location", "season"]
     date_hierarchy = "start_date"
     inlines = [
@@ -81,6 +88,16 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
         )
 
     season_link.short_description = _("(Current) Breeding season")
+
+    def egg_count(self, obj):
+        return obj.eggs.count()
+
+    egg_count.short_description = _("Eggs")
+
+    def eggs_fertilized(self, obj):
+        return obj.eggs.filter(status=Egg.Status.FERTILIZED).count()
+
+    eggs_fertilized.short_description = _("Fertilized")
 
     def get_inline_instances(self, request, obj=None):
         return obj and super().get_inline_instances(request, obj) or []
