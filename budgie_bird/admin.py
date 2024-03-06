@@ -47,6 +47,7 @@ class BirdAdmin(
     )
     date_hierarchy = "date_of_birth"
     ordering = ["ring_number"]
+    show_facets = admin.ShowFacets.ALWAYS
 
     fieldsets = (
         (

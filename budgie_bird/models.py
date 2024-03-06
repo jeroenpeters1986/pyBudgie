@@ -1,3 +1,6 @@
+import json
+from collections import Counter
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
@@ -164,6 +167,22 @@ class Bird(models.Model):
         }
         ancestors.update(tree)
         return ancestors
+
+    def family_tree_for_inbreed(self):
+        def _get_tree(bird):
+            if bird is None:
+                return None
+
+            tree = {
+                "name": bird.ring_number
+            }
+            if bird.father:
+                tree.update({"s": _get_tree(bird.father)})
+            if bird.mother:
+                tree.update({"d": _get_tree(bird.mother)})
+            return tree
+
+        return json.dumps(_get_tree(self))
 
 
 class Breeder(models.Model):
