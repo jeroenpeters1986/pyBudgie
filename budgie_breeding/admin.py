@@ -25,6 +25,7 @@ class BreedingCoupleInline(BudgieUserMixin, admin.TabularInline):
 
 @admin.register(BreedingSeason)
 class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
+    show_facets = True
     list_display = ["starting_year", "starting_month", "label", "couple_count"]
     list_filter = ["starting_year"]
     inlines = [

@@ -1,5 +1,0 @@
-RUN wget -qO- https://pascalroeleven.nl/deb-pascalroeleven.gpg | sudo tee /etc/apt/trusted.gpg.d/deb-pascalroeleven.gpg && \
-    echo "deb http://deb.pascalroeleven.nl/python3.10 bullseye-backports main" > /etc/apt/sources.list.d/python310.list
-
-RUN apt-get -qq update
-RUN apt-get -qq install --no-install-recommends --no-install-suggests -y python3.10

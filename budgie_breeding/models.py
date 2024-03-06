@@ -1,4 +1,5 @@
 import datetime
+from enum import auto
 
 from django.contrib import admin
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -16,18 +17,18 @@ class BreedingSeason(models.Model):
     class Month(models.TextChoices):
         """Months"""
 
-        JAN = 1, _("January")
-        FEB = 2, _("February")
-        MAR = 3, _("March")
-        APR = 4, _("April")
-        MAY = 5, _("May")
-        JUN = 6, _("June")
-        JUL = 7, _("July")
-        AUG = 8, _("August")
-        SEP = 9, _("September")
-        OCT = 10, _("October")
-        NOV = 11, _("November")
-        DEC = 12, _("December")
+        JAN = auto(), "January"
+        FEB = auto(), "February"
+        MAR = auto(), "March"
+        APR = auto(), "April"
+        MAY = auto(), "May"
+        JUN = auto(), "June"
+        JUL = auto(), "July"
+        AUG = auto(), "August"
+        SEP = auto(), "September"
+        OCT = auto(), "October"
+        NOV = auto(), "November"
+        DEC = auto(), "December"
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     starting_year = models.IntegerField(
