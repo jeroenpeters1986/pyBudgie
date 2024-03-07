@@ -173,9 +173,7 @@ class Bird(models.Model):
             if bird is None:
                 return None
 
-            tree = {
-                "name": bird.ring_number
-            }
+            tree = {"name": bird.ring_number}
             if bird.father:
                 tree.update({"s": _get_tree(bird.father)})
             if bird.mother:
