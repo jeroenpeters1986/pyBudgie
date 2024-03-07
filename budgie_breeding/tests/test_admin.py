@@ -134,7 +134,7 @@ class BreedingAppAdminTest(TestCase):
 
         season_params = {
             "starting_year": 2021,
-            "starting_month": 'MAR',
+            "starting_month": "MAR",
             "label": "BIER",
             # Because of th inlines...
             "breedingcouple_set-TOTAL_FORMS": 1,
@@ -163,7 +163,7 @@ class BreedingAppAdminTest(TestCase):
 
         season_params = {
             "starting_year": 2021,
-            "starting_month": 'MAR',
+            "starting_month": "MAR",
             "label": "BIER",
             # Because of th inlines...
             "breedingcouple_set-TOTAL_FORMS": 1,
@@ -229,7 +229,7 @@ class BreedingAppAdminTest(TestCase):
 
         season_params = {
             "starting_year": 2021,
-            "starting_month": 'MAR',
+            "starting_month": "MAR",
             "label": "BIER",
             # Because of th inlines...
             "breedingcouple_set-TOTAL_FORMS": 1,
@@ -311,7 +311,7 @@ class BreedingAppAdminTest(TestCase):
         season_params = {
             "user": self.pybudgie_admin.pk,
             "starting_year": 2021,
-            "starting_month": 'MAR',
+            "starting_month": "MAR",
             "label": "BIER",
             # Because of th inlines...
             "breedingcouple_set-TOTAL_FORMS": 1,
@@ -347,7 +347,7 @@ class BreedingAppAdminTest(TestCase):
         season_params = {
             "user": self.pybudgie_admin.pk,
             "starting_year": 2021,
-            "starting_month": 'MAR',
+            "starting_month": "MAR",
             "label": "BIER",
             # Because of th inlines...
             "breedingcouple_set-TOTAL_FORMS": 1,
