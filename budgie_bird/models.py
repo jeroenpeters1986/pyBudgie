@@ -1,5 +1,4 @@
 import json
-from collections import Counter
 
 from django.conf import settings
 from django.db import models
