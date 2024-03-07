@@ -51,7 +51,7 @@ jobs:
       - name: Setup python environment # setting python environment to 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
       - name: Install gettext (dependency for locale generation)
         run: sudo apt-get -y install gettext
       - name: Install requirements
