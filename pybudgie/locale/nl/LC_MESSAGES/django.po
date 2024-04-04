@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-14 00:12+0100\n"
+"POT-Creation-Date: 2024-03-09 18:09+0100\n"
 "PO-Revision-Date: 2024-01-14 00:13+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -26,93 +26,94 @@ msgstr ""
 "Zoeken kan naar ringnummers. Je kunt ook deze lijst filteren door gebruik te "
 "maken van de filters rechts."
 
-#: budgie_bird/admin.py:53
+#: budgie_bird/admin.py:54
 msgid "General information"
 msgstr "Algemene informatie"
 
-#: budgie_bird/admin.py:65 budgie_bird/admin.py:172 budgie_bird/models.py:65
-#: budgie_bird/models.py:218
+#: budgie_bird/admin.py:66 budgie_bird/admin.py:173 budgie_bird/models.py:67
+#: budgie_bird/models.py:234
 msgid "Color properties"
 msgstr "Kleurslagen"
 
-#: budgie_bird/admin.py:71 budgie_bird/admin.py:167
+#: budgie_bird/admin.py:72 budgie_bird/admin.py:168
 #: budgie_bird/templates/admin/budgie_bird/change_form.html:41
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:61
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:64
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:100
 msgid "Family tree"
 msgstr "Stamboom"
 
-#: budgie_bird/admin.py:77
+#: budgie_bird/admin.py:78
 msgid "Other information"
 msgstr "Overige informatie"
 
-#: budgie_bird/admin.py:123
+#: budgie_bird/admin.py:124
 msgid "Photo"
 msgstr "Foto"
 
-#: budgie_bird/admin.py:147 budgie_bird/admin.py:151
+#: budgie_bird/admin.py:148 budgie_bird/admin.py:152
 msgid "years"
 msgstr "jaren"
 
-#: budgie_bird/admin.py:149 budgie_bird/admin.py:153
+#: budgie_bird/admin.py:150 budgie_bird/admin.py:154
 msgid "months"
 msgstr "maanden"
 
-#: budgie_bird/admin.py:158
+#: budgie_bird/admin.py:159
 msgid "Age"
 msgstr "Leeftijd"
 
-#: budgie_bird/admin.py:163 budgie_breeding/admin.py:86
-#: budgie_breeding/admin.py:204
+#: budgie_bird/admin.py:164 budgie_breeding/admin.py:87
+#: budgie_breeding/admin.py:205
 msgid "View"
 msgstr "Bekijk"
 
-#: budgie_bird/admin.py:177 budgie_bird/models.py:71
+#: budgie_bird/admin.py:178 budgie_bird/models.py:73
 msgid "Split properties"
 msgstr "Split voor"
 
-#: budgie_bird/admin.py:182
+#: budgie_bird/admin.py:183
 msgid "Selected birds are marked as owned"
 msgstr "De geselecteerde vogels zijn gemarkeerd als In bezit"
 
-#: budgie_bird/admin.py:185
+#: budgie_bird/admin.py:186
 msgid "Mark as owned"
 msgstr "Markeer als In bezit"
 
-#: budgie_bird/admin.py:190
+#: budgie_bird/admin.py:191
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:193
+#: budgie_bird/admin.py:194
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:200 budgie_bird/models.py:74
+#: budgie_bird/admin.py:201 budgie_bird/models.py:76
 msgid "Date of birth"
 msgstr "Geboortedatum"
 
-#: budgie_bird/admin.py:222
+#: budgie_bird/admin.py:223
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:244
+#: budgie_bird/admin.py:245
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: budgie_bird/admin.py:393
+#: budgie_bird/admin.py:394
 msgid "bird_export"
 msgstr "vogel_export"
 
-#: budgie_bird/admin.py:413
+#: budgie_bird/admin.py:414
 msgid "Yes"
 msgstr "Ja"
 
-#: budgie_bird/admin.py:413
+#: budgie_bird/admin.py:414
 msgid "No"
 msgstr "Nee"
 
 #: budgie_bird/apps.py:8
 #: budgie_bird/templates/budgie_bird/admin/bird_export.html:8
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:58
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:61
 msgid "Bird Administration"
 msgstr "Vogeladministratie"
 
@@ -138,96 +139,96 @@ msgstr "Exporteer geselecteerde naar .csv"
 msgid "Export all to .csv"
 msgstr "Exporteer alles naar .csv"
 
-#: budgie_bird/models.py:16 budgie_bird/models.py:36
+#: budgie_bird/models.py:18 budgie_bird/models.py:38
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: budgie_bird/models.py:17 budgie_breeding/models.py:83
+#: budgie_bird/models.py:19 budgie_breeding/models.py:84
 msgid "Male"
 msgstr "Man"
 
-#: budgie_bird/models.py:18 budgie_breeding/models.py:92
+#: budgie_bird/models.py:20 budgie_breeding/models.py:93
 msgid "Female"
 msgstr "Pop"
 
-#: budgie_bird/models.py:26
+#: budgie_bird/models.py:28
 msgid "Light Green"
 msgstr "Lichtgroen"
 
-#: budgie_bird/models.py:27
+#: budgie_bird/models.py:29
 msgid "Dark Green"
 msgstr "Donkergroen"
 
-#: budgie_bird/models.py:28
+#: budgie_bird/models.py:30
 msgid "Olive Green"
 msgstr "Olijfgroen"
 
-#: budgie_bird/models.py:29
+#: budgie_bird/models.py:31
 msgid "Grey Green"
 msgstr "Grijsgroen"
 
-#: budgie_bird/models.py:30
+#: budgie_bird/models.py:32
 msgid "Violet Green"
 msgstr "Violet groen"
 
-#: budgie_bird/models.py:31
+#: budgie_bird/models.py:33
 msgid "Sky Blue"
 msgstr "Hemelsblauw"
 
-#: budgie_bird/models.py:32
+#: budgie_bird/models.py:34
 msgid "Cobalt Blue"
 msgstr "Kobaltblauw"
 
-#: budgie_bird/models.py:33
+#: budgie_bird/models.py:35
 msgid "Mauve"
 msgstr "Mauve"
 
-#: budgie_bird/models.py:34
+#: budgie_bird/models.py:36
 msgid "Gray"
 msgstr "Grijs"
 
-#: budgie_bird/models.py:35
+#: budgie_bird/models.py:37
 msgid "Violet Blue"
 msgstr "Violet blauw"
 
-#: budgie_bird/models.py:42
+#: budgie_bird/models.py:44
 msgid "Ring number"
 msgstr "Ringnummer"
 
-#: budgie_bird/models.py:44
+#: budgie_bird/models.py:46
 msgid "This is to uniquely identify the bird and to determine its breeder"
 msgstr ""
 "Dit wordt gebruikt om een unieke vogel te identificeren en wie de kweker is"
 
-#: budgie_bird/models.py:53
+#: budgie_bird/models.py:55
 msgid "Gender"
 msgstr "Geslacht"
 
-#: budgie_bird/models.py:59
+#: budgie_bird/models.py:61
 msgid "Color"
 msgstr "Kleur"
 
-#: budgie_bird/models.py:77
+#: budgie_bird/models.py:79
 msgid "Date of death"
 msgstr "Sterfdatum"
 
-#: budgie_bird/models.py:83
+#: budgie_bird/models.py:85
 msgid "father"
 msgstr "vader"
 
-#: budgie_bird/models.py:92
+#: budgie_bird/models.py:94
 msgid "mother"
 msgstr "moeder"
 
-#: budgie_bird/models.py:108
+#: budgie_bird/models.py:110
 msgid "Owner"
 msgstr "Eigenaar"
 
-#: budgie_bird/models.py:114
+#: budgie_bird/models.py:116
 msgid "I own this bird"
 msgstr "In bezit"
 
-#: budgie_bird/models.py:116
+#: budgie_bird/models.py:118
 msgid ""
 "Sometimes when you are the owner, the bird is not at your disposal due to a "
 "trade"
@@ -235,71 +236,71 @@ msgstr ""
 "Het kan voorkomen dat je de eigenaar bent maar de vogel toch niet in je "
 "bezit is, bijvoorbeeld vanwege een broedruil"
 
-#: budgie_bird/models.py:120
+#: budgie_bird/models.py:122
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:122 budgie_bird/models.py:185
-#: budgie_breeding/models.py:107 budgie_user/models.py:11
+#: budgie_bird/models.py:124 budgie_bird/models.py:201
+#: budgie_breeding/models.py:108 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:131 budgie_bird/models.py:229
+#: budgie_bird/models.py:133 budgie_bird/models.py:245
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:132 budgie_bird/models.py:230
+#: budgie_bird/models.py:134 budgie_bird/models.py:246
 #: budgie_bird/templates/budgie_bird/admin/bird_export.html:9
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:59
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:62
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:173
+#: budgie_bird/models.py:189
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:174
+#: budgie_bird/models.py:190
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:179 budgie_user/models.py:8
+#: budgie_bird/models.py:195 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:181
+#: budgie_bird/models.py:197
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:183
+#: budgie_bird/models.py:199
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:189
+#: budgie_bird/models.py:205
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:190
+#: budgie_bird/models.py:206
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:208
+#: budgie_bird/models.py:224
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:211
+#: budgie_bird/models.py:227
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:212
+#: budgie_bird/models.py:228
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
-#: budgie_bird/models.py:217
+#: budgie_bird/models.py:233
 msgid "Color property"
 msgstr "Kleurslagen"
 
-#: budgie_bird/models.py:229 budgie_bird/models.py:230
+#: budgie_bird/models.py:245 budgie_bird/models.py:246
 msgid "Not in use:"
 msgstr "Niet in gebruik:"
 
@@ -312,7 +313,7 @@ msgid "Export"
 msgstr "Exporteren"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_export.html:7
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:57
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:60
 msgid "Home"
 msgstr "Begin"
 
@@ -336,58 +337,62 @@ msgstr "Nu exporteren"
 msgid "Back"
 msgstr "Terug"
 
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:93
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:97
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:112
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:116
 msgid "Family tree of"
 msgstr "Stamboom van"
 
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:102
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:121
 msgid "Back to the bird"
 msgstr "Terug naar de vogel"
 
-#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:103
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:122
+msgid "Download as .png"
+msgstr ""
+
+#: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:123
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:25
 msgid "Back to the overview"
 msgstr "Terug naar het overzicht"
 
-#: budgie_breeding/admin.py:37
+#: budgie_breeding/admin.py:38
 msgid "Number of couples"
 msgstr "Aantal koppels"
 
-#: budgie_breeding/admin.py:77 budgie_breeding/models.py:115
-#: budgie_breeding/models.py:166
+#: budgie_breeding/admin.py:78 budgie_breeding/models.py:116
+#: budgie_breeding/models.py:167
 msgid "Breeding couple"
 msgstr "Broedkoppel"
 
-#: budgie_breeding/admin.py:90
+#: budgie_breeding/admin.py:91
 msgid "(Current) Breeding season"
 msgstr "(Huidige) Broedseizoen"
 
-#: budgie_breeding/admin.py:95 budgie_breeding/models.py:191
+#: budgie_breeding/admin.py:96 budgie_breeding/models.py:192
 msgid "Eggs"
 msgstr "Eieren"
 
-#: budgie_breeding/admin.py:100 budgie_breeding/models.py:157
+#: budgie_breeding/admin.py:101 budgie_breeding/models.py:158
 msgid "Fertilized"
 msgstr "Bevrucht"
 
-#: budgie_breeding/admin.py:148
+#: budgie_breeding/admin.py:149
 msgid "Some fields were empty, please retry"
 msgstr "Er zijn velden leeggelaten, probeer het opnieuw"
 
-#: budgie_breeding/admin.py:168
+#: budgie_breeding/admin.py:169
 msgid "Added an egg for the selected couples succeeded!"
 msgstr "Voor alle geselecteerde koppels is er een ei aangemaakt!"
 
-#: budgie_breeding/admin.py:188 budgie_breeding/models.py:143
+#: budgie_breeding/admin.py:189 budgie_breeding/models.py:144
 msgid "Taken"
 msgstr "Bezet"
 
-#: budgie_breeding/admin.py:196
+#: budgie_breeding/admin.py:197
 msgid "None"
 msgstr "Geen"
 
-#: budgie_breeding/admin.py:208 budgie_breeding/models.py:137
+#: budgie_breeding/admin.py:209 budgie_breeding/models.py:138
 msgid "Current breeding couple"
 msgstr "Huidig broedkoppel"
 
@@ -395,151 +400,103 @@ msgstr "Huidig broedkoppel"
 msgid "Breeding administration"
 msgstr "Kweekadministratie"
 
-#: budgie_breeding/models.py:19
-msgid "January"
-msgstr "Januari"
-
-#: budgie_breeding/models.py:20
-msgid "February"
-msgstr "Februari"
-
-#: budgie_breeding/models.py:21
-msgid "March"
-msgstr "Maart"
-
-#: budgie_breeding/models.py:22
-msgid "April"
-msgstr "April"
-
-#: budgie_breeding/models.py:23
-msgid "May"
-msgstr "Mei"
-
-#: budgie_breeding/models.py:24
-msgid "June"
-msgstr "Juni"
-
-#: budgie_breeding/models.py:25
-msgid "July"
-msgstr "Juli"
-
-#: budgie_breeding/models.py:26
-msgid "August"
-msgstr "Augustus"
-
-#: budgie_breeding/models.py:27
-msgid "September"
-msgstr "September"
-
-#: budgie_breeding/models.py:28
-msgid "October"
-msgstr "Oktober"
-
-#: budgie_breeding/models.py:29
-msgid "November"
-msgstr "November"
-
-#: budgie_breeding/models.py:30
-msgid "December"
-msgstr "December"
-
-#: budgie_breeding/models.py:34
+#: budgie_breeding/models.py:35
 msgid "Starting year"
 msgstr "Start jaar"
 
-#: budgie_breeding/models.py:39
+#: budgie_breeding/models.py:40
 msgid "Starting month"
 msgstr "Start maand"
 
-#: budgie_breeding/models.py:46
+#: budgie_breeding/models.py:47
 msgid ""
 "This allows you to distinguish breeding rounds if you have multiple per year"
 msgstr ""
 "Hiermee kun je de verschillende broedseizoenen uit elkaar houden als je "
 "meerdere rondes per jaar kweekt"
 
-#: budgie_breeding/models.py:51
+#: budgie_breeding/models.py:52
 msgid "Label"
 msgstr "Label"
 
-#: budgie_breeding/models.py:52
+#: budgie_breeding/models.py:53
 msgid "Optional label to find it quicker"
 msgstr "Optioneel label om sneller te kunnen vinden"
 
-#: budgie_breeding/models.py:59 budgie_breeding/models.py:79
+#: budgie_breeding/models.py:60 budgie_breeding/models.py:80
 msgid "Breeding season"
 msgstr "Broedseizoen"
 
-#: budgie_breeding/models.py:60
+#: budgie_breeding/models.py:61
 msgid "Breeding seasons"
 msgstr "Broedseizoenen"
 
-#: budgie_breeding/models.py:67
+#: budgie_breeding/models.py:68
 msgid "Breeding round"
 msgstr "Kweekronde"
 
-#: budgie_breeding/models.py:99
+#: budgie_breeding/models.py:100
 msgid "Start date"
 msgstr "Startdatum"
 
-#: budgie_breeding/models.py:105 budgie_breeding/models.py:147
+#: budgie_breeding/models.py:106 budgie_breeding/models.py:148
 msgid "Location / Cage"
 msgstr "Locatie / Kooi"
 
-#: budgie_breeding/models.py:111
+#: budgie_breeding/models.py:112
 msgid "M: {}, F: {} @ {}"
 msgstr "M: {}, P: {} @ {}"
 
-#: budgie_breeding/models.py:116
+#: budgie_breeding/models.py:117
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:35
 msgid "Breeding couples"
 msgstr "Broedkoppels"
 
-#: budgie_breeding/models.py:125
+#: budgie_breeding/models.py:126
 msgid "A code to represent the location of this cage"
 msgstr ""
 "Een code waar de locatie/kooi herkend kan worden, bijvoorbeeld \"K01\", of "
 "gewoon \"Kooi 1\""
 
-#: budgie_breeding/models.py:127
+#: budgie_breeding/models.py:128
 msgid "Description"
 msgstr "Beschrijving"
 
-#: budgie_breeding/models.py:133
+#: budgie_breeding/models.py:134
 msgid "This is the couple that is currently breeding here, can also be empty"
 msgstr "Dit is het huidige broedkoppel dat hier broedt, mag ook leeg zijn"
 
-#: budgie_breeding/models.py:148
+#: budgie_breeding/models.py:149
 msgid "Locations / Cages"
 msgstr "Locaties / Kooien"
 
-#: budgie_breeding/models.py:158
+#: budgie_breeding/models.py:159
 msgid "Unfertilized"
 msgstr "Onbevrucht"
 
-#: budgie_breeding/models.py:159
+#: budgie_breeding/models.py:160
 msgid "Died off"
 msgstr "Afgestorven"
 
-#: budgie_breeding/models.py:160
+#: budgie_breeding/models.py:161
 msgid "Broken"
 msgstr "Kapot gegaan"
 
-#: budgie_breeding/models.py:169
+#: budgie_breeding/models.py:170
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:47
 msgid "Date found"
 msgstr "Datum gevonden"
 
-#: budgie_breeding/models.py:176
+#: budgie_breeding/models.py:177
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:55
 msgid "Status"
 msgstr "Status"
 
-#: budgie_breeding/models.py:180
+#: budgie_breeding/models.py:181
 msgid "Expected hatch date"
 msgstr "Uitgerekende datum"
 
-#: budgie_breeding/models.py:187 budgie_breeding/models.py:190
+#: budgie_breeding/models.py:188 budgie_breeding/models.py:191
 msgid "Egg"
 msgstr "Ei"
 
@@ -608,6 +565,42 @@ msgstr "Nederlands"
 #: pybudgie/config/base.py:134
 msgid "English"
 msgstr "Engels"
+
+#~ msgid "January"
+#~ msgstr "Januari"
+
+#~ msgid "February"
+#~ msgstr "Februari"
+
+#~ msgid "March"
+#~ msgstr "Maart"
+
+#~ msgid "April"
+#~ msgstr "April"
+
+#~ msgid "May"
+#~ msgstr "Mei"
+
+#~ msgid "June"
+#~ msgstr "Juni"
+
+#~ msgid "July"
+#~ msgstr "Juli"
+
+#~ msgid "August"
+#~ msgstr "Augustus"
+
+#~ msgid "September"
+#~ msgstr "September"
+
+#~ msgid "October"
+#~ msgstr "Oktober"
+
+#~ msgid "November"
+#~ msgstr "November"
+
+#~ msgid "December"
+#~ msgstr "December"
 
 #~ msgid "Breeding couple; M: {}, F: {}"
 #~ msgstr "Broedkoppel; M: {}, V: {}"
