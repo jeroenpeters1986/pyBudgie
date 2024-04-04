@@ -2,6 +2,7 @@ from datetime import datetime
 
 import budgie_import.services.read_csv
 import budgie_import.services.read_xlsx
+import budgie_import.services.read_zooeasy
 from budgie_bird.models import Bird, Breeder, ColorProperty
 
 
@@ -15,6 +16,10 @@ def import_from_file(file_path, user):
     elif file_type == "csv":
         bird_import_rows = budgie_import.services.read_csv.read_csv(
             file_path, header=True
+        )
+    elif file_type == "zoo":
+        bird_import_rows = budgie_import.services.read_zooeasy.read_zooeasy(
+            file_path
         )
     else:
         raise Exception("No valid .xlsx or .csv found")
