@@ -182,6 +182,21 @@ class Bird(models.Model):
         return json.dumps(_get_tree(self))
 
 
+class BirdPhoto(models.Model):
+    bird = models.ForeignKey(Bird, on_delete=models.CASCADE, related_name="birdphotos")
+    notes = models.CharField(max_length=255, blank=True, verbose_name=_("Notes"))
+    image = models.ImageField(
+        default=settings.BIRD_PICTURE_DEFAULT,
+        upload_to=settings.BIRD_PICTURE_UPLOAD_LOCATION,
+    )
+    uploaded_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["uploaded_at"]
+        verbose_name = _("Additional bird photo")
+        verbose_name_plural = _("Additional bird photos")
+
+
 class Breeder(models.Model):
     """Breeder (contacts) model"""
 
