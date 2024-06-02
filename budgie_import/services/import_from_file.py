@@ -18,9 +18,7 @@ def import_from_file(file_path, user):
             file_path, header=True
         )
     elif file_type == "zoo":
-        bird_import_rows = budgie_import.services.read_zooeasy.read_zooeasy(
-            file_path
-        )
+        bird_import_rows = budgie_import.services.read_zooeasy.read_zooeasy(file_path)
     else:
         raise Exception("No valid .xlsx or .csv found")
 

@@ -12,7 +12,12 @@ from django.utils.translation import gettext_lazy as _
 from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
 from .mixins import AdminExportCsvMixin, AdminExportAllCsvMixin
-from .models import Bird, Breeder, ColorProperty, BirdProxy
+from .models import Bird, Breeder, ColorProperty, BirdProxy, BirdPhoto
+
+
+class BirdPhotoInline(admin.StackedInline):
+    model = BirdPhoto
+    extra = 1
 
 
 @admin.register(Bird)
@@ -20,6 +25,8 @@ class BirdAdmin(
     BudgieUserMixin, admin.ModelAdmin, AdminExportCsvMixin, AdminExportAllCsvMixin
 ):
     form = BirdForm
+
+    inlines = [BirdPhotoInline]
 
     list_display = [
         "ring_number",
@@ -305,19 +312,23 @@ class ExportBirdAdmin(admin.ModelAdmin):
         for row_num, bird in enumerate(queryset, 2):
             column_num = 0
 
+            # Ring number
             column_num += 1
             excel_sheet.cell(row=row_num, column=column_num, value=bird.ring_number)
 
+            # Color name full-out
             column_num += 1
             excel_sheet.cell(
                 row=row_num, column=column_num, value=bird.descriptive_color()
             )
 
+            # Color (catalog) category
             column_num += 1
             excel_sheet.cell(
                 row=row_num, column=column_num, value=bird.get_color_display()
             )
 
+            # Color properties
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -325,6 +336,7 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=bird.color_props(),
             )
 
+            # Split properties
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -332,6 +344,7 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=bird.split_props(),
             )
 
+            # Father
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -339,6 +352,7 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=self.get_model_string_or_empty(bird.father),
             )
 
+            # Mother
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -346,16 +360,19 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=self.get_model_string_or_empty(bird.mother),
             )
 
+            # Date of birth
             column_num += 1
             excel_sheet.cell(row=row_num, column=column_num, value=bird.date_of_birth)
 
+            # Breeder
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
-                column=8,
+                column=column_num,
                 value=self.get_model_string_or_empty(bird.breeder),
             )
 
+            # Owner
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -363,11 +380,13 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=self.get_model_string_or_empty(bird.owner),
             )
 
+            # Sex
             column_num += 1
             excel_sheet.cell(
                 row=row_num, column=column_num, value=bird.get_gender_display()
             )
 
+            # Is this bird owned by the account holder?
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -375,6 +394,7 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=str(self.get_value_yes_no(bird.is_owned)),
             )
 
+            # Is this bird for sale?
             column_num += 1
             excel_sheet.cell(
                 row=row_num,
@@ -382,20 +402,21 @@ class ExportBirdAdmin(admin.ModelAdmin):
                 value=str(self.get_value_yes_no(bird.is_for_sale)),
             )
 
+            # Notes about the bird
             column_num += 1
             excel_sheet.cell(row=row_num, column=column_num, value=bird.notes)
 
         response = HttpResponse(
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-        response[
-            "Content-Disposition"
-        ] = "attachment; filename={filename}-{timestamp}.xlsx".format(
-            filename=_("bird_export"),
-            timestamp=str(datetime.now().strftime("%Y-%m-%d")),
+        response["Content-Disposition"] = (
+            "attachment; filename={filename}-{timestamp}.xlsx".format(
+                filename=_("bird_export"),
+                timestamp=str(datetime.now().strftime("%Y-%m-%d")),
+            )
         )
 
-        # Sla het Excel-bestand op in de HTTP-respons
+        # Save this Excel workbook to the response
         excel_workbook.save(response)
 
         return response
