@@ -119,7 +119,7 @@ class BirdAppAdminTest(TestCase):
         self.assertEqual(1, Bird.objects.count())
 
     def test_admin_bird_add_cannot_die_before_born_date(self):
-        """Test if the cannot-die-before-birthdate check works"""
+        """Test if the cannot-die-before-birthdate check throws an error on invalid input"""
         self.setup_assign_breeders(self.pybudgie_user)
         self.client.login(
             username=self.user_credentials["username"],
@@ -152,6 +152,7 @@ class BirdAppAdminTest(TestCase):
         )  # FIXME: Test for English, @override_settings(LANGUAGE_CODE="en") doesnt seem to work
 
     def test_bird_form_date_of_death(self):
+        """Test if the cannot-die-before-birthdate check works"""
         spullen_bird = {
             "user": 1,
             "ring_number": "5TJJ-12-2010",
@@ -285,7 +286,7 @@ class BirdAppAdminTest(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_userfilter_mixin_working_for_user(self):
-        """Test if the BudgieUser mixin is used in the admin"""
+        """Test if the BudgieUser filter mixin is called in the admin"""
 
         Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021")
         Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021")
