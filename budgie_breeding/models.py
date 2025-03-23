@@ -17,18 +17,18 @@ class BreedingSeason(models.Model):
     class Month(models.TextChoices):
         """Months"""
 
-        JAN = auto(), "January"
-        FEB = auto(), "February"
-        MAR = auto(), "March"
-        APR = auto(), "April"
-        MAY = auto(), "May"
-        JUN = auto(), "June"
-        JUL = auto(), "July"
-        AUG = auto(), "August"
-        SEP = auto(), "September"
-        OCT = auto(), "October"
-        NOV = auto(), "November"
-        DEC = auto(), "December"
+        JAN = auto(), _("January")
+        FEB = auto(), _("February")
+        MAR = auto(), _("March")
+        APR = auto(), _("April")
+        MAY = auto(), _("May")
+        JUN = auto(), _("June")
+        JUL = auto(), _("July")
+        AUG = auto(), _("August")
+        SEP = auto(), _("September")
+        OCT = auto(), _("October")
+        NOV = auto(), _("November")
+        DEC = auto(), _("December")
 
     user = models.ForeignKey(BudgieUser, on_delete=models.CASCADE)
     starting_year = models.IntegerField(
@@ -67,7 +67,7 @@ class BreedingSeason(models.Model):
             else "{} {}, {}".format(
                 _("Breeding round"),
                 self.starting_year,
-                self.Month.labels[int(self.starting_month) - 1],
+                self.get_starting_month_display(),
             )
         )
 

@@ -77,19 +77,6 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
 
     full_name.short_description = _("Breeding couple")
 
-    def season_link(self, obj):
-        link = reverse(
-            "admin:budgie_breeding_breedingseason_change", args=[obj.season.id]
-        )
-        return format_html(
-            '<a href="{}" title="{}" style="text-decoration: underline;">{}</a>',
-            link,
-            _("View"),
-            obj.season,
-        )
-
-    season_link.short_description = _("(Current) Breeding season")
-
     def egg_count(self, obj):
         return obj.eggs.count()
 
