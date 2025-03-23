@@ -443,14 +443,10 @@ class BirdAppAdminTest(TestCase):
             password=self.user_credentials["password"],
         )
 
-        testbirds = [
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2021"),
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2022"),
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2023"),
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021"),
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2021"),
-            Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-1805-2021"),
-        ]
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2802-2023"),
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-0801-2021"),
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-2710-2021"),
+        Bird.objects.create(user=self.pybudgie_user, ring_number="5TJJ-1805-2021"),
 
         view_response = self.client.get(bird_export_url)
         self.assertEqual(view_response.status_code, 200)
