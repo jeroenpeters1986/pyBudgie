@@ -431,11 +431,12 @@ class BirdAppAdminTest(TestCase):
             self.assertContains(response, bird.ring_number)
         self.assertEqual(response.headers["Content-Type"], "text/csv")
 
-
     def test_bird_excel_export(self):
         """Test if the Excel-export page returns an excel document"""
 
-        bird_export_url = "{}export_file/".format(reverse("admin:budgie_bird_birdproxy_changelist"))
+        bird_export_url = "{}export_file/".format(
+            reverse("admin:budgie_bird_birdproxy_changelist")
+        )
 
         self.client.login(
             username=self.user_credentials["username"],
@@ -445,13 +446,14 @@ class BirdAppAdminTest(TestCase):
         view_response = self.client.get(bird_export_url)
         self.assertEqual(view_response.status_code, 200)
 
-        post_data = {
-            "submit": "Nu exporteren"
-        }
+        post_data = {"submit": "Nu exporteren"}
         post_response = self.client.post(bird_export_url, post_data)
 
         self.assertEqual(post_response.status_code, 200)
-        self.assertEqual(post_response.headers["Content-Type"], "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        self.assertEqual(
+            post_response.headers["Content-Type"],
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
 
     def test_admin_bird_familytree(self):
         """Test if user can view a birds familytree"""
