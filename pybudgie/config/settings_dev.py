@@ -7,16 +7,6 @@ ALLOWED_HOSTS = [
 ]
 X_FRAME_OPTIONS = "sameorigin"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "pybudgie__app",
-        "USER": "root",
-        "PASSWORD": "jeroen",
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
-    }
-}
 
 DEFAULT_FILE_STORAGE = "storages.backends.sftpstorage.SFTPStorage"
 SFTP_STORAGE_HOST = "web0083.zxcs.nl"
