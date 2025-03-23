@@ -444,7 +444,7 @@ class BreedingAppAdminTest(TestCase):
         )
 
         view_page = self.client.get(self.add_couple_url)
-        self.assertEquals([], view_page.context["inline_admin_formsets"])
+        self.assertEqual([], view_page.context["inline_admin_formsets"])
 
         Bird.objects.create(user=self.pybudgie_user, ring_number="henk")
         Bird.objects.create(user=self.pybudgie_user, ring_number="nina")
@@ -457,8 +457,8 @@ class BreedingAppAdminTest(TestCase):
         view_page = self.client.get(
             reverse("admin:budgie_breeding_breedingcouple_change", args=[1])
         )
-        self.assertNotEquals([], view_page.context["inline_admin_formsets"])
-        self.assertEquals(list, type(view_page.context["inline_admin_formsets"]))
+        self.assertNotEqual([], view_page.context["inline_admin_formsets"])
+        self.assertEqual(list, type(view_page.context["inline_admin_formsets"]))
 
     @skip("TODO: Fix this test")
     def test_admin_add_egg_to_breeding_couple_inline(self):

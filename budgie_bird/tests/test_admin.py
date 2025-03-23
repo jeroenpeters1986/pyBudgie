@@ -108,6 +108,10 @@ class BirdAppAdminTest(TestCase):
         self.assertEqual(0, Bird.objects.count())
 
         new_bird = self.bird_data
+
+        # Add this because of the inline forms
+        new_bird.update({"birdphotos-TOTAL_FORMS": 1, "birdphotos-INITIAL_FORMS": 0})
+
         new_bird["user"] = self.pybudgie_admin.pk
         response = self.client.post(self.add_bird_url, new_bird)
         self.assertEqual(response.status_code, 302)

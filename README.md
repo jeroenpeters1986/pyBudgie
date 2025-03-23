@@ -25,8 +25,8 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://docs.djangoproject.com/en/3.1/ref/databases/#connecting-to-the-database
 
 ## System requirements
- * Django 3.1 or higher
- * (min) Python 3.6
+ * Django 5.x or higher
+ * (min) Python 3.11
 
 ### Author todo:
 CSS-addition:
