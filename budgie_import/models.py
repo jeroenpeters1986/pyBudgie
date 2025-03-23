@@ -16,7 +16,8 @@ class ImportFile(models.Model):
     import_file = models.FileField(
         verbose_name=_("Import file"),
         help_text=_(
-            "Upload an Excel file (.xlsx or .csv) or ZooEasy file (.zoo) to import new birds or update them"
+            "Upload an Excel file (.xlsx or .csv) or ZooEasy file (.zoo) "
+            "to import new birds or update them"
         ),
         validators=[FileExtensionValidator(["csv", "xlsx", "zoo"])],
         upload_to=settings.BIRD_EXCELFILE_UPLOAD_LOCATION,
