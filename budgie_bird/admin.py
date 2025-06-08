@@ -22,11 +22,11 @@ class BirdPhotoInline(admin.StackedInline):
 
 
 class BirdFatherFilter(SimpleListFilter):
-    title = _("Father (male birds only)")
+    title = _("Father")
     parameter_name = "father"
 
     def lookups(self, request, model_admin):
-        males = Bird.objects.filter(gender="male")
+        males = Bird.objects.filter(gender=Bird.Gender.MALE)
         return [(b.pk, str(b)) for b in males]
 
     def queryset(self, request, queryset):
@@ -36,16 +36,16 @@ class BirdFatherFilter(SimpleListFilter):
 
 
 class BirdMotherFilter(SimpleListFilter):
-    title = _("Mother (female birds only)")
+    title = _("Mother")
     parameter_name = "mother"
 
     def lookups(self, request, model_admin):
-        males = Bird.objects.filter(gender="female")
+        males = Bird.objects.filter(gender=Bird.Gender.FEMALE)
         return [(b.pk, str(b)) for b in males]
 
     def queryset(self, request, queryset):
         if self.value():
-            return queryset.filter(father__pk=self.value())
+            return queryset.filter(mother__pk=self.value())
         return queryset
 
 
