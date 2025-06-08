@@ -1,8 +1,8 @@
 # pyBudgie
 Keep track of your budgies
 
-[![Python support](https://img.shields.io/badge/python-3.6+-blue.svg)](https://devguide.python.org/#status-of-python-branches)
-[![Django support](https://img.shields.io/badge/django-3.1+-brightgreen.svg)](https://djangoproject.com)
+[![Python support](https://img.shields.io/badge/python-3.11+-blue.svg)](https://devguide.python.org/#status-of-python-branches)
+[![Django support](https://img.shields.io/badge/django-5.0+-brightgreen.svg)](https://djangoproject.com)
 [![Tests status](https://github.com/jeroenpeters1986/pyBudgie/actions/workflows/ci.yml/badge.svg)](https://github.com/jeroenpeters1986/pyBudgie/actions)
 [![Coverage](https://jeroenpeters1986.github.io/pyBudgie/badges/coverage.svg)](https://github.com/jeroenpeters1986/pyBudgie/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
@@ -27,6 +27,17 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
 ## System requirements
  * Django 5.x or higher
  * (min) Python 3.11
+
+## Install darn mysql client on MacOS
+```
+brew install mysql-client
+export PKG_CONFIG_PATH="/opt/homebrew/opt/mysql-client/lib/pkgconfig" 
+export MYSQLCLIENT_CFLAGS="-I/opt/homebrew/opt/mysql-client/include/mysql"
+export MYSQLCLIENT_LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+
+```
 
 ### Author todo:
 CSS-addition:
@@ -55,4 +66,3 @@ pylama
 coverage run manage.py test -v2 --noinput --settings=pybudgie.config.settings_test
 coverage html
 ```
-

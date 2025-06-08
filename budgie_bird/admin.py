@@ -44,6 +44,8 @@ class BirdAdmin(
         "color",
         "color_property",
         "split_property",
+        "father",
+        "mother",
         "is_owned",
         "is_for_sale",
     ]

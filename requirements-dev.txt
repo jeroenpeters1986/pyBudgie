@@ -1,9 +1,9 @@
-black==24.4.0
-coverage==7.4.4
-pycodestyle==2.11.1
+black==25.1.0
+coverage==7.8.2
+pycodestyle==2.13.0
 pydocstyle==6.3.0
-pyflakes==3.2.0
+pyflakes==3.3.2
 pylama==8.4.1
-pylint==3.1.0
-pytest==8.1.1
-setuptools==77.0.3
+pylint==3.3.7
+pytest==8.4.0
+setuptools==80.9.0
