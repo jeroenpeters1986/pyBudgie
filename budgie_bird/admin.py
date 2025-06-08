@@ -22,7 +22,7 @@ class BirdPhotoInline(admin.StackedInline):
 
 
 class BirdFatherFilter(SimpleListFilter):
-    title = _("Father")
+    title = _("father")
     parameter_name = "father"
 
     def lookups(self, request, model_admin):
@@ -36,7 +36,7 @@ class BirdFatherFilter(SimpleListFilter):
 
 
 class BirdMotherFilter(SimpleListFilter):
-    title = _("Mother")
+    title = _("mother")
     parameter_name = "mother"
 
     def lookups(self, request, model_admin):
