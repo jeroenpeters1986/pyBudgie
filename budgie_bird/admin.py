@@ -2,6 +2,7 @@ import openpyxl
 from datetime import datetime
 
 from django.contrib import admin, messages
+from django.contrib.admin import SimpleListFilter
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -18,6 +19,34 @@ from .models import Bird, Breeder, ColorProperty, BirdProxy, BirdPhoto
 class BirdPhotoInline(admin.StackedInline):
     model = BirdPhoto
     extra = 1
+
+
+class BirdFatherFilter(SimpleListFilter):
+    title = _("Father (male birds only)")
+    parameter_name = "father"
+
+    def lookups(self, request, model_admin):
+        males = Bird.objects.filter(gender="male")
+        return [(b.pk, str(b)) for b in males]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(father__pk=self.value())
+        return queryset
+
+
+class BirdMotherFilter(SimpleListFilter):
+    title = _("Mother (female birds only)")
+    parameter_name = "mother"
+
+    def lookups(self, request, model_admin):
+        males = Bird.objects.filter(gender="female")
+        return [(b.pk, str(b)) for b in males]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(father__pk=self.value())
+        return queryset
 
 
 @admin.register(Bird)
@@ -44,8 +73,8 @@ class BirdAdmin(
         "color",
         "color_property",
         "split_property",
-        "father",
-        "mother",
+        BirdFatherFilter,
+        BirdMotherFilter,
         "is_owned",
         "is_for_sale",
     ]
