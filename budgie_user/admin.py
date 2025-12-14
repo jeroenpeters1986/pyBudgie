@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import BudgieUser
 
 
+@admin.register(BudgieUser)
 class BudgieUserAdmin(UserAdmin):
     model = BudgieUser
 
@@ -20,6 +21,3 @@ class BudgieUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (_("PyBudgie properties"), {"fields": ("breeding_reg_nr", "notes")}),
     )
-
-
-admin.site.register(BudgieUser, BudgieUserAdmin)

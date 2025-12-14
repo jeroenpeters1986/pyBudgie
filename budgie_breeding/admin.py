@@ -32,10 +32,9 @@ class BreedingSeasonAdmin(BudgieUserMixin, admin.ModelAdmin):
         BreedingCoupleInline,
     ]
 
+    @admin.display(description=_("Number of couples"))
     def couple_count(self, obj):
         return obj.couple_count
-
-    couple_count.short_description = _("Number of couples")
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -72,20 +71,17 @@ class BreedingCoupleAdmin(BudgieUserMixin, admin.ModelAdmin):
     ]
     autocomplete_fields = ["male", "female"]
 
+    @admin.display(description=_("Breeding couple"))
     def full_name(self, obj):
         return obj.__str__()
 
-    full_name.short_description = _("Breeding couple")
-
+    @admin.display(description=_("Eggs"))
     def egg_count(self, obj):
         return obj.eggs.count()
 
-    egg_count.short_description = _("Eggs")
-
+    @admin.display(description=_("Fertilized"))
     def eggs_fertilized(self, obj):
         return obj.eggs.filter(status=Egg.Status.FERTILIZED).count()
-
-    eggs_fertilized.short_description = _("Fertilized")
 
     def get_inline_instances(self, request, obj=None):
         return obj and super().get_inline_instances(request, obj) or []
@@ -179,6 +175,7 @@ class LocationAdmin(BudgieUserMixin, admin.ModelAdmin):
             return True
         return False
 
+    @admin.display(description=_("Current breeding couple"))
     def current_breeding_couple_url(self, obj):
         if not obj.current_breeding_couple:
             return _("None")
@@ -192,5 +189,3 @@ class LocationAdmin(BudgieUserMixin, admin.ModelAdmin):
             _("View"),
             obj.current_breeding_couple,
         )
-
-    current_breeding_couple_url.short_description = _("Current breeding couple")

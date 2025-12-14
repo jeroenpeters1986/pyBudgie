@@ -153,14 +153,14 @@ class BirdAdmin(
             return ["user"]
         return {}
 
+    @admin.display(description=_("Photo"))
     def image_tag(self, obj):
         """Render the image tag of the birds photo"""
         return mark_safe(
             '<img src="{}" height="48" class="birdpreview" />'.format(obj.photo.url)
         )
 
-    image_tag.short_description = _("Photo")
-
+    @admin.display(description=_("Age"))
     def current_age(self, obj):
         """Calculate the age of the bird"""
 
@@ -194,8 +194,7 @@ class BirdAdmin(
         )
         # Too long?  return "{} {}, {} {}".format(years, _("years"), months, _("months"))
 
-    current_age.short_description = _("Age")
-
+    @admin.display(description=_("Family tree"))
     def family_tree(self, obj):
         return mark_safe(
             '<a class="grp-button" href="{}">{}</a>'.format(
@@ -203,33 +202,27 @@ class BirdAdmin(
             )
         )
 
-    family_tree.short_description = _("Family tree")
-
+    @admin.display(description=_("Color properties"))
     def color_props(self, obj):
         return obj.color_props()
 
-    color_props.short_description = _("Color properties")
-
+    @admin.display(description=_("Split properties"))
     def split_props(self, obj):
         return obj.split_props()
 
-    split_props.short_description = _("Split properties")
-
+    @admin.action(description=_("Mark as owned"))
     def mark_as_owned(self, request, queryset):
         queryset.update(is_owned=True)
         messages.add_message(
             request, messages.SUCCESS, _("Selected birds are marked as owned")
         )
 
-    mark_as_owned.short_description = _("Mark as owned")
-
+    @admin.action(description=_("Mark as for sale"))
     def mark_as_for_sale(self, request, queryset):
         queryset.update(is_for_sale=True)
         messages.add_message(
             request, messages.SUCCESS, _("Selected birds are marked as for sale")
         )
-
-    mark_as_for_sale.short_description = _("Mark as for sale")
 
     def convert_bird_to_treantjs_data(self, bird):
         tree_data = {
@@ -276,11 +269,10 @@ class BreederAdmin(BudgieUserMixin, admin.ModelAdmin):
     search_fields = ["first_name", "last_name", "breeding_reg_nr", "notes", "address"]
     list_display = ["display_name", "breeding_reg_nr", "phone_number"]
 
+    @admin.display(description=_("Full name"))
     def display_name(self, obj):
         # We wouldn't need this if it wasn't for translations...
         return obj.display_name()
-
-    display_name.short_description = _("Full name")
 
 
 @admin.register(ColorProperty)
