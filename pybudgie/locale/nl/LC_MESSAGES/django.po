@@ -402,7 +402,7 @@ msgstr ""
 #, fuzzy
 #| msgid "As PDF with notes"
 msgid "with notes"
-msgstr "Als PDF met notities"
+msgstr "met notities"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:164
 #: budgie_breeding/templates/budgie_breeding/admin/egg_bulk_add.html:25
