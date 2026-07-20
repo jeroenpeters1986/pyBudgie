@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-19 23:15+0200\n"
-"PO-Revision-Date: 2026-07-19 23:09+0200\n"
+"POT-Creation-Date: 2026-07-20 21:55+0200\n"
+"PO-Revision-Date: 2026-07-20 21:56+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -44,7 +44,7 @@ msgid "Color properties"
 msgstr "Kleurslagen"
 
 #: budgie_bird/admin.py:111 budgie_bird/admin.py:210
-#: budgie_bird/pedigree_pdf.py:195
+#: budgie_bird/pdf_helper.py:199
 #: budgie_bird/templates/admin/budgie_bird/change_form.html:41
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:94
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:134
@@ -263,8 +263,8 @@ msgstr "Vogel"
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:187 budgie_bird/pedigree_pdf.py:149
-#: budgie_bird/pedigree_pdf.py:168
+#: budgie_bird/models.py:187 budgie_bird/pdf_helper.py:150
+#: budgie_bird/pdf_helper.py:172
 msgid "Notes"
 msgstr "Notities"
 
@@ -325,19 +325,19 @@ msgstr "Kleurslagen"
 msgid "Not in use:"
 msgstr "Niet in gebruik:"
 
-#: budgie_bird/pedigree_pdf.py:137
+#: budgie_bird/pdf_helper.py:138
 msgid "Born"
 msgstr "Geboren"
 
-#: budgie_bird/pedigree_pdf.py:139
+#: budgie_bird/pdf_helper.py:140
 msgid "Died"
 msgstr "Overleden"
 
-#: budgie_bird/pedigree_pdf.py:200
+#: budgie_bird/pdf_helper.py:204
 msgid "Including bird notes"
 msgstr "Inclusief vogel notities"
 
-#: budgie_bird/pedigree_pdf.py:230
+#: budgie_bird/pdf_helper.py:236
 msgid "Bird family tree"
 msgstr "Vogel stamboom"
 
