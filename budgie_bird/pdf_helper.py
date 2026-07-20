@@ -162,11 +162,14 @@ def _draw_tree_page(pdf, bird, include_notes):
     note_lines = 0
     if include_notes:
         for node in nodes:
+            notes = node["bird"].notes
+            if not notes:
+                continue
             note_lines = max(
                 note_lines,
                 len(
                     simpleSplit(
-                        "{}: {}".format(_("Notes"), node["bird"].notes),
+                        "{}: {}".format(_("Notes"), notes),
                         "Helvetica",
                         8,
                         CARD_WIDTH - 16,
