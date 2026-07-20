@@ -15,29 +15,15 @@ on:
       - develop
 
 
-# three job definition
 jobs:
-  test-and-coverage: # health check job for testing and code formatting check
-    runs-on: ubuntu-latest # os for running the job
-#    services:
-#      postgres: # we need a postgres docker image to be booted a side car service to run the tests that needs a db
-#        image: postgres
-#        env: # the environment variable must match with app/settings.py if block of DATBASES variable otherwise test will fail due to connectivity issue.
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_DB: github-actions
-#        ports:
-#          - 5432:5432 # exposing 5432 port for application to use
-#        # needed because the postgres container does not provide a healthcheck
-#        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  test-and-coverage:
+    runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:latest
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: pybudgie__test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
     steps:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
         uses: actions/checkout@v3

@@ -1,5 +1,6 @@
-from io import BytesIO
 import ssl
+
+from io import BytesIO
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import urlopen
@@ -104,7 +105,7 @@ def _draw_bird_photo(pdf, bird, left, bottom, card_height):
     return True
 
 
-def _draw_card(pdf, node, left, bottom, card_height, include_notes):
+def _draw_bird_card(pdf, node, left, bottom, card_height, include_notes):
     bird = node["bird"]
     gender_colors = {
         "male": colors.HexColor("#1976d2"),
@@ -221,7 +222,9 @@ def _draw_tree_page(pdf, bird, include_notes):
             pdf.line(midpoint, child["center_y"], child_left, child["center_y"])
 
     for node in nodes:
-        _draw_card(pdf, node, node["left"], node["bottom"], card_height, include_notes)
+        _draw_bird_card(
+            pdf, node, node["left"], node["bottom"], card_height, include_notes
+        )
 
 
 def render_bird_tree_pdf(birds, include_notes=False):
