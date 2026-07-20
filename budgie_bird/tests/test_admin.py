@@ -2,6 +2,7 @@ import datetime
 import glob
 import os
 from unittest import mock
+from urllib.error import HTTPError
 
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -12,6 +13,7 @@ from django.urls import reverse
 
 from budgie_bird.forms import BirdForm
 from budgie_bird.models import Breeder, Bird, ColorProperty
+from budgie_bird.pdf_helper import _draw_bird_photo
 from budgie_user.models import BudgieUser
 
 
@@ -94,6 +96,22 @@ class BirdAppAdminTest(TestCase):
         for breeder in Breeder.objects.all():
             breeder.user = user
             breeder.save()
+
+    def test_draw_bird_photo_returns_false_on_404(self):
+        """Test that missing remote photos do not break PDF rendering."""
+        bird = mock.Mock()
+        bird.photo = mock.Mock()
+        bird.photo.name = "assets/budgie-silhouette.png"
+        bird.photo.url = "https://example.invalid/photo.png"
+        bird.photo.storage = mock.Mock()
+
+        with mock.patch(
+            "budgie_bird.pdf_helper.urlopen",
+            side_effect=HTTPError(
+                "https://example.invalid/photo.png", 404, "Not Found", None, None
+            ),
+        ):
+            self.assertFalse(_draw_bird_photo(mock.Mock(), bird, 0, 0, 100))
 
     def test_admin_bird_add_by_admin(self):
         """Test if the admin can add a new bird"""
@@ -431,6 +449,57 @@ class BirdAppAdminTest(TestCase):
             self.assertContains(response, bird.ring_number)
         self.assertEqual(response.headers["Content-Type"], "text/csv")
 
+    def test_bird_family_tree_pdf_export_without_notes(self):
+        """Test that the family tree action returns a PDF without notes."""
+        father = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="FATHER", notes="Father note"
+        )
+        bird = Bird.objects.create(
+            user=self.pybudgie_user,
+            ring_number="CHICK",
+            father=father,
+            notes="Bird note",
+        )
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        response = self.client.post(
+            self.bird_overview_url,
+            {
+                "action": "export_family_tree_pdf",
+                "_selected_action": [bird.pk],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "application/pdf")
+        self.assertTrue(response.content.startswith(b"%PDF"))
+        self.assertNotIn(b"Bird note", response.content)
+
+    def test_bird_family_tree_pdf_export_with_notes(self):
+        """Test that the family tree action can include notes."""
+        bird = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="CHICK", notes="Bird note"
+        )
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        response = self.client.post(
+            self.bird_overview_url,
+            {
+                "action": "export_family_tree_pdf_with_notes",
+                "_selected_action": [bird.pk],
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "application/pdf")
+        self.assertIn(b"Bird note", response.content)
+
     def test_bird_excel_export(self):
         """Test if the Excel-export page returns an excel document"""
 
@@ -458,6 +527,27 @@ class BirdAppAdminTest(TestCase):
         self.assertEqual(
             post_response.headers["Content-Type"],
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+    def test_admin_bird_familytree_pdf_urls(self):
+        """Test that the family tree detail page exposes PDF actions."""
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        bird = Bird.objects.create(user=self.pybudgie_user, ring_number="DETAIL-PDF")
+        response = self.client.get(
+            reverse("admin:budgie_bird_bird_familytree", kwargs={"object_id": bird.pk})
+        )
+
+        self.assertContains(
+            response,
+            reverse("admin:budgie_bird_bird_familytree_pdf", args=[bird.pk]),
+        )
+        self.assertContains(
+            response,
+            reverse("admin:budgie_bird_bird_familytree_pdf_with_notes", args=[bird.pk]),
         )
 
     def test_admin_bird_familytree(self):

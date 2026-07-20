@@ -14,6 +14,7 @@ from budgie_user.mixins import BudgieUserMixin
 from .forms import BirdForm
 from .mixins import AdminExportCsvMixin, AdminExportAllCsvMixin
 from .models import Bird, Breeder, ColorProperty, BirdProxy, BirdPhoto
+from .pdf_helper import render_bird_tree_pdf
 
 
 class BirdPhotoInline(admin.StackedInline):
@@ -127,6 +128,8 @@ class BirdAdmin(
     actions = [
         "export_as_csv",
         "export_all_as_csv",
+        "export_family_tree_pdf",
+        "export_family_tree_pdf_with_notes",
         "mark_as_owned",
         "mark_as_for_sale",
     ]
@@ -141,7 +144,17 @@ class BirdAdmin(
                 "<path:object_id>/family_tree/",
                 self.admin_site.admin_view(self.family_tree_view, cacheable=True),
                 name="budgie_bird_bird_familytree",
-            )
+            ),
+            path(
+                "<path:object_id>/family_tree/pdf/",
+                self.admin_site.admin_view(self.family_tree_pdf_view),
+                name="budgie_bird_bird_familytree_pdf",
+            ),
+            path(
+                "<path:object_id>/family_tree/pdf_with_notes/",
+                self.admin_site.admin_view(self.family_tree_pdf_with_notes_view),
+                name="budgie_bird_bird_familytree_pdf_with_notes",
+            ),
         ]
         return additional_bird_admin_urls + urls
 
@@ -217,6 +230,54 @@ class BirdAdmin(
             request, messages.SUCCESS, _("Selected birds are marked as owned")
         )
 
+    @admin.action(description=_("Export family tree to PDF"))
+    def export_family_tree_pdf(self, request, queryset):
+        return self._export_family_tree_pdf(queryset, include_notes=False)
+
+    @admin.action(description=_("Export family tree to PDF (with notes)"))
+    def export_family_tree_pdf_with_notes(self, request, queryset):
+        return self._export_family_tree_pdf(queryset, include_notes=True)
+
+    def _export_family_tree_pdf(self, queryset, include_notes):
+        pdf = render_bird_tree_pdf(
+            queryset.select_related("father", "mother"), include_notes=include_notes
+        )
+        response = HttpResponse(pdf, content_type="application/pdf")
+        if queryset.count() == 1:
+            bird = queryset.first()
+            safe_name = "{}-family-tree.pdf".format(bird.ring_number or bird.pk)
+            response["Content-Disposition"] = 'attachment; filename="{}"'.format(
+                safe_name.replace("/", "_")
+            )
+        else:
+            response["Content-Disposition"] = (
+                'attachment; filename="bird-family-trees.pdf"'
+            )
+        return response
+
+    def _get_bird_for_family_tree(self, request, object_id):
+        try:
+            return Bird.objects.get(pk=object_id)
+        except Bird.DoesNotExist:
+            messages.add_message(request, messages.ERROR, _("That bird does not exist"))
+            return None
+
+    def _export_family_tree_pdf_for_bird(self, request, object_id, include_notes):
+        bird = self._get_bird_for_family_tree(request, object_id)
+        if bird is None:
+            return redirect(reverse("admin:budgie_bird_bird_changelist"))
+
+        pdf = render_bird_tree_pdf(
+            Bird.objects.filter(pk=bird.pk).select_related("father", "mother"),
+            include_notes=include_notes,
+        )
+        response = HttpResponse(pdf, content_type="application/pdf")
+        safe_name = "{}-family-tree.pdf".format(bird.ring_number or bird.pk)
+        response["Content-Disposition"] = 'attachment; filename="{}"'.format(
+            safe_name.replace("/", "_")
+        )
+        return response
+
     @admin.action(description=_("Mark as for sale"))
     def mark_as_for_sale(self, request, queryset):
         queryset.update(is_for_sale=True)
@@ -248,10 +309,8 @@ class BirdAdmin(
 
     def family_tree_view(self, request, *args, **kwargs):
         """Custom admin view to show the family tree"""
-        try:
-            bird = Bird.objects.get(pk=kwargs["object_id"])
-        except Bird.DoesNotExist:
-            messages.add_message(request, messages.ERROR, _("That bird does not exist"))
+        bird = self._get_bird_for_family_tree(request, kwargs["object_id"])
+        if bird is None:
             return redirect(reverse("admin:budgie_bird_bird_changelist"))
 
         context = dict(
@@ -261,6 +320,16 @@ class BirdAdmin(
         )
         return TemplateResponse(
             request, "budgie_bird/admin/bird_familytree.html", context
+        )
+
+    def family_tree_pdf_view(self, request, *args, **kwargs):
+        return self._export_family_tree_pdf_for_bird(
+            request, kwargs["object_id"], include_notes=False
+        )
+
+    def family_tree_pdf_with_notes_view(self, request, *args, **kwargs):
+        return self._export_family_tree_pdf_for_bird(
+            request, kwargs["object_id"], include_notes=True
         )
 
 
