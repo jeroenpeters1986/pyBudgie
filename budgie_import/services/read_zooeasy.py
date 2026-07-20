@@ -16,4 +16,6 @@ def read_zooeasy(file_path):
     print(rows)
     return []
 
+    # dingen
+
     return rows
