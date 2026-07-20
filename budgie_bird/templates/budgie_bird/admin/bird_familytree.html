@@ -155,7 +155,7 @@
                 <details class="button pdf-dropdown">
                     <summary>{% trans 'Download' %}...</summary>
                     <div class="pdf-dropdown-menu">
-                        <a class="button" href="#" onclick="javascript:downloadFamilyTreeAsImage()">{% trans 'As .png-image' %}</a>
+                        <a class="button" href="#" onclick="downloadFamilyTreeAsImage(); return false;">{% trans 'As .png-image' %}</a>
                         <a class="button" href="{% url 'admin:budgie_bird_bird_familytree_pdf' bird.pk %}">{% trans 'As .pdf-file' %}</a>
                         <a class="button" href="{% url 'admin:budgie_bird_bird_familytree_pdf_with_notes' bird.pk %}">{% trans 'As .pdf-file' %} ({% trans 'with notes' %})</a>
                     </div>
