@@ -106,7 +106,7 @@ class BirdAppAdminTest(TestCase):
         bird.photo.storage = mock.Mock()
 
         with mock.patch(
-            "budgie_bird.pedigree_pdf.urlopen",
+            "budgie_bird.pdf_helper.urlopen",
             side_effect=HTTPError(
                 "https://example.invalid/photo.png", 404, "Not Found", None, None
             ),
