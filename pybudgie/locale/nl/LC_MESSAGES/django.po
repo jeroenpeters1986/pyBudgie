@@ -396,7 +396,7 @@ msgstr "Als .PNG-afbeelding"
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:160
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:161
 msgid "As .pdf-file"
-msgstr ""
+msgstr "Als .pdf-bestand"
 
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:161
 #, fuzzy
