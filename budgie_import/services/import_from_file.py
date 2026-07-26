@@ -50,19 +50,30 @@ def import_or_update_bird(bird_data, user):
 
     # Gender
     if "geslacht" in bird_data:
-        if bird_data["geslacht"].lower() == "pop":
+        gender_value = bird_data["geslacht"].lower()
+        if gender_value in {"pop", "female", "vrouw", "1"}:
             bird.gender = Bird.Gender.FEMALE
-        if bird_data["geslacht"].lower() == "man":
+        if gender_value in {"man", "male", "0"}:
             bird.gender = Bird.Gender.MALE
 
     # Birth date
-    if "geboren" in bird_data:
+    if "geboren" in bird_data and bird_data["geboren"]:
         try:
             bird.date_of_birth = datetime.strptime(
                 bird_data["geboren"], "%d-%m-%Y"
             ).date()
         except ValueError as error:
             # TODO: pass this as a note or something
+            print("ERROR: ", error)
+            pass
+
+    # Death date
+    if "overleden" in bird_data and bird_data["overleden"]:
+        try:
+            bird.date_of_death = datetime.strptime(
+                bird_data["overleden"], "%d-%m-%Y"
+            ).date()
+        except ValueError as error:
             print("ERROR: ", error)
             pass
 
