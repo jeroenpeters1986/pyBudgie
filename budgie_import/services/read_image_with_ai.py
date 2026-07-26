@@ -173,9 +173,12 @@ def _openai_chat_completion(image_path, model):
                             "The third table column contains a hatch date in DD/MM format only; "
                             "ignore extra OCR tokens like k10 or similar noise. "
                             "The left side of the fourth column contains a numeric ring number. "
-                            "The right side of the fourth column contains gender, P for pop and M for man. "
-                            "Keep the color text as a normal space-separated string and do not merge words. "
-                            "The parent ring numbers are usually shaped like XXXX-XXX-YYYY; normalize them to that form. "
+                            "The right side of the fourth column contains gender, "
+                            "P for pop and M for man. "
+                            "Keep the color text as a normal space-separated string and "
+                            "do not merge words."
+                            "The parent ring numbers are usually shaped like XXXX-XXX-YYYY; "
+                            "normalize them to that form. "
                             "Only include rows that contain both a hatch date and a ring number."
                         ),
                     },
