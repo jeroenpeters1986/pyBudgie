@@ -1,6 +1,7 @@
 import datetime
 import glob
 import os
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -88,4 +89,28 @@ class ImportFileAdminTest(TestCase):
         bird = Bird.objects.get(ring_number="5TJJ-81-2018")
         self.assertIn(
             "Grijs", bird.color_property.all().values_list("color_name", flat=True)
+        )
+
+    @patch(
+        "budgie_import.services.import_from_file.budgie_import.services.read_csv.read_csv"
+    )
+    def test_import_result_reports_ring_numbers_and_skipped_rows(self, read_csv):
+        read_csv.return_value = [
+            {"ringnummer": "NEW-001", "geslacht": "man"},
+            {"ringnummer": "   "},
+            {},
+        ]
+        Bird.objects.create(user=self.pybudgie_user, ring_number="NEW-002")
+        read_csv.return_value.append({"ringnummer": "NEW-002"})
+
+        result = budgie_import.services.import_from_file.import_from_file(
+            "birds.csv", self.pybudgie_user
+        )
+
+        self.assertEqual(result.imported_ring_numbers, ["NEW-001", "NEW-002"])
+        self.assertEqual(result.created_ring_numbers, ["NEW-001"])
+        self.assertEqual(result.updated_ring_numbers, ["NEW-002"])
+        self.assertEqual(
+            [row["reason"] for row in result.skipped_rows],
+            ["missing ring number", "missing ring number"],
         )

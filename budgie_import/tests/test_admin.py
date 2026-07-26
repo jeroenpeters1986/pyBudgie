@@ -89,6 +89,7 @@ class ImportFileAdminTest(TestCase):
             "user": 1,
             "import_file": upload_file,
             "completed": False,
+            "notes": "Keep this note",
         }
 
         response = self.client.post(self.add_file_url, import_form)
@@ -96,6 +97,10 @@ class ImportFileAdminTest(TestCase):
 
         response = self.client.get(self.importfile_overview_url)
         self.assertContains(response, upload_filename)
+        import_file = ImportFile.objects.get(import_file__endswith=upload_filename)
+        self.assertIn("Keep this note", import_file.notes)
+        self.assertIn("Imported 4 bird(s):", import_file.notes)
+        self.assertIn("5TJJ-12-2018", import_file.notes)
 
         # Check for created birds
         # Normal bird
