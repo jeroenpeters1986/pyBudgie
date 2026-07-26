@@ -97,7 +97,10 @@ def import_from_file(file_path, user):
         )
     elif file_type == "zoo":
         bird_import_rows = budgie_import.services.read_zooeasy.read_zooeasy(file_path)
-    elif f".{file_type}" in budgie_import.services.read_image_with_ai.SUPPORTED_IMAGE_EXTENSIONS:
+    elif (
+        f".{file_type}"
+        in budgie_import.services.read_image_with_ai.SUPPORTED_IMAGE_EXTENSIONS
+    ):
         image_result = budgie_import.services.read_image_with_ai.read_image(
             file_path, user.breeding_reg_nr
         )
