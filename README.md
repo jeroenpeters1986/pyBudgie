@@ -14,6 +14,18 @@ settings.py
 AUTH_USER_MODEL = 'budgie_account.BudgieUser'
 ```
 
+### OpenAI image import
+Set these environment variables for photographed breeding cards:
+```
+OPENAI_API_KEY=...
+```
+
+Optionally adjust the workings with:
+```
+OPENAI_IMAGE_MODEL=gpt-4.1-mini    ## Model of OpenAI
+OPENAI_IMAGE_MAX_DIMENSION=2000    ## Increase when results are bad
+```
+
 ## Useful resources
  * https://djangowaves.com/tutorial/multiple-languages-in-Django/
  * https://docs.djangoproject.com/en/3.1/topics/testing/tools/
@@ -25,8 +37,8 @@ AUTH_USER_MODEL = 'budgie_account.BudgieUser'
  * https://docs.djangoproject.com/en/3.1/ref/databases/#connecting-to-the-database
 
 ## System requirements
- * Django 5.x or higher
- * (min) Python 3.11
+ * Django 6.x or higher
+ * (min) Python 3.12
 
 ## Install darn mysql client on MacOS
 ```

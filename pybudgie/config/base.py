@@ -13,10 +13,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR.parent / ".env", override=False)
 
 # Quick-start development config - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -126,6 +127,12 @@ AUTH_USER_MODEL = "budgie_user.BudgieUser"
 BIRD_PICTURE_DEFAULT = "assets/budgie-silhouette.png"
 BIRD_PICTURE_UPLOAD_LOCATION = "assets/uploads/bird_pics"
 BIRD_EXCELFILE_UPLOAD_LOCATION = "assets/uploads/import"
+
+# OPEN AI SETTINGS
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_ENDPOINT = "https://api.openai.com/v1/chat/completions"
+OPENAI_IMAGE_MODEL = "gpt-4.1-mini"
+OPENAI_IMAGE_MAX_DIMENSION = 2000
 
 LANGUAGE_CODE = "nl"
 TIME_ZONE = "Europe/Amsterdam"

@@ -26,11 +26,11 @@ superuser:
 	$(MANAGE) createsuperuser --settings=$(SETTINGS) $(ARGS)
 
 .requirements :requirements.txt
-	pip install -r $(REQUIREMENTS) -U $(ARGS)
+	python3 -m pip install --user --break-system-packages -r $(REQUIREMENTS) -U $(ARGS)
 	touch .requirements
 
 .requirements_dev: requirements-dev.txt
-	pip install -r $(REQUIREMENTS) -U $(ARGS)
+	python3 -m pip install --user --break-system-packages -r $(REQUIREMENTS_DEV) -U $(ARGS)
 	touch .requirements_dev
 
 
@@ -52,11 +52,11 @@ translations: generate-locales
 
 .PHONY: coverage
 coverage:
-	coverage html
+	python3 -m coverage html
 
 .PHONY: run-test
 run-test: install install-dev
-	coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
+	python3 -m coverage run $(MANAGE) test -v2 --noinput --settings=$(SETTINGS) $(ARGS)
 
 .PHONY: test
 test: $(PO_FILES) generate-locales run-test coverage

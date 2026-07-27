@@ -1,13 +1,91 @@
+from collections.abc import Mapping
+from dataclasses import dataclass, field
+import json
 from datetime import datetime
 
 import budgie_import.services.read_csv
 import budgie_import.services.read_xlsx
 import budgie_import.services.read_zooeasy
+import budgie_import.services.read_image_with_ai
 from budgie_bird.models import Bird, Breeder, ColorProperty
 
 
+@dataclass
+class ImportRowResult:
+    """The outcome of importing one source row."""
+
+    imported: bool
+    ring_number: str = None
+    created: bool = False
+    skipped_reason: str = None
+    warnings: list = field(default_factory=list)
+
+    def __bool__(self):
+        return self.imported
+
+
+@dataclass
+class ImportResult:
+    """The outcome of importing all rows from one file."""
+
+    imported_ring_numbers: list = field(default_factory=list)
+    created_ring_numbers: list = field(default_factory=list)
+    updated_ring_numbers: list = field(default_factory=list)
+    skipped_rows: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
+    diagnostics: dict = field(default_factory=dict)
+
+    @property
+    def created_or_updated_ring_numbers(self):
+        return self.created_ring_numbers + self.updated_ring_numbers
+
+    @property
+    def imported(self):
+        return self.imported_ring_numbers
+
+    def __getitem__(self, key):
+        return {
+            "imported": self.imported_ring_numbers,
+            "imported_ring_numbers": self.imported_ring_numbers,
+            "created_ring_numbers": self.created_ring_numbers,
+            "updated_ring_numbers": self.updated_ring_numbers,
+            "created_or_updated": self.created_or_updated_ring_numbers,
+            "created_or_updated_ring_numbers": self.created_or_updated_ring_numbers,
+            "skipped": self.skipped_rows,
+            "skipped_rows": self.skipped_rows,
+            "warnings": self.warnings,
+            "diagnostics": self.diagnostics,
+        }[key]
+
+    def diagnostics_text(self, limit=12000):
+        if not self.diagnostics:
+            return ""
+        text = json.dumps(self.diagnostics, ensure_ascii=False, indent=2)
+        return f"Image diagnostics:\n{text[:limit]}"
+
+    def summary(self):
+        parts = [
+            f"Imported {len(self.imported_ring_numbers)} bird(s): "
+            f"{', '.join(self.imported_ring_numbers) or 'none'}."
+        ]
+        if self.created_ring_numbers:
+            parts.append(f"Created: {', '.join(self.created_ring_numbers)}.")
+        if self.updated_ring_numbers:
+            parts.append(f"Updated: {', '.join(self.updated_ring_numbers)}.")
+        if self.skipped_rows:
+            skipped = "; ".join(
+                f"row {row['row_number']} ({row['reason']})"
+                for row in self.skipped_rows
+            )
+            parts.append(f"Skipped {len(self.skipped_rows)} row(s): {skipped}.")
+        if self.warnings:
+            parts.append(f"Warnings: {'; '.join(self.warnings)}.")
+        return " ".join(parts)
+
+
 def import_from_file(file_path, user):
-    file_type = file_path.split(".")[-1]
+    file_type = file_path.rsplit(".", 1)[-1].lower() if "." in file_path else ""
+    image_result = None
 
     if file_type == "xlsx":
         bird_import_rows = budgie_import.services.read_xlsx.read_xlsx(
@@ -19,20 +97,60 @@ def import_from_file(file_path, user):
         )
     elif file_type == "zoo":
         bird_import_rows = budgie_import.services.read_zooeasy.read_zooeasy(file_path)
+    elif (
+        f".{file_type}"
+        in budgie_import.services.read_image_with_ai.SUPPORTED_IMAGE_EXTENSIONS
+    ):
+        image_result = budgie_import.services.read_image_with_ai.read_image(
+            file_path, user.breeding_reg_nr
+        )
+        bird_import_rows = image_result
     else:
-        raise Exception("No valid .xlsx or .csv found")
+        raise ValueError("No valid .xlsx, .csv, .zoo, .jpg, .jpeg, or .png file found.")
 
-    for import_bird in bird_import_rows:
-        import_or_update_bird(import_bird, user)
+    result = ImportResult()
+    if hasattr(image_result, "diagnostics"):
+        result.diagnostics = image_result.diagnostics
+    for row_number, import_bird in enumerate(bird_import_rows, start=1):
+        row_result = import_or_update_bird(import_bird, user)
+        if not row_result:
+            result.skipped_rows.append(
+                {
+                    "row_number": row_number,
+                    "ring_number": row_result.ring_number,
+                    "reason": row_result.skipped_reason,
+                }
+            )
+            continue
 
-    return True
+        result.imported_ring_numbers.append(row_result.ring_number)
+        if row_result.created:
+            result.created_ring_numbers.append(row_result.ring_number)
+        else:
+            result.updated_ring_numbers.append(row_result.ring_number)
+        result.warnings.extend(row_result.warnings)
+
+    return result
 
 
 def import_or_update_bird(bird_data, user):
-    if "ringnummer" not in bird_data:
-        return False
+    if not isinstance(bird_data, Mapping):
+        return ImportRowResult(
+            imported=False,
+            skipped_reason="row is not a mapping",
+        )
 
-    bird = Bird.objects.get_or_create(user=user, ring_number=bird_data["ringnummer"])[0]
+    ring_number = bird_data.get("ringnummer")
+    if not isinstance(ring_number, str) or not ring_number.strip():
+        return ImportRowResult(
+            imported=False,
+            ring_number=ring_number,
+            skipped_reason="missing ring number",
+        )
+    ring_number = ring_number.strip()
+
+    bird, created = Bird.objects.get_or_create(user=user, ring_number=ring_number)
+    warnings = []
 
     # Mother
     if "moeder" in bird_data:
@@ -63,9 +181,7 @@ def import_or_update_bird(bird_data, user):
                 bird_data["geboren"], "%d-%m-%Y"
             ).date()
         except ValueError as error:
-            # TODO: pass this as a note or something
-            print("ERROR: ", error)
-            pass
+            warnings.append(f"invalid birth date ({error})")
 
     # Death date
     if "overleden" in bird_data and bird_data["overleden"]:
@@ -89,7 +205,7 @@ def import_or_update_bird(bird_data, user):
 
             bird.breeder = Breeder.objects.get_or_create(
                 user=user,
-                breeding_reg_nr=bird_data["ringnummer"].split("-")[0],
+                breeding_reg_nr=ring_number.split("-")[0],
                 defaults={
                     "last_name": last_name,
                     "first_name": first_name,
@@ -114,7 +230,8 @@ def import_or_update_bird(bird_data, user):
         if possible_owners.count() == 1:
             bird.owner = possible_owners[0]
 
-    bird.save()
+    if "notes" in bird_data:
+        bird.notes = bird_data["notes"]
 
     # All sorts of colors and properties
     if "kleur" in bird_data:
@@ -134,3 +251,10 @@ def import_or_update_bird(bird_data, user):
             bird.color_property.add(matched_color_prop)
 
     bird.save()
+
+    return ImportRowResult(
+        imported=True,
+        ring_number=ring_number,
+        created=created,
+        warnings=warnings,
+    )

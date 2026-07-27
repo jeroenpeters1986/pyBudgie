@@ -30,9 +30,20 @@ class ImportFileAdmin(BudgieUserMixin, admin.ModelAdmin):
             obj.user = request.user
 
         if not obj.completed:
-            budgie_import.services.import_from_file.import_from_file(
+            result = budgie_import.services.import_from_file.import_from_file(
                 obj.import_file.path, obj.user
             )
+            summary = (
+                result.summary()
+                if hasattr(result, "summary")
+                else "Import completed successfully."
+            )
+            diagnostics = (
+                result.diagnostics_text() if hasattr(result, "diagnostics_text") else ""
+            )
+            report = "\n\n".join(part for part in (summary, diagnostics) if part)
+            if report and (not obj.notes or report not in obj.notes):
+                obj.notes = f"{obj.notes.rstrip()}\n\n{report}" if obj.notes else report
             obj.completed = True
 
         obj.save()
