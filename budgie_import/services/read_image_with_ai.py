@@ -263,7 +263,11 @@ def _parse_import_rows(payload, breeder_number):
         row_number = row.get("row_number")
         hatched_text = _date_text(row.get("hatched"), card_year)
         hatched = _date_value(hatched_text, card_year)
-        ring_serial_number = str(int(row.get("ring_number"))).zfill(3)
+        ring_raw = row.get("ring_number")
+        try:
+            ring_serial_number = str(int(str(ring_raw).strip())).zfill(3)
+        except (TypeError, ValueError):
+            ring_serial_number = None
         gender = _parse_gender(row.get("gender"))
         color = " ".join(str(row.get("color") or "").split())
         diagnostics_rows.append(
