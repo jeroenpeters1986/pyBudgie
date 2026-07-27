@@ -137,7 +137,12 @@ def _extract_json_text(content):
     fenced = _JSON_TEXT_RE.search(text)
     if fenced:
         text = fenced.group(1).strip()
-    return json.loads(text)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as error:
+        raise OpenAIImportError(
+            "OpenAI image import returned invalid JSON content."
+        ) from error
 
 
 def _openai_chat_completion(image_path, model):
