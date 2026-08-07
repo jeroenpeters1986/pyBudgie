@@ -1,7 +1,14 @@
 from django.test import TestCase, override_settings
+from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 
-from budgie_bird.models import Breeder, Bird, ColorProperty
+from budgie_bird.models import (
+    Bird,
+    BirdCharacteristic,
+    BirdCharacteristicSelection,
+    Breeder,
+    ColorProperty,
+)
 from budgie_bird.forms import BirdForm
 from budgie_user.models import BudgieUser
 
@@ -175,3 +182,25 @@ class BreederModelTest(TestCase):
         self.assertEqual(new_bird.color_props(), "Dominant bont Cinnamon Geelmasker")
         ColorProperty.objects.filter(rank=2).update(rank=100)
         self.assertEqual(new_bird.color_props(), "Dominant bont Geelmasker Cinnamon")
+
+    def test_bird_characteristic_grade_selection(self):
+        characteristic = BirdCharacteristic.objects.create(
+            name="Temperament",
+            **{f"description_{level}": f"Grade {level}" for level in range(4)},
+        )
+        selection = BirdCharacteristicSelection.objects.create(
+            bird=self.existing_bird, characteristic=characteristic, selected_grade=2
+        )
+
+        self.assertEqual(
+            ["Temperament: Grade 2"], self.existing_bird.characteristic_display()
+        )
+        self.assertIn("Grade 2", str(selection))
+
+        other = BirdCharacteristic.objects.create(
+            name="Other", **{f"description_{level}": str(level) for level in range(4)}
+        )
+        with self.assertRaises(ValidationError):
+            BirdCharacteristicSelection(
+                bird=self.existing_bird, characteristic=other, selected_grade=4
+            ).full_clean()

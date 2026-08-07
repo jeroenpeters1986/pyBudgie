@@ -12,7 +12,13 @@ from django.test import TestCase
 from django.urls import reverse
 
 from budgie_bird.forms import BirdForm
-from budgie_bird.models import Breeder, Bird, ColorProperty
+from budgie_bird.models import (
+    Bird,
+    BirdCharacteristic,
+    BirdCharacteristicSelection,
+    Breeder,
+    ColorProperty,
+)
 from budgie_bird.pdf_helper import _draw_bird_photo
 from budgie_user.models import BudgieUser
 
@@ -500,6 +506,40 @@ class BirdAppAdminTest(TestCase):
         self.assertEqual(response.headers["Content-Type"], "application/pdf")
         self.assertIn(b"Bird note", response.content)
 
+    def test_bird_family_tree_pdf_extra_information_includes_characteristics(self):
+        characteristic = BirdCharacteristic.objects.create(
+            name="Temperament",
+            **{f"description_{level}": f"Description {level}" for level in range(4)},
+        )
+        bird = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="CHICK", notes="Bird note"
+        )
+        BirdCharacteristicSelection.objects.create(
+            bird=bird, characteristic=characteristic, selected_grade=2
+        )
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        response = self.client.post(
+            self.bird_overview_url,
+            {
+                "action": "export_family_tree_pdf",
+                "_selected_action": [bird.pk],
+            },
+        )
+        self.assertNotIn(b"Description 2", response.content)
+        response = self.client.post(
+            self.bird_overview_url,
+            {
+                "action": "export_family_tree_pdf_with_notes",
+                "_selected_action": [bird.pk],
+            },
+        )
+        self.assertIn(b"Description 2", response.content)
+        self.assertIn(b"Bird note", response.content)
+
     def test_bird_excel_export(self):
         """Test if the Excel-export page returns an excel document"""
 
@@ -579,6 +619,34 @@ class BirdAppAdminTest(TestCase):
             "nodeStructure: {'HTMLclass': 'pyBudgie_male', 'text': {'name': 'D', 'desc': '",
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_admin_bird_familytree_extra_information_uses_newlines(self):
+        characteristic = BirdCharacteristic.objects.create(
+            name="Tail",
+            description_0="Not applicable",
+            description_1="Returns",
+            description_2="Does not return",
+            description_3="Missing",
+        )
+        bird = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="WITH-CHARACTERISTIC", notes="Remark"
+        )
+        BirdCharacteristicSelection.objects.create(
+            bird=bird, characteristic=characteristic, selected_grade=2
+        )
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        response = self.client.get(
+            reverse("admin:budgie_bird_bird_familytree", args=[bird.pk])
+            + "?include_extra=1"
+        )
+
+        self.assertContains(response, r"\nNotities: Remark")
+        self.assertContains(response, r"\nTail: Does not return")
+        self.assertNotContains(response, "<br>Notities")
 
     def test_admin_bird_familytree_non_existing_bird(self):
         """Test if user can view a birds familytree"""
@@ -695,4 +763,29 @@ class BirdAppAdminTest(TestCase):
         response = self.client.get(bird_change_url)
         self.assertContains(
             response, reverse("admin:budgie_bird_bird_familytree", args=[birdie.pk])
+        )
+
+    def test_admin_bird_characteristic_options_include_descriptions(self):
+        characteristic = BirdCharacteristic.objects.create(
+            name="Tail",
+            description_0="Not applicable",
+            description_1="Returns",
+            description_2="Does not return",
+            description_3="Missing",
+        )
+        bird = Bird.objects.create(user=self.pybudgie_user, ring_number="CHARACTERISTIC")
+        self.client.login(
+            username=self.user_credentials["username"],
+            password=self.user_credentials["password"],
+        )
+
+        response = self.client.get(
+            reverse("admin:budgie_bird_bird_change", args=[bird.pk])
+        )
+
+        self.assertContains(response, "Not applicable")
+        self.assertContains(response, "Does not return")
+        self.assertContains(response, "characteristic-options")
+        self.assertContains(
+            response, 'onchange="window.updateCharacteristicGradeLabels(this);"'
         )

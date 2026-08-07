@@ -5,7 +5,69 @@
 {% block admin_change_form_document_ready %}
     {{ block.super }}
 
+    {{ characteristic_options|json_script:"characteristic-options" }}
     <script>
+        const parsedCharacteristicOptions = JSON.parse(
+            document.getElementById("characteristic-options").textContent
+        );
+        const characteristicList = Array.isArray(parsedCharacteristicOptions)
+            ? parsedCharacteristicOptions
+            : Object.values(parsedCharacteristicOptions);
+        const characteristicOptions = characteristicList.reduce((options, characteristic) => {
+            options[characteristic.id] = characteristic;
+            return options;
+        }, {});
+
+        window.updateCharacteristicGradeLabels = function (characteristicSelect) {
+            const row = django.jQuery(characteristicSelect).closest("tr")[0]
+                || django.jQuery(characteristicSelect).closest(".form-row")[0];
+            const characteristic = characteristicOptions[
+                django.jQuery(characteristicSelect).val()
+            ];
+            if (!row || !characteristic) {
+                return;
+            };
+
+            row.querySelectorAll('input[name$="-selected_grade"]').forEach((input) => {
+                const label = row.querySelector(`label[for="${input.id}"]`);
+                if (!label) {
+                    return;
+                }
+                while (label.firstChild) {
+                    label.removeChild(label.firstChild);
+                }
+                label.appendChild(input);
+                label.appendChild(
+                    document.createTextNode(
+                        ` ${input.value}: ${characteristic["description_" + input.value]}`
+                    )
+                );
+            });
+        }
+
+        function initializeCharacteristicRow(row) {
+            const characteristicSelect = row.querySelector(
+                'select[name$="-characteristic"]'
+            );
+            if (characteristicSelect) {
+                updateCharacteristicGradeLabels(characteristicSelect);
+            }
+        }
+
+        django.jQuery(document).on(
+            "change",
+            'select[name$="-characteristic"]',
+            function () {
+                updateCharacteristicGradeLabels(this);
+            }
+        );
+
+        django.jQuery(document).on("formset:added", function (event, row, formsetName) {
+            if (formsetName === "characteristic_selections") {
+                initializeCharacteristicRow(row.jquery ? row[0] : row);
+            }
+        });
+
         let view_text = "{% translate "View this bird in a new window" %}";
         let base_admin_link = "{% url 'admin:budgie_bird_bird_changelist' %}";
 
@@ -22,6 +84,9 @@
         }
 
         django.jQuery(document).ready(function () {
+            django.jQuery('select[name$="-characteristic"]').each(function () {
+                updateCharacteristicGradeLabels(this);
+            });
             createParentViewLink(django.jQuery('#id_father').val(), 'father');
             createParentViewLink(django.jQuery('#id_mother').val(), 'mother');
 

@@ -141,18 +141,27 @@ def _draw_bird_card(pdf, node, left, bottom, card_height, include_notes):
     for date in dates:
         text_y = _draw_wrapped_text(pdf, date, text_x, text_y, text_width, size=8)
 
+    extra_information = []
     if include_notes and bird.notes:
+        extra_information.append("{}: {}".format(_("Notes"), bird.notes))
+    if include_notes:
+        extra_information.extend(
+            "{}: {}".format(
+                "{} ({} {})".format(
+                    value.characteristic.name, _("level"), value.selected_grade
+                ),
+                value.selected_description,
+            )
+            for value in bird.characteristic_values()
+        )
+    if extra_information:
         text_y -= 2
         pdf.setStrokeColor(colors.HexColor("#dddddd"))
         pdf.line(text_x, text_y + 3, left + CARD_WIDTH - 8, text_y + 3)
-        _draw_wrapped_text(
-            pdf,
-            "{}: {}".format(_("Notes"), bird.notes),
-            text_x,
-            text_y - 7,
-            text_width,
-            size=8,
-        )
+        for extra_line in extra_information:
+            text_y = _draw_wrapped_text(
+                pdf, extra_line, text_x, text_y - 7, text_width, size=8
+            )
 
 
 def _draw_tree_page(pdf, bird, include_notes):
@@ -162,20 +171,25 @@ def _draw_tree_page(pdf, bird, include_notes):
     note_lines = 0
     if include_notes:
         for node in nodes:
-            notes = node["bird"].notes
-            if not notes:
-                continue
-            note_lines = max(
-                note_lines,
-                len(
-                    simpleSplit(
-                        "{}: {}".format(_("Notes"), notes),
-                        "Helvetica",
-                        8,
-                        CARD_WIDTH - 16,
-                    )
-                ),
+            extra_information = []
+            if node["bird"].notes:
+                extra_information.append(
+                    "{}: {}".format(_("Notes"), node["bird"].notes)
+                )
+            extra_information.extend(
+                "{}: {}".format(
+                    "{} (level {})".format(
+                        value.characteristic.name, value.selected_grade
+                    ),
+                    value.selected_description,
+                )
+                for value in node["bird"].characteristic_values()
             )
+            information_lines = sum(
+                len(simpleSplit(information, "Helvetica", 8, CARD_WIDTH - 16))
+                for information in extra_information
+            )
+            note_lines = max(note_lines, information_lines)
     card_height = (
         CARD_HEIGHT_WITH_NOTES + max(0, note_lines - 3) * 10
         if include_notes

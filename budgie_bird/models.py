@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Lower
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.models import BudgieUser
@@ -146,6 +147,17 @@ class Bird(models.Model):
             x.color_name for x in self.split_property.all().order_by("rank")
         )
 
+    def characteristic_values(self):
+        return self.characteristic_selections.select_related("characteristic").order_by(
+            "characteristic__name"
+        )
+
+    def characteristic_display(self):
+        return [
+            "{}: {}".format(value.characteristic.name, value.selected_description)
+            for value in self.characteristic_values()
+        ]
+
     def descriptive_color(self):
         return "{props} {color} {sep} {split}".format(
             props=self.color_props(),
@@ -195,6 +207,72 @@ class BirdPhoto(models.Model):
         ordering = ["uploaded_at"]
         verbose_name = _("Additional bird photo")
         verbose_name_plural = _("Additional bird photos")
+
+
+class BirdCharacteristic(models.Model):
+    name = models.CharField(max_length=100, unique=True, verbose_name=_("Name"))
+    description_0 = models.CharField(
+        max_length=255, verbose_name=_("Description for level 0")
+    )
+    description_1 = models.CharField(
+        max_length=255, verbose_name=_("Description for level 1")
+    )
+    description_2 = models.CharField(
+        max_length=255, verbose_name=_("Description for level 2")
+    )
+    description_3 = models.CharField(
+        max_length=255, verbose_name=_("Description for level 3")
+    )
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = _("Bird characteristic")
+        verbose_name_plural = _("Bird characteristics")
+
+    def __str__(self):
+        return self.name
+
+    def description_for_level(self, level):
+        return getattr(self, f"description_{level}")
+
+
+class BirdCharacteristicSelection(models.Model):
+    bird = models.ForeignKey(
+        Bird, on_delete=models.CASCADE, related_name="characteristic_selections"
+    )
+    characteristic = models.ForeignKey(
+        BirdCharacteristic,
+        on_delete=models.CASCADE,
+        related_name="bird_selections",
+        verbose_name=_("Characteristic"),
+    )
+    selected_grade = models.PositiveSmallIntegerField(
+        choices=[(level, str(level)) for level in range(4)],
+        verbose_name=_("Selected grade"),
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["bird", "characteristic"],
+                name="unique_bird_characteristic",
+            )
+        ]
+        verbose_name = _("Bird characteristic selection")
+        verbose_name_plural = _("Bird characteristic selections")
+
+    def clean(self):
+        if self.selected_grade not in range(4):
+            raise ValidationError(
+                {"selected_grade": _("The selected grade is invalid.")}
+            )
+
+    @property
+    def selected_description(self):
+        return self.characteristic.description_for_level(self.selected_grade)
+
+    def __str__(self):
+        return "{}: {}".format(self.characteristic, self.selected_description)
 
 
 class Breeder(models.Model):

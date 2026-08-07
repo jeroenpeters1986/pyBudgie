@@ -6,20 +6,65 @@ from django.contrib.admin import SimpleListFilter
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.utils.html import escape
 from django.urls import path, reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from budgie_user.mixins import BudgieUserMixin
-from .forms import BirdForm
+from .forms import BirdCharacteristicSelectionForm, BirdForm
 from .mixins import AdminExportCsvMixin, AdminExportAllCsvMixin
-from .models import Bird, Breeder, ColorProperty, BirdProxy, BirdPhoto
+from .models import (
+    Bird,
+    BirdCharacteristic,
+    BirdCharacteristicSelection,
+    Breeder,
+    ColorProperty,
+    BirdProxy,
+    BirdPhoto,
+)
 from .pdf_helper import render_bird_tree_pdf
 
 
 class BirdPhotoInline(admin.StackedInline):
     model = BirdPhoto
     extra = 1
+
+
+class BirdCharacteristicSelectionInline(admin.TabularInline):
+    model = BirdCharacteristicSelection
+    form = BirdCharacteristicSelectionForm
+    extra = 1
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field = super().formfield_for_foreignkey(db_field, request, **kwargs)
+        if db_field.name == "characteristic":
+            field.widget.attrs["onchange"] = (
+                "window.updateCharacteristicGradeLabels(this);"
+            )
+        return field
+
+    def has_add_permission(self, request, obj=None):
+        return request.user.has_perm("budgie_bird.add_bird")
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.has_perm("budgie_bird.change_bird")
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.has_perm("budgie_bird.change_bird")
+
+
+@admin.register(BirdCharacteristic)
+class BirdCharacteristicAdmin(admin.ModelAdmin):
+    fields = [
+        "name",
+        "description_0",
+        "description_1",
+        "description_2",
+        "description_3",
+    ]
+    list_display = ["name"]
+    search_fields = ["name"]
 
 
 class BirdFatherFilter(SimpleListFilter):
@@ -56,7 +101,7 @@ class BirdAdmin(
 ):
     form = BirdForm
 
-    inlines = [BirdPhotoInline]
+    inlines = [BirdPhotoInline, BirdCharacteristicSelectionInline]
 
     list_display = [
         "ring_number",
@@ -135,6 +180,27 @@ class BirdAdmin(
     ]
 
     change_list_template = "budgie_bird/admin/bird_changelist.html"
+
+    def get_formsets_with_inlines(self, request, obj=None):
+        for formset, inline in super().get_formsets_with_inlines(request, obj):
+            if (
+                request.method == "POST"
+                and inline.model is BirdCharacteristicSelection
+                and f"{formset.get_default_prefix()}-TOTAL_FORMS" not in request.POST
+            ):
+                continue
+            yield formset, inline
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["characteristic_options"] = list(
+            BirdCharacteristic.objects.values(
+                "id", "description_0", "description_1", "description_2", "description_3"
+            )
+        )
+        return super().changeform_view(
+            request, object_id, form_url, extra_context=extra_context
+        )
 
     def get_urls(self):
         """Extend the urls of the Django admin with new views"""
@@ -234,7 +300,9 @@ class BirdAdmin(
     def export_family_tree_pdf(self, request, queryset):
         return self._export_family_tree_pdf(queryset, include_notes=False)
 
-    @admin.action(description=_("Export family tree to PDF (with notes)"))
+    @admin.action(
+        description=_("Export family tree to PDF (with notes and characteristics)")
+    )
     def export_family_tree_pdf_with_notes(self, request, queryset):
         return self._export_family_tree_pdf(queryset, include_notes=True)
 
@@ -285,22 +353,37 @@ class BirdAdmin(
             request, messages.SUCCESS, _("Selected birds are marked as for sale")
         )
 
-    def convert_bird_to_treantjs_data(self, bird):
+    def convert_bird_to_treantjs_data(self, bird, include_extra=False):
+        extra_information = []
+        if include_extra and bird.notes:
+            extra_information.append("{}: {}".format(_("Notes"), bird.notes))
+        if include_extra:
+            extra_information.extend(bird.characteristic_display())
+        extra_information = "\n".join(
+            escape(information) for information in extra_information
+        )
         tree_data = {
             "HTMLclass": "pyBudgie_{}".format(bird.gender),
             "text": {
                 "name": bird.ring_number,
                 "desc": "{}: {}".format(_("Date of birth"), bird.date_of_birth or ""),
-                "contact": bird.descriptive_color(),
+                "contact": "{}{}".format(
+                    bird.descriptive_color(),
+                    "\n{}".format(extra_information) if extra_information else "",
+                ),
             },
             "image": bird.photo.url,
         }
 
         children = []
         if bird.father:
-            children.append(self.convert_bird_to_treantjs_data(bird.father))
+            children.append(
+                self.convert_bird_to_treantjs_data(bird.father, include_extra)
+            )
         if bird.mother:
-            children.append(self.convert_bird_to_treantjs_data(bird.mother))
+            children.append(
+                self.convert_bird_to_treantjs_data(bird.mother, include_extra)
+            )
 
         if children:
             tree_data["children"] = children
@@ -313,10 +396,14 @@ class BirdAdmin(
         if bird is None:
             return redirect(reverse("admin:budgie_bird_bird_changelist"))
 
+        include_extra = request.GET.get("include_extra") == "1"
         context = dict(
             self.admin_site.each_context(request),  # Common admin things
             bird=bird,
-            family_tree_data=mark_safe(self.convert_bird_to_treantjs_data(bird)),
+            include_extra=include_extra,
+            family_tree_data=mark_safe(
+                self.convert_bird_to_treantjs_data(bird, include_extra)
+            ),
         )
         return TemplateResponse(
             request, "budgie_bird/admin/bird_familytree.html", context
