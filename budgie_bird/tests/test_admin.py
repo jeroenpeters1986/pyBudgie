@@ -13,7 +13,11 @@ from django.urls import reverse
 
 from budgie_bird.forms import BirdForm
 from budgie_bird.models import Breeder, Bird, ColorProperty
-from budgie_bird.pdf_helper import _draw_bird_photo
+from budgie_bird.pdf_helper import (
+    _build_tree,
+    _draw_bird_photo,
+    _load_family_tree_birds,
+)
 from budgie_user.models import BudgieUser
 
 
@@ -112,6 +116,53 @@ class BirdAppAdminTest(TestCase):
             ),
         ):
             self.assertFalse(_draw_bird_photo(mock.Mock(), bird, 0, 0, 100))
+
+    def test_draw_bird_photo_reuses_cached_image(self):
+        """Test that an image URL is loaded only once per PDF export."""
+        bird = mock.Mock()
+        bird.photo = mock.Mock()
+        bird.photo.name = "assets/budgie-silhouette.png"
+        bird.photo.url = "https://example.invalid/photo.png"
+
+        with open(
+            "{}/../budgie_bird/fixtures/testpic.png".format(settings.BASE_DIR), "rb"
+        ) as image_file:
+            response = mock.MagicMock()
+            response.read.return_value = image_file.read()
+
+        with mock.patch(
+            "budgie_bird.pdf_helper.urlopen", return_value=response
+        ) as mocked_urlopen:
+            image_cache = {}
+            self.assertTrue(
+                _draw_bird_photo(mock.Mock(), bird, 0, 0, 100, image_cache=image_cache)
+            )
+            self.assertTrue(
+                _draw_bird_photo(mock.Mock(), bird, 0, 0, 100, image_cache=image_cache)
+            )
+
+        self.assertEqual(mocked_urlopen.call_count, 1)
+
+    def test_family_tree_ancestors_are_loaded_without_lazy_queries(self):
+        """Test that rendering the loaded tree does not query each ancestor."""
+        grandparent = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="GRANDPARENT"
+        )
+        father = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="FATHER", father=grandparent
+        )
+        bird = Bird.objects.create(
+            user=self.pybudgie_user, ring_number="CHICK", father=father
+        )
+
+        loaded_bird = _load_family_tree_birds([bird])[0]
+        with self.assertNumQueries(0):
+            tree = _build_tree(loaded_bird)
+
+        self.assertEqual(tree["children"][0]["bird"].ring_number, "FATHER")
+        self.assertEqual(
+            tree["children"][0]["children"][0]["bird"].ring_number, "GRANDPARENT"
+        )
 
     def test_admin_bird_add_by_admin(self):
         """Test if the admin can add a new bird"""
