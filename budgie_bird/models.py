@@ -139,12 +139,14 @@ class Bird(models.Model):
 
     def color_props(self):
         return " ".join(
-            x.color_name for x in self.color_property.all().order_by("rank")
+            x.color_name
+            for x in sorted(self.color_property.all(), key=lambda prop: prop.rank)
         )
 
     def split_props(self):
         return " ".join(
-            x.color_name for x in self.split_property.all().order_by("rank")
+            x.color_name
+            for x in sorted(self.split_property.all(), key=lambda prop: prop.rank)
         )
 
     def characteristic_values(self):
@@ -159,11 +161,13 @@ class Bird(models.Model):
         ]
 
     def descriptive_color(self):
+        props = self.color_props()
+        split = self.split_props()
         return "{props} {color} {sep} {split}".format(
-            props=self.color_props(),
+            props=props,
             color=self.get_color_display(),
-            sep="/" if self.split_props() else "",
-            split=self.split_props(),
+            sep="/" if split else "",
+            split=split,
         ).strip()
 
     def get_ancestors(self):

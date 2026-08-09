@@ -307,12 +307,13 @@ class BirdAdmin(
         return self._export_family_tree_pdf(queryset, include_notes=True)
 
     def _export_family_tree_pdf(self, queryset, include_notes):
+        birds = list(queryset.select_related("father", "mother"))
         pdf = render_bird_tree_pdf(
-            queryset.select_related("father", "mother"), include_notes=include_notes
+            birds, include_notes=include_notes
         )
         response = HttpResponse(pdf, content_type="application/pdf")
-        if queryset.count() == 1:
-            bird = queryset.first()
+        if len(birds) == 1:
+            bird = birds[0]
             safe_name = "{}-family-tree.pdf".format(bird.ring_number or bird.pk)
             response["Content-Disposition"] = 'attachment; filename="{}"'.format(
                 safe_name.replace("/", "_")
