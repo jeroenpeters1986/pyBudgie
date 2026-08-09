@@ -56,8 +56,10 @@ black==26.5.1
 coverage==7.15.4
 pylint==4.0.6
 pytest==9.1.1
-setuptools==84.0.0
+setuptools==80.9.0
 ```
+
+Compatibility note: pylama==8.4.1 imports pkg_resources; setuptools 84.0.0 removed pkg_resources while setuptools 80.9.0 restores it. We conservatively pin setuptools==80.9.0 so pylama can run and reveal the pre-existing W0612 at budgie_bird/tests/test_admin.py:822 — an intentional compatibility tradeoff.
 
 Leave `pycodestyle`, `pydocstyle`, `pyflakes`, and `pylama` unchanged because
 their current pins already match the latest available versions.
