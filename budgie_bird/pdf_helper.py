@@ -35,6 +35,47 @@ def _build_tree(bird, ancestors=None):
     return {"bird": bird, "children": children}
 
 
+def _load_family_tree_birds(birds):
+    """Load all birds in the family trees and cache their related data."""
+    from .models import Bird
+
+    roots = list(birds)
+    all_ids = {bird.pk for bird in roots}
+    pending_ids = {
+        parent_id
+        for bird in roots
+        for parent_id in (bird.father_id, bird.mother_id)
+        if parent_id is not None
+    }
+
+    while pending_ids:
+        all_ids.update(pending_ids)
+        parent_rows = Bird.objects.filter(pk__in=pending_ids).values(
+            "pk", "father_id", "mother_id"
+        )
+        pending_ids = {
+            parent_id
+            for row in parent_rows
+            for parent_id in (row["father_id"], row["mother_id"])
+            if parent_id is not None and parent_id not in all_ids
+        }
+
+    loaded_birds = list(
+        Bird.objects.filter(pk__in=all_ids).prefetch_related(
+            "color_property", "split_property"
+        )
+    )
+    birds_by_id = {bird.pk: bird for bird in loaded_birds}
+    father_field = Bird._meta.get_field("father")
+    mother_field = Bird._meta.get_field("mother")
+
+    for bird in loaded_birds:
+        father_field.set_cached_value(bird, birds_by_id.get(bird.father_id))
+        mother_field.set_cached_value(bird, birds_by_id.get(bird.mother_id))
+
+    return [birds_by_id[bird.pk] for bird in roots]
+
+
 def _position_tree(tree):
     leaves = []
     nodes = []
@@ -64,31 +105,17 @@ def _draw_wrapped_text(pdf, text, x, y, width, font="Helvetica", size=8, leading
     return y
 
 
-def _draw_bird_photo(pdf, bird, left, bottom, card_height):
+def _draw_bird_photo(pdf, bird, left, bottom, card_height, image_cache=None):
     if not bird.photo or not bird.photo.name:
         return False
 
+    image_cache = {} if image_cache is None else image_cache
     max_size = min(52, card_height - 16)
     photo_url = bird.photo.url
-    parsed_url = urlparse(photo_url)
-
-    try:
-        if parsed_url.scheme in ("http", "https"):
-            urlopen_options = {"timeout": 10}
-            if settings.DEBUG:
-                urlopen_options["context"] = ssl._create_unverified_context()
-            photo_file = urlopen(photo_url, **urlopen_options)
-        else:
-            photo_file = bird.photo.storage.open(bird.photo.name, "rb")
-    except HTTPError as exc:
-        if exc.code == 404:
+    if photo_url in image_cache:
+        image = image_cache[photo_url]
+        if image is None:
             return False
-        raise
-    except (URLError, OSError):
-        return False
-
-    with photo_file:
-        image = ImageReader(photo_file)
         image_width, image_height = image.getSize()
         scale = min(max_size / image_width, max_size / image_height)
         width = image_width * scale
@@ -102,10 +129,49 @@ def _draw_bird_photo(pdf, bird, left, bottom, card_height):
             preserveAspectRatio=True,
             mask="auto",
         )
+        return True
+
+    parsed_url = urlparse(photo_url)
+
+    try:
+        if parsed_url.scheme in ("http", "https"):
+            urlopen_options = {"timeout": 10}
+            if settings.DEBUG:
+                urlopen_options["context"] = ssl._create_unverified_context()
+            photo_file = urlopen(photo_url, **urlopen_options)
+        else:
+            photo_file = bird.photo.storage.open(bird.photo.name, "rb")
+    except HTTPError as exc:
+        if exc.code == 404:
+            image_cache[photo_url] = None
+            return False
+        raise
+    except (URLError, OSError):
+        image_cache[photo_url] = None
+        return False
+
+    with photo_file:
+        image = ImageReader(BytesIO(photo_file.read()))
+    image_cache[photo_url] = image
+    image_width, image_height = image.getSize()
+    scale = min(max_size / image_width, max_size / image_height)
+    width = image_width * scale
+    height = image_height * scale
+    pdf.drawImage(
+        image,
+        left + CARD_WIDTH - width - 8,
+        bottom + card_height - height - 8,
+        width=width,
+        height=height,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
     return True
 
 
-def _draw_bird_card(pdf, node, left, bottom, card_height, include_notes):
+def _draw_bird_card(
+    pdf, node, left, bottom, card_height, include_notes, image_cache=None
+):
     bird = node["bird"]
     gender_colors = {
         "male": colors.HexColor("#1976d2"),
@@ -119,7 +185,9 @@ def _draw_bird_card(pdf, node, left, bottom, card_height, include_notes):
     pdf.roundRect(left, bottom, CARD_WIDTH, card_height, 6, fill=1, stroke=1)
 
     text_x = left + 8
-    has_photo = _draw_bird_photo(pdf, bird, left, bottom, card_height)
+    has_photo = _draw_bird_photo(
+        pdf, bird, left, bottom, card_height, image_cache=image_cache
+    )
     text_width = CARD_WIDTH - 74 if has_photo else CARD_WIDTH - 16
     text_y = bottom + card_height - 16
     text_y = _draw_wrapped_text(
@@ -155,7 +223,7 @@ def _draw_bird_card(pdf, node, left, bottom, card_height, include_notes):
         )
 
 
-def _draw_tree_page(pdf, bird, include_notes):
+def _draw_tree_page(pdf, bird, include_notes, image_cache=None):
     tree = _build_tree(bird)
     nodes, leaf_count = _position_tree(tree)
     max_depth = max(node["depth"] for node in nodes)
@@ -226,7 +294,13 @@ def _draw_tree_page(pdf, bird, include_notes):
 
     for node in nodes:
         _draw_bird_card(
-            pdf, node, node["left"], node["bottom"], card_height, include_notes
+            pdf,
+            node,
+            node["left"],
+            node["bottom"],
+            card_height,
+            include_notes,
+            image_cache=image_cache,
         )
 
 
@@ -236,8 +310,9 @@ def render_bird_tree_pdf(birds, include_notes=False):
     pdf.setTitle(_("Bird family tree"))
     pdf.setPageCompression(0)
 
-    for bird in birds:
-        _draw_tree_page(pdf, bird, include_notes)
+    image_cache = {}
+    for bird in _load_family_tree_birds(birds):
+        _draw_tree_page(pdf, bird, include_notes, image_cache=image_cache)
         pdf.showPage()
 
     pdf.save()
