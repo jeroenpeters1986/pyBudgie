@@ -128,6 +128,8 @@ class BirdAppAdminTest(TestCase):
             "{}/../budgie_bird/fixtures/testpic.png".format(settings.BASE_DIR), "rb"
         ) as image_file:
             response = mock.MagicMock()
+            response.__enter__.return_value = response
+            response.__exit__.return_value = False
             response.read.return_value = image_file.read()
 
         with mock.patch(
