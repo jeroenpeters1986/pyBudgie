@@ -50,8 +50,10 @@ pyflakes==3.4.0
 pylama==8.4.1
 pylint==4.0.6
 pytest==9.1.1
-setuptools==84.0.0
+setuptools==80.9.0
 ```
+
+Compatibility note: pylama==8.4.1 imports pkg_resources; setuptools 84.0.0 no longer provides pkg_resources, while setuptools 80.9.0 restores it. We intentionally pin setuptools==80.9.0 so pylama runs (and consequently surfaces the pre-existing W0612 at budgie_bird/tests/test_admin.py:822). This is a conservative, documented compatibility tradeoff.
 
 ## Django 6.1 compatibility assessment
 
