@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-09 16:35+0200\n"
+"POT-Creation-Date: 2026-08-23 22:26+0200\n"
 "PO-Revision-Date: 2026-08-10 00:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,12 +39,12 @@ msgid "General information"
 msgstr "Algemene informatie"
 
 #: budgie_bird/admin.py:150 budgie_bird/admin.py:284 budgie_bird/models.py:68
-#: budgie_bird/models.py:327
+#: budgie_bird/models.py:331
 msgid "Color properties"
 msgstr "Kleurslagen"
 
 #: budgie_bird/admin.py:156 budgie_bird/admin.py:276
-#: budgie_bird/pdf_helper.py:213
+#: budgie_bird/pdf_helper.py:281
 #: budgie_bird/templates/admin/budgie_bird/change_form.html:106
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:98
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:138
@@ -95,40 +95,40 @@ msgstr "Exporteer als .pdf-bestand"
 msgid "Export family tree to PDF (with notes and characteristics)"
 msgstr "Exporteer als .pdf-bestand (met notities en kenmerken)"
 
-#: budgie_bird/admin.py:330
+#: budgie_bird/admin.py:331
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:349
+#: budgie_bird/admin.py:350
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:353
+#: budgie_bird/admin.py:354
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:359 budgie_bird/models.py:199
-#: budgie_bird/pdf_helper.py:146 budgie_bird/pdf_helper.py:177
+#: budgie_bird/admin.py:360 budgie_bird/models.py:203
+#: budgie_bird/pdf_helper.py:214 budgie_bird/pdf_helper.py:245
 msgid "Notes"
 msgstr "Notities"
 
-#: budgie_bird/admin.py:369 budgie_bird/models.py:77
+#: budgie_bird/admin.py:370 budgie_bird/models.py:77
 msgid "Date of birth"
 msgstr "Geboortedatum"
 
-#: budgie_bird/admin.py:428
+#: budgie_bird/admin.py:429
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: budgie_bird/admin.py:593
+#: budgie_bird/admin.py:594
 msgid "bird_export"
 msgstr "vogel_export"
 
-#: budgie_bird/admin.py:614
+#: budgie_bird/admin.py:615
 msgid "Yes"
 msgstr "Ja"
 
-#: budgie_bird/admin.py:614
+#: budgie_bird/admin.py:615
 msgid "No"
 msgstr "Nee"
 
@@ -253,143 +253,143 @@ msgstr ""
 msgid "This bird is for sale"
 msgstr "Deze vogel is te koop"
 
-#: budgie_bird/models.py:125 budgie_bird/models.py:294
+#: budgie_bird/models.py:125 budgie_bird/models.py:298
 #: budgie_breeding/models.py:108 budgie_user/models.py:11
 msgid "Remarks / Notes"
 msgstr "Opmerkingen / Notities"
 
-#: budgie_bird/models.py:134 budgie_bird/models.py:338
+#: budgie_bird/models.py:134 budgie_bird/models.py:342
 msgid "Bird"
 msgstr "Vogel"
 
-#: budgie_bird/models.py:135 budgie_bird/models.py:339
+#: budgie_bird/models.py:135 budgie_bird/models.py:343
 #: budgie_bird/templates/budgie_bird/admin/bird_export.html:9
 #: budgie_bird/templates/budgie_bird/admin/bird_familytree.html:96
 msgid "Birds"
 msgstr "Vogels"
 
-#: budgie_bird/models.py:208
+#: budgie_bird/models.py:212
 msgid "Additional bird photo"
 msgstr "Extra vogel foto"
 
-#: budgie_bird/models.py:209
+#: budgie_bird/models.py:213
 msgid "Additional bird photos"
 msgstr "Extra vogel foto's"
 
-#: budgie_bird/models.py:213
+#: budgie_bird/models.py:217
 msgid "Name"
 msgstr "Naam"
 
-#: budgie_bird/models.py:215
+#: budgie_bird/models.py:219
 msgid "Description for level 0"
 msgstr "Beschrijving van gradatie 0"
 
-#: budgie_bird/models.py:218
+#: budgie_bird/models.py:222
 msgid "Description for level 1"
 msgstr "Beschrijving van gradatie 1"
 
-#: budgie_bird/models.py:221
+#: budgie_bird/models.py:225
 msgid "Description for level 2"
 msgstr "Beschrijving van gradatie 2"
 
-#: budgie_bird/models.py:224
+#: budgie_bird/models.py:228
 msgid "Description for level 3"
 msgstr "Beschrijving van gradatie 3"
 
-#: budgie_bird/models.py:229
+#: budgie_bird/models.py:233
 msgid "Bird characteristic"
 msgstr "Vogelkwaliteit"
 
-#: budgie_bird/models.py:230
+#: budgie_bird/models.py:234
 msgid "Bird characteristics"
 msgstr "Vogelkwaliteit"
 
-#: budgie_bird/models.py:247
+#: budgie_bird/models.py:251
 msgid "Characteristic"
 msgstr "Kwaliteit"
 
-#: budgie_bird/models.py:251
+#: budgie_bird/models.py:255
 msgid "Selected grade"
 msgstr "Gradatie"
 
-#: budgie_bird/models.py:261
+#: budgie_bird/models.py:265
 msgid "Bird characteristic selection"
 msgstr "Vogelkwaliteit selectie"
 
-#: budgie_bird/models.py:262
+#: budgie_bird/models.py:266
 msgid "Bird characteristic selections"
 msgstr "Vogelkwaliteit selecties"
 
-#: budgie_bird/models.py:267
+#: budgie_bird/models.py:271
 msgid "The selected grade is invalid."
 msgstr "De geselecteerde gradatie is ongeldig."
 
-#: budgie_bird/models.py:282
+#: budgie_bird/models.py:286
 msgid "First name"
 msgstr "Voornaam"
 
-#: budgie_bird/models.py:283
+#: budgie_bird/models.py:287
 msgid "Last name"
 msgstr "Achternaam"
 
-#: budgie_bird/models.py:288 budgie_user/models.py:8
+#: budgie_bird/models.py:292 budgie_user/models.py:8
 msgid "Breeding registration number"
 msgstr "Kwekersnummer"
 
-#: budgie_bird/models.py:290
+#: budgie_bird/models.py:294
 msgid "Home address"
 msgstr "Thuisadres"
 
-#: budgie_bird/models.py:292
+#: budgie_bird/models.py:296
 msgid "Phone number"
 msgstr "Telefoonnummer"
 
-#: budgie_bird/models.py:298
+#: budgie_bird/models.py:302
 msgid "Breeder"
 msgstr "Kweker"
 
-#: budgie_bird/models.py:299
+#: budgie_bird/models.py:303
 msgid "Breeders"
 msgstr "Kwekers"
 
-#: budgie_bird/models.py:317
+#: budgie_bird/models.py:321
 msgid "Colorproperty name"
 msgstr "Kleurslag naam"
 
-#: budgie_bird/models.py:320
+#: budgie_bird/models.py:324
 msgid "Matter of importance"
 msgstr "Volgorde van belangrijkheid"
 
-#: budgie_bird/models.py:321
+#: budgie_bird/models.py:325
 msgid "1 is very important, 1000 is not important"
 msgstr ""
 "1 is heel belangrijk (als eerste tonen), 1000 is niet belangrijk/achteraan"
 
-#: budgie_bird/models.py:326
+#: budgie_bird/models.py:330
 msgid "Color property"
 msgstr "Kleurslagen"
 
-#: budgie_bird/models.py:338 budgie_bird/models.py:339
+#: budgie_bird/models.py:342 budgie_bird/models.py:343
 msgid "Not in use:"
 msgstr "Niet in gebruik:"
 
-#: budgie_bird/pdf_helper.py:138
+#: budgie_bird/pdf_helper.py:206
 msgid "Born"
 msgstr "Geboren"
 
-#: budgie_bird/pdf_helper.py:140
+#: budgie_bird/pdf_helper.py:208
 msgid "Died"
 msgstr "Overleden"
 
-#: budgie_bird/pdf_helper.py:151
+#: budgie_bird/pdf_helper.py:219
 msgid "level"
 msgstr "niveau"
 
-#: budgie_bird/pdf_helper.py:218
+#: budgie_bird/pdf_helper.py:286
 msgid "Including bird notes"
 msgstr "Inclusief vogel notities"
 
-#: budgie_bird/pdf_helper.py:250
+#: budgie_bird/pdf_helper.py:324
 msgid "Bird family tree"
 msgstr "Vogel stamboom"
 
