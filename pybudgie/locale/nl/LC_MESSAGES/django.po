@@ -302,7 +302,7 @@ msgstr "Vogelkwaliteit"
 
 #: budgie_bird/models.py:234
 msgid "Bird characteristics"
-msgstr "Vogelkwaliteit"
+msgstr "Vogelkwaliteiten"
 
 #: budgie_bird/models.py:251
 msgid "Characteristic"
