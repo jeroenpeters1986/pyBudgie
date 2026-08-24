@@ -93,7 +93,7 @@ msgstr "Exporteer als .pdf-bestand"
 
 #: budgie_bird/admin.py:304
 msgid "Export family tree to PDF (with notes and characteristics)"
-msgstr "Exporteer als .pdf-bestand (met notities en kenmerken)"
+msgstr "Exporteer als .pdf-bestand (met notities en kwaliteiten)"
 
 #: budgie_bird/admin.py:329
 msgid "That bird does not exist"
@@ -302,7 +302,7 @@ msgstr "Vogelkwaliteit"
 
 #: budgie_bird/models.py:234
 msgid "Bird characteristics"
-msgstr "Vogelkwaliteit"
+msgstr "Vogelkwaliteiten"
 
 #: budgie_bird/models.py:251
 msgid "Characteristic"

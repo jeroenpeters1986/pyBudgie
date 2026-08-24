@@ -246,8 +246,8 @@ def _draw_tree_page(pdf, bird, include_notes, image_cache=None):
                 )
             extra_information.extend(
                 "{}: {}".format(
-                    "{} (level {})".format(
-                        value.characteristic.name, value.selected_grade
+                    "{} ({} {})".format(
+                        value.characteristic.name, _("level"), value.selected_grade
                     ),
                     value.selected_description,
                 )
