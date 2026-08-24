@@ -70,11 +70,19 @@ class BirdAppAdminTest(TestCase):
         content_type_bird = ContentType.objects.get_for_model(Bird)
         content_type_breeder = ContentType.objects.get_for_model(Breeder)
         content_type_color = ContentType.objects.get_for_model(ColorProperty)
+        content_type_characteristic = ContentType.objects.get_for_model(
+            BirdCharacteristic
+        )
+        content_type_characteristic_selection = ContentType.objects.get_for_model(
+            BirdCharacteristicSelection
+        )
         permissions = Permission.objects.filter(
             content_type__in=(
                 content_type_bird,
                 content_type_breeder,
                 content_type_color,
+                content_type_characteristic,
+                content_type_characteristic_selection,
             )
         )
         self.pybudgie_user.user_permissions.set(permissions)
@@ -836,6 +844,7 @@ class BirdAppAdminTest(TestCase):
             reverse("admin:budgie_bird_bird_change", args=[bird.pk])
         )
 
+        self.assertContains(response, characteristic.name)
         self.assertContains(response, "Not applicable")
         self.assertContains(response, "Does not return")
         self.assertContains(response, "characteristic-options")

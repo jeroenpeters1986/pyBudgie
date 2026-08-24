@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 22:26+0200\n"
+"POT-Creation-Date: 2026-08-24 22:01+0200\n"
 "PO-Revision-Date: 2026-08-10 00:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -95,40 +95,40 @@ msgstr "Exporteer als .pdf-bestand"
 msgid "Export family tree to PDF (with notes and characteristics)"
 msgstr "Exporteer als .pdf-bestand (met notities en kenmerken)"
 
-#: budgie_bird/admin.py:331
+#: budgie_bird/admin.py:329
 msgid "That bird does not exist"
 msgstr "Die vogel bestaat niet"
 
-#: budgie_bird/admin.py:350
+#: budgie_bird/admin.py:348
 msgid "Mark as for sale"
 msgstr "Markeer als Te koop"
 
-#: budgie_bird/admin.py:354
+#: budgie_bird/admin.py:352
 msgid "Selected birds are marked as for sale"
 msgstr "De geselecteerde vogels zijn gemarkeerd als Te koop"
 
-#: budgie_bird/admin.py:360 budgie_bird/models.py:203
+#: budgie_bird/admin.py:358 budgie_bird/models.py:203
 #: budgie_bird/pdf_helper.py:214 budgie_bird/pdf_helper.py:245
 msgid "Notes"
 msgstr "Notities"
 
-#: budgie_bird/admin.py:370 budgie_bird/models.py:77
+#: budgie_bird/admin.py:368 budgie_bird/models.py:77
 msgid "Date of birth"
 msgstr "Geboortedatum"
 
-#: budgie_bird/admin.py:429
+#: budgie_bird/admin.py:427
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: budgie_bird/admin.py:594
+#: budgie_bird/admin.py:592
 msgid "bird_export"
 msgstr "vogel_export"
 
-#: budgie_bird/admin.py:615
+#: budgie_bird/admin.py:613
 msgid "Yes"
 msgstr "Ja"
 
-#: budgie_bird/admin.py:615
+#: budgie_bird/admin.py:613
 msgid "No"
 msgstr "Nee"
 

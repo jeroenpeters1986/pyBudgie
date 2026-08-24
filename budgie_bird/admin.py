@@ -45,13 +45,13 @@ class BirdCharacteristicSelectionInline(admin.TabularInline):
         return field
 
     def has_add_permission(self, request, obj=None):
-        return request.user.has_perm("budgie_bird.add_bird")
+        return request.user.has_perm("budgie_bird.add_birdcharacteristicselection")
 
     def has_change_permission(self, request, obj=None):
-        return request.user.has_perm("budgie_bird.change_bird")
+        return request.user.has_perm("budgie_bird.change_birdcharacteristicselection")
 
     def has_delete_permission(self, request, obj=None):
-        return request.user.has_perm("budgie_bird.change_bird")
+        return request.user.has_perm("budgie_bird.change_birdcharacteristicselection")
 
 
 @admin.register(BirdCharacteristic)
@@ -308,9 +308,7 @@ class BirdAdmin(
 
     def _export_family_tree_pdf(self, queryset, include_notes):
         birds = list(queryset.select_related("father", "mother"))
-        pdf = render_bird_tree_pdf(
-            birds, include_notes=include_notes
-        )
+        pdf = render_bird_tree_pdf(birds, include_notes=include_notes)
         response = HttpResponse(pdf, content_type="application/pdf")
         if len(birds) == 1:
             bird = birds[0]
