@@ -49,6 +49,10 @@
         border-color: dodgerblue;
     }
 
+    .family-node .node-contact {
+        white-space: pre-line;
+    }
+
     .node-name {
         font-weight: bold;
     }
@@ -152,6 +156,11 @@
         <div>
             <div class="submit-row">
                 <a class="button" href="{% url 'admin:budgie_bird_bird_change' bird.pk %}">{% translate "Back to the bird" %}</a>
+                {% if include_extra %}
+                    <a class="button" href="{% url 'admin:budgie_bird_bird_familytree' bird.pk %}">{% translate "Hide notes and characteristics" %}</a>
+                {% else %}
+                    <a class="button" href="{% url 'admin:budgie_bird_bird_familytree' bird.pk %}?include_extra=1">{% translate "Show notes and characteristics" %}</a>
+                {% endif %}
                 <details class="button pdf-dropdown">
                     <summary>{% trans 'Download' %}...</summary>
                     <div class="pdf-dropdown-menu">

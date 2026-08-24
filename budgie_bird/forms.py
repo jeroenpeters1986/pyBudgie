@@ -1,7 +1,10 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from budgie_bird.models import Bird
+from budgie_bird.models import (
+    Bird,
+    BirdCharacteristicSelection,
+)
 from budgie_bird.utils import make_date
 
 
@@ -54,3 +57,42 @@ class BirdForm(forms.ModelForm):
                 )
 
         return parent_cleaned
+
+
+class BirdCharacteristicSelectionForm(forms.ModelForm):
+    class Meta:
+        model = BirdCharacteristicSelection
+        fields = ("characteristic", "selected_grade")
+        widgets = {"selected_grade": forms.RadioSelect}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        characteristic = (
+            self.instance.characteristic if self.instance.characteristic_id else None
+        )
+        if self.is_bound:
+            characteristic_id = self.data.get(self.add_prefix("characteristic"))
+            if characteristic_id:
+                try:
+                    characteristic = self.fields["characteristic"].queryset.get(
+                        pk=characteristic_id
+                    )
+                except (
+                    TypeError,
+                    ValueError,
+                    self.fields["characteristic"].queryset.model.DoesNotExist,
+                ):
+                    characteristic = None
+        if characteristic:
+            self.fields["selected_grade"].choices = [
+                (level, characteristic.description_for_level(level))
+                for level in range(4)
+            ]
+        else:
+            self.fields["selected_grade"].choices = [
+                (level, str(level)) for level in range(4)
+            ]
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data

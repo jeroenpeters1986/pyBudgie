@@ -26,6 +26,18 @@ OPENAI_IMAGE_MODEL=gpt-4.1-mini    ## Model of OpenAI
 OPENAI_IMAGE_MAX_DIMENSION=2000    ## Increase when results are bad
 ```
 
+### OpenAI image import
+Set these environment variables for photographed breeding cards:
+```
+OPENAI_API_KEY=...
+```
+
+Optionally adjust the workings in your settings file with:
+```
+OPENAI_IMAGE_MODEL=gpt-4.1-mini    ## Model of OpenAI
+OPENAI_IMAGE_MAX_DIMENSION=2000    ## Increase when results are bad
+```
+
 ## Useful resources
  * https://djangowaves.com/tutorial/multiple-languages-in-Django/
  * https://docs.djangoproject.com/en/3.1/topics/testing/tools/
